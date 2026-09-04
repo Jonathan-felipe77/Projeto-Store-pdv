@@ -1,28 +1,105 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, Float
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
+
 from app.database import Base
 
 
 class Cliente(Base):
+
     __tablename__ = "clientes"
 
-    id         = Column(Integer, primary_key=True, index=True)
-    nome       = Column(String(150), nullable=False, index=True)
+    # ============================================================
+    # ID
+    # ============================================================
 
-    # Matrícula do aluno SENAI — único, usado para identificar o associado
-    matricula  = Column(String(50), nullable=True, unique=True)
+    id = Column(
+        Integer,
+        primary_key=True,
+        index=True
+    )
 
-    telefone   = Column(String(20), nullable=True)
+    # ============================================================
+    # NOME
+    # ============================================================
 
-    # is_associado define se o cliente tem 10% de desconto
-    is_associado = Column(Boolean, default=False, nullable=False)
+    nome = Column(
+        String(150),
+        nullable=False
+    )
 
-    ativo      = Column(Boolean, default=True)
-    criado_em  = Column(DateTime, server_default=func.now())
+    # ============================================================
+    # MATRÍCULA
+    # ============================================================
 
-    # Relacionamento reverso para consultar vendas do cliente
-    vendas = relationship("Venda", back_populates="cliente")
+    matricula = Column(
+        String(100),
+        unique=True,
+        nullable=True
+    )
 
-    def __repr__(self):
-        return f"<Cliente id={self.id} nome={self.nome} associado={self.is_associado}>"
+    # ============================================================
+    # TELEFONE
+    # ============================================================
+
+    telefone = Column(
+        String(30),
+        nullable=True
+    )
+
+    # ============================================================
+    # ASSOCIADO
+    # ============================================================
+
+    is_associado = Column(
+        Boolean,
+        default=False,
+        nullable=False
+    )
+
+    # ============================================================
+    # ATIVO
+    # ============================================================
+
+    ativo = Column(
+        Boolean,
+        default=True,
+        nullable=False
+    )
+
+    # ============================================================
+    # DESCONTO INDIVIDUAL
+    # ============================================================
+    #
+    # 0    = sem desconto
+    # 5    = 5%
+    # 10   = 10%
+    # 15   = 15%
+    # 20   = 20%
+    #
+    # ============================================================
+
+    desconto_percentual = Column(
+        Float,
+        default=0.0,
+        nullable=False
+    )
+
+    # ============================================================
+    # DATA DE CRIAÇÃO
+    # ============================================================
+
+    criado_em = Column(
+        DateTime,
+        server_default=func.now(),
+        nullable=False
+    )
+
+    # ============================================================
+    # RELACIONAMENTO
+    # ============================================================
+
+    vendas = relationship(
+        "Venda",
+        back_populates="cliente"
+    )

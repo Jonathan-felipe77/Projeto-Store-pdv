@@ -1,15 +1,27 @@
 
 import json
 
-from fastapi import APIRouter, Depends, Request, Form
+from fastapi import (
+    APIRouter,
+    Depends,
+    Request,
+    Form
+)
+
 from fastapi.responses import RedirectResponse
+
 from fastapi.templating import Jinja2Templates
+
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+
 from app.models.venda import Venda, ItemVenda
+
 from app.models.produto import Produto
+
 from app.models.cliente import Cliente
+
 from app.auth import get_usuario_logado
 
 
@@ -24,59 +36,75 @@ templates = Jinja2Templates(
 
 
 # ============================================================
-# DESCONTO
-# ============================================================
-
-# Cliente associado recebe 10% de desconto
-DESCONTO_ASSOCIADO = 10.0
-
-
-# ============================================================
 # TELA DO PDV
 # ============================================================
 
 @router.get("/")
 def tela_pdv(
+
     request: Request,
+
     db: Session = Depends(get_db),
-    usuario=Depends(get_usuario_logado)
+
+    usuario=Depends(
+        get_usuario_logado
+    )
 ):
-    """
-    Carrega a tela do PDV com:
-    - produtos ativos
-    - produtos com estoque
-    - clientes ativos
-    - percentual de desconto do associado
-    """
 
     produtos = (
+
         db.query(Produto)
+
         .filter(
+
             Produto.ativo == True,
+
             Produto.estoque_atual > 0
         )
-        .order_by(Produto.nome)
+
+        .order_by(
+            Produto.nome
+        )
+
         .all()
     )
 
+
     clientes = (
+
         db.query(Cliente)
+
         .filter(
             Cliente.ativo == True
         )
-        .order_by(Cliente.nome)
+
+        .order_by(
+            Cliente.nome
+        )
+
         .all()
     )
 
+
     return templates.TemplateResponse(
-        request,
-        "pdv/index.html",
-        {
-            "request": request,
-            "usuario": usuario,
-            "produtos": produtos,
-            "clientes": clientes,
-            "desconto_associado": DESCONTO_ASSOCIADO,
+
+        request=request,
+
+        name="pdv/index.html",
+
+        context={
+
+            "request":
+                request,
+
+            "usuario":
+                usuario,
+
+            "produtos":
+                produtos,
+
+            "clientes":
+                clientes
         }
     )
 
@@ -87,119 +115,139 @@ def tela_pdv(
 
 @router.post("/finalizar")
 def finalizar_venda(
+
     request: Request,
 
-    # JSON enviado pelo JavaScript
-    carrinho_json: str = Form(...),
+    carrinho_json: str =
+        Form(...),
 
-    # Cliente selecionado no PDV
-    # 0 = sem cliente
-    cliente_id: int = Form(0),
+    cliente_id: int =
+        Form(0),
 
-    observacao: str = Form(""),
+    observacao: str =
+        Form(""),
 
-    db: Session = Depends(get_db),
+    db: Session =
+        Depends(get_db),
 
-    usuario=Depends(get_usuario_logado)
+    usuario=Depends(
+        get_usuario_logado
+    )
 ):
-    """
-    Recebe o carrinho, valida os produtos,
-    verifica o tipo do cliente, calcula desconto
-    e salva a venda.
-    """
 
     # ========================================================
-    # LER CARRINHO
+    # CARRINHO
     # ========================================================
 
     try:
-        itens = json.loads(carrinho_json)
 
-    except (json.JSONDecodeError, ValueError, TypeError):
-
-        return RedirectResponse(
-            url="/pdv?erro=json",
-            status_code=302
+        itens = json.loads(
+            carrinho_json
         )
 
-    # Carrinho vazio
+    except (
+        json.JSONDecodeError,
+        ValueError,
+        TypeError
+    ):
+
+        return RedirectResponse(
+
+            url="/pdv?erro=json",
+
+            status_code=303
+        )
+
+
     if not itens:
 
         return RedirectResponse(
+
             url="/pdv?erro=vazio",
-            status_code=302
+
+            status_code=303
         )
 
+
     # ========================================================
-    # BUSCAR CLIENTE
+    # CLIENTE
     # ========================================================
 
     cliente = None
 
     desconto_percentual = 0.0
 
+
     if cliente_id:
 
         cliente = (
+
             db.query(Cliente)
+
             .filter(
-                Cliente.id == cliente_id,
-                Cliente.ativo == True
+
+                Cliente.id ==
+                    cliente_id,
+
+                Cliente.ativo ==
+                    True
             )
+
             .first()
         )
 
-        # Cliente informado não existe
+
         if not cliente:
 
             return RedirectResponse(
+
                 url="/pdv?erro=cliente_inexistente",
-                status_code=302
+
+                status_code=303
             )
 
+
         # ====================================================
-        # VERIFICA SE É CLIENTE ASSOCIADO
-        # ====================================================
-        #
-        # O cadastro envia:
-        #
-        # tipo_cliente = "normal"
-        #
-        # ou
-        #
-        # tipo_cliente = "associado"
-        #
+        # DESCONTO INDIVIDUAL DO CLIENTE
         # ====================================================
 
-        tipo_cliente = getattr(
-            cliente,
-            "tipo_cliente",
-            None
+        desconto_percentual = float(
+
+            getattr(
+                cliente,
+                "desconto_percentual",
+                0.0
+            )
+            or 0.0
         )
 
-        if tipo_cliente:
 
-            tipo_cliente = str(
-                tipo_cliente
-            ).strip().lower()
+        # Segurança
+        desconto_percentual = max(
+            0.0,
+            min(
+                100.0,
+                desconto_percentual
+            )
+        )
 
-        if tipo_cliente == "associado":
 
-            desconto_percentual = DESCONTO_ASSOCIADO
+        desconto_percentual = round(
+            desconto_percentual,
+            2
+        )
+
 
     # ========================================================
-    # VALIDAR ESTOQUE E CALCULAR TOTAL BRUTO
+    # PRODUTOS
     # ========================================================
 
     total_bruto = 0.0
 
     itens_validados = []
 
-    for item in itens:
 
-        # ----------------------------------------------------
-        # Validar dados recebidos
-        # ----------------------------------------------------
+    for item in itens:
 
         try:
 
@@ -211,100 +259,125 @@ def finalizar_venda(
                 item["quantidade"]
             )
 
-        except (KeyError, TypeError, ValueError):
+        except (
+            KeyError,
+            TypeError,
+            ValueError
+        ):
 
             return RedirectResponse(
+
                 url="/pdv?erro=item_invalido",
-                status_code=302
+
+                status_code=303
             )
 
-        # ----------------------------------------------------
-        # Quantidade inválida
-        # ----------------------------------------------------
 
         if quantidade <= 0:
 
             return RedirectResponse(
+
                 url="/pdv?erro=quantidade",
-                status_code=302
+
+                status_code=303
             )
 
-        # ----------------------------------------------------
-        # Buscar produto novamente no banco
-        # ----------------------------------------------------
 
         produto = (
+
             db.query(Produto)
+
             .filter(
-                Produto.id == produto_id,
-                Produto.ativo == True
+
+                Produto.id ==
+                    produto_id,
+
+                Produto.ativo ==
+                    True
             )
+
             .with_for_update()
+
             .first()
         )
+
 
         if not produto:
 
             return RedirectResponse(
-                url=f"/pdv?erro=produto_inexistente&id={produto_id}",
-                status_code=302
+
+                url="/pdv?erro=produto_inexistente",
+
+                status_code=303
             )
 
-        # ----------------------------------------------------
-        # Verificar estoque
-        # ----------------------------------------------------
 
         if produto.estoque_atual < quantidade:
 
             return RedirectResponse(
-                url=f"/pdv?erro=estoque&produto={produto.nome}",
-                status_code=302
+
+                url="/pdv?erro=estoque",
+
+                status_code=303
             )
 
-        # ----------------------------------------------------
-        # Subtotal do produto
-        # ----------------------------------------------------
 
-        subtotal = float(
+        preco = float(
             produto.preco
-        ) * quantidade
+        )
+
+
+        subtotal = (
+
+            preco *
+            quantidade
+        )
+
 
         total_bruto += subtotal
 
-        # ----------------------------------------------------
-        # Guardar item validado
-        # ----------------------------------------------------
 
-        itens_validados.append(
-            {
-                "produto": produto,
-                "quantidade": quantidade,
-                "preco": float(produto.preco),
-                "produto_nome": produto.nome,
-            }
-        )
+        itens_validados.append({
+
+            "produto":
+                produto,
+
+            "quantidade":
+                quantidade,
+
+            "preco":
+                preco,
+
+            "produto_nome":
+                produto.nome
+        })
+
 
     # ========================================================
-    # CALCULAR DESCONTO
+    # DESCONTO
     # ========================================================
 
     desconto_valor = (
+
         total_bruto *
-        (desconto_percentual / 100)
+
+        (
+            desconto_percentual
+            / 100
+        )
     )
+
 
     # ========================================================
     # TOTAL FINAL
     # ========================================================
 
     total_liquido = (
+
         total_bruto -
         desconto_valor
     )
 
-    # ========================================================
-    # GARANTIR DUAS CASAS DECIMAIS
-    # ========================================================
 
     total_bruto = round(
         total_bruto,
@@ -321,31 +394,46 @@ def finalizar_venda(
         2
     )
 
+
     # ========================================================
-    # CRIAR VENDA
+    # VENDA
     # ========================================================
 
     venda = Venda(
-        cliente_id=cliente_id or None,
 
-        usuario_id=usuario.get("id"),
+        cliente_id=(
+            cliente_id
+            if cliente_id
+            else None
+        ),
 
-        desconto_percentual=desconto_percentual,
+        usuario_id=
+            usuario.get("id"),
 
-        total_bruto=total_bruto,
+        desconto_percentual=
+            desconto_percentual,
 
-        total_liquido=total_liquido,
+        total_bruto=
+            total_bruto,
 
-        observacao=observacao or None,
+        total_liquido=
+            total_liquido,
+
+        observacao=(
+            observacao.strip()
+            if observacao
+            else None
+        )
     )
+
 
     db.add(venda)
 
-    # Gera o ID da venda
     db.flush()
 
+
     # ========================================================
-    # CRIAR ITENS DA VENDA
+    # ITENS
     # ========================================================
 
     for item in itens_validados:
@@ -354,31 +442,33 @@ def finalizar_venda(
 
         quantidade = item["quantidade"]
 
-        preco = item["preco"]
-
-        # ----------------------------------------------------
-        # Criar ItemVenda
-        # ----------------------------------------------------
 
         db.add(
+
             ItemVenda(
-                venda_id=venda.id,
 
-                produto_id=produto.id,
+                venda_id=
+                    venda.id,
 
-                produto_nome=item["produto_nome"],
+                produto_id=
+                    produto.id,
 
-                quantidade=quantidade,
+                produto_nome=
+                    item["produto_nome"],
 
-                preco_unitario=preco,
+                quantidade=
+                    quantidade,
+
+                preco_unitario=
+                    item["preco"]
             )
         )
 
-        # ----------------------------------------------------
-        # Baixar estoque
-        # ----------------------------------------------------
 
-        produto.estoque_atual -= quantidade
+        produto.estoque_atual -= (
+            quantidade
+        )
+
 
     # ========================================================
     # SALVAR
@@ -393,17 +483,22 @@ def finalizar_venda(
         db.rollback()
 
         return RedirectResponse(
+
             url="/pdv?erro=salvar",
-            status_code=302
+
+            status_code=303
         )
 
-    # ========================================================
-    # FINALIZAR
-    # ========================================================
 
     return RedirectResponse(
-        url=f"/pdv/venda/{venda.id}?sucesso=ok",
-        status_code=302
+
+        url=(
+            f"/pdv/venda/"
+            f"{venda.id}"
+            f"?sucesso=ok"
+        ),
+
+        status_code=303
     )
 
 
@@ -413,37 +508,57 @@ def finalizar_venda(
 
 @router.get("/venda/{venda_id}")
 def detalhe_venda(
+
     venda_id: int,
+
     request: Request,
+
     db: Session = Depends(get_db),
-    usuario=Depends(get_usuario_logado)
+
+    usuario=Depends(
+        get_usuario_logado
+    )
 ):
-    """
-    Exibe o comprovante da venda.
-    """
 
     venda = (
+
         db.query(Venda)
+
         .filter(
-            Venda.id == venda_id
+            Venda.id ==
+                venda_id
         )
+
         .first()
     )
+
 
     if not venda:
 
         return RedirectResponse(
+
             url="/pdv",
-            status_code=302
+
+            status_code=303
         )
 
+
     return templates.TemplateResponse(
-        request,
-        "pdv/comprovante.html",
-        {
-            "request": request,
-            "usuario": usuario,
-            "venda": venda
+
+        request=request,
+
+        name="pdv/comprovante.html",
+
+        context={
+
+            "request":
+                request,
+
+            "usuario":
+                usuario,
+
+            "venda":
+                venda
         }
     )
 
@@ -454,29 +569,45 @@ def detalhe_venda(
 
 @router.get("/historico")
 def historico_vendas(
+
     request: Request,
+
     db: Session = Depends(get_db),
-    usuario=Depends(get_usuario_logado)
+
+    usuario=Depends(
+        get_usuario_logado
+    )
 ):
-    """
-    Histórico das últimas 100 vendas.
-    """
 
     vendas = (
+
         db.query(Venda)
+
         .order_by(
             Venda.criado_em.desc()
         )
+
         .limit(100)
+
         .all()
     )
 
+
     return templates.TemplateResponse(
-        request,
-        "pdv/historico.html",
-        {
-            "request": request,
-            "usuario": usuario,
-            "vendas": vendas
+
+        request=request,
+
+        name="pdv/historico.html",
+
+        context={
+
+            "request":
+                request,
+
+            "usuario":
+                usuario,
+
+            "vendas":
+                vendas
         }
     )
