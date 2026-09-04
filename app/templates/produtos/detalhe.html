@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ produto.nome }} — M&J Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #0b0b0b;
+        }
+        .text-neon {
+            color: #ccff00;
+        }
+        .bg-neon {
+            background-color: #ccff00;
+        }
+        .bg-neon:hover {
+            background-color: #b2df00;
+        }
+    </style>
+    <link rel="stylesheet" href="/static/css/navbar.css">
+</head>
+<body class="text-gray-200 min-h-screen flex flex-col justify-between">
+    {% include "shared/navbar.html" %}
+
+
+    <header class="border-b border-gray-800 bg-[#111] py-4 px-6 flex justify-between items-center">
+        <div class="flex items-center space-x-2">
+            <a href="/auth/produtos" class="text-white font-extrabold text-xl tracking-tighter">M&J <span class="text-neon text-xs tracking-normal font-semibold">STORE</span></a>
+        </div>
+        <a href="/auth/produtos" class="text-sm text-gray-400 hover:text-white transition">← Voltar para a vitrine</a>
+    </header>
+
+    <main class="max-w-5xl mx-auto my-12 px-4 w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+        
+        <div class="bg-[#151515] p-6 rounded-lg border border-gray-800 flex justify-center items-center shadow-xl">
+            <img src="{{ produto.imagem_url if produto.imagem_url else '/static/img/placeholder.png' }}" alt="{{ produto.nome }}" class="w-full max-h-[450px] object-contain rounded">
+        </div>
+
+        <div class="flex flex-col h-full justify-between space-y-6">
+            <div>
+               
+                            <div class="bg-green-900/30 border border-green-500 text-green-400 p-3 rounded mb-4 text-sm">
+                                ✓ 
+                            </div>
+                     
+                <span class="text-xs uppercase tracking-widest text-gray-500 font-bold block mb-1">
+                   
+                </span>
+                
+                <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight uppercase mb-4">
+                   
+                </h1>
+
+                <div class="text-3xl font-bold text-white mb-6">
+                    <span class="text-sm font-normal text-gray-400">R$</span> 
+                </div>
+
+                <div class="bg-[#111] border border-gray-800 rounded-lg p-4 mb-6 flex justify-between items-center">
+                    <div>
+                        <p class="text-xs uppercase text-gray-500 font-semibold tracking-wider">Estoque Atual</p>
+                        <p class="text-xl font-bold text-white mt-1"> <span class="text-xs font-normal text-gray-400">unidades</span></p>
+                    </div>
+                    <div>
+                       
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-opacity-10 text-green-400 bg-green-100 border border-green-500/30">
+                                Em estoque
+                            </span>
+                        
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-opacity-10 text-red-400 bg-red-100 border border-red-500/30">
+                                Fora de estoque
+                            </span>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-6 space-y-3">
+                <p class="text-xs font-bold uppercase text-gray-500 tracking-wider">Painel de Controle</p>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <a href="/movimentacoes/nova?produto_id={{ produto.id }}" 
+                       class="bg-neon text-black text-center py-3 px-4 rounded font-bold uppercase text-sm tracking-wider transition duration-200 shadow-lg block">
+                        + Movimentar Estoque
+                    </a>
+                    
+                    <a href="/movimentacoes/produto/{{ produto.id }}" 
+                       class="bg-transparent border border-gray-700 hover:border-gray-500 text-white text-center py-3 px-4 rounded font-bold uppercase text-sm tracking-wider transition duration-200 block">
+                        Ver Histórico
+                    </a>
+                </div>
+
+                <div class="pt-2">
+                    <a href="/auth/produtos/{{ produto.id }}/editar" 
+                       class="w-full inline-block bg-neutral-800 hover:bg-neutral-700 text-gray-300 text-center py-2 px-4 rounded font-semibold text-xs uppercase tracking-wider transition">
+                        ⚙️ Editar Produto (Admin)
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="border-t border-gray-900 bg-[#0a0a0a] py-4 text-center text-xs text-gray-600">
+        &copy; 2026 M&J Store — Todos os direitos reservados.
+    </footer>
+
+</body>
+</html

@@ -1,0 +1,272 @@
+
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuários — M&J STORE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Reset e Configurações Gerais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: #0b0b0b; /* Preto absoluto do site */
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Header da Página */
+        .header-painel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #222;
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        /* Botão Novo Usuário */
+        .btn-novo {
+            display: inline-block;
+            background-color: #ccff00; /* Verde neon */
+            color: #000000;
+            text-decoration: none;
+            padding: 12px 24px;
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-novo:hover {
+            background-color: #b2df00;
+        }
+
+        /* Mensagens de Feedback Estilizadas */
+        .alert {
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            border-left: 4px solid;
+            background-color: #141414;
+        }
+
+        .alert-success {
+            color: #00ff66;
+            border-color: #00ff66;
+        }
+
+        .alert-error {
+            color: #ff4444;
+            border-color: #ff4444;
+        }
+
+        /* Tabela Customizada M&J Store */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            background-color: #141414; /* Fundo cinza escuro dos cards */
+            border: 1px solid #222;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 16px 20px;
+            font-size: 14px;
+        }
+
+        th {
+            background-color: #1a1a1a;
+            color: #888;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 12px;
+            border-bottom: 1px solid #222;
+        }
+
+        tr {
+            border-bottom: 1px solid #1f1f1f;
+            transition: background-color 0.2s ease;
+        }
+
+        tr:hover {
+            background-color: #1c1c1c;
+        }
+
+        /* Badges de Perfil e Status */
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background-color: #2a2a2a;
+            color: #ccc;
+        }
+
+        .badge.active {
+            background-color: rgba(0, 255, 102, 0.1);
+            color: #00ff66;
+        }
+
+        .badge.inactive {
+            background-color: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+        }
+
+        /* Links de Ações dentro da Tabela */
+        .btn-editar {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            margin-right: 15px;
+            border-bottom: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .btn-editar:hover {
+            border-color: #ffffff;
+        }
+
+        .btn-toggle {
+            background: none;
+            border: none;
+            color: #ccff00; /* Verde neon */
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding: 0;
+            font-family: inherit;
+            border-bottom: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .btn-toggle:hover {
+            border-color: #ccff00;
+        }
+
+        /* Link de Voltar */
+        .btn-voltar {
+            display: inline-block;
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .btn-voltar:hover {
+            color: #ffffff;
+        }
+    </style>
+    <link rel="stylesheet" href="/static/css/navbar.css">
+</head>
+<body>
+    {% include "shared/navbar.html" %}
+
+
+    <div class="container">
+        
+        <div class="header-painel">
+            <h1>Usuários</h1>
+            <a href="/usuarios/novo" class="btn-novo">+ Novo usuário</a>
+        </div>
+
+        {% if request.query_params.get('criado') == 'ok' %}
+            <div class="alert alert-success">Usuário criado com sucesso!</div>
+        {% endif %}
+        
+        {% if request.query_params.get('editado') == 'ok' %}
+            <div class="alert alert-success">Usuário atualizado com sucesso!</div>
+        {% endif %}
+       
+        {% if request.query_params.get('erro') == 'autoproprio' %}
+            <div class="alert alert-error">Você não pode desativar sua própria conta.</div>
+        {% endif %}
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                        <th>Perfil</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in usuarios %}
+                    <tr>
+                        <td style="font-weight: 600;">{{ u.nome }}</td>
+                        <td style="color: #aaa;">{{ u.email }}</td>
+                        <td><span class="badge">{{ u.role }}</span></td>
+                        <td>
+                            {% if u.ativo %}
+                                <span class="badge active">Ativo</span>
+                            {% else %}
+                                <span class="badge inactive">Inativo</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="/usuarios/{{ u.id }}/editar" class="btn-editar">Editar</a>
+
+                            <form action="/usuarios/{{ u.id }}/toggle-ativo" method="post" style="display:inline">
+                                <button type="submit" class="btn-toggle">
+                                    {% if u.ativo %}
+                                        Desativar
+                                    {% else %}
+                                        Ativar
+                                    {% endif %}
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" style="text-align: center; color: #888;">Nenhum usuário cadastrado.</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+            </table>
+        </div>
+
+        <p><a href="/" class="btn-voltar">← Voltar ao home</a></p>
+    </div>
+
+</body>
+</html>

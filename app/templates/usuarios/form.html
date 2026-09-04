@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ "Editar" if editando else "Novo" }} Usuário — M&J STORE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Reset e Estilos Gerais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: #0b0b0b; /* Fundo escuro absoluto */
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Card do Formulário */
+        .form-card {
+            background-color: #141414; /* Cinza escuro dos cards do site */
+            border: 1px solid #222;
+            width: 100%;
+            max-width: 500px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Logo simulada no topo do form */
+        .brand-logo {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            color: #ffffff;
+        }
+
+        .brand-logo span {
+            color: #ccff00;
+            font-size: 11px;
+            vertical-align: super;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+            padding-bottom: 15px;
+        }
+
+        /* Alerta de Erro Estilizado */
+        .alert-error {
+            background-color: rgba(255, 68, 68, 0.1);
+            color: #ff4444;
+            border-left: 4px solid #ff4444;
+            padding: 12px 15px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        /* Grupos de Input */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888;
+        }
+
+        /* Inputs, Passwords e Selects customizados */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        select {
+            width: 100%;
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            color: #ffffff;
+            padding: 14px;
+            font-size: 14px;
+            font-weight: 500;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        /* Foco com efeito Verde Neon do site */
+        input:focus, select:focus {
+            border-color: #ccff00;
+            box-shadow: 0 0 5px rgba(204, 255, 0, 0.2);
+        }
+
+        /* Estilização do placeholder padrão */
+        ::placeholder {
+            color: #555;
+            font-size: 13px;
+        }
+
+        /* Customização da seta do select para combinar */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23888'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Container de botões na base */
+        .form-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 35px;
+        }
+
+        /* Botão Salvar (Baseado no botão principal "Ver Coleção") */
+        .btn-submit {
+            width: 100%;
+            background-color: #ccff00;
+            color: #000000;
+            border: none;
+            padding: 16px;
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-submit:hover {
+            background-color: #b2df00;
+        }
+
+        /* Botão Cancelar (Estilo secundário discreto) */
+        .btn-cancel {
+            display: block;
+            text-align: center;
+            width: 100%;
+            background-color: transparent;
+            border: 1px solid #333;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel:hover {
+            border-color: #ffffff;
+            background-color: #ffffff;
+            color: #000000;
+        }
+    </style>
+    <link rel="stylesheet" href="/static/css/navbar.css">
+</head>
+<body>
+    {% include "shared/navbar.html" %}
+
+
+    <div class="form-card">
+        <div class="brand-logo">M&J<span>STORE</span></div>
+
+        <h1>{{ "Editar" if editando else "Novo" }} Usuário</h1>
+
+        {% if erro %}
+            <div class="alert-error">{{ erro }}</div>
+        {% endif %}
+
+        <form action="{{ '/usuarios/' + editando.id|string + '/editar' if editando else '/usuarios/novo' }}" method="post">
+
+            <div class="input-group">
+                <label for="nome">Nome completo</label>
+                <input type="text" 
+                       id="nome"
+                       name="nome" 
+                       value="{{ editando.nome if editando else (valores.nome if valores else '') }}" 
+                       required>
+            </div>
+
+            <div class="input-group">
+                <label for="email">E-mail corporativo</label>
+                <input type="email" 
+                       id="email"
+                       name="email" 
+                       value="{{ editando.email if editando else (valores.email if valores else '') }}" 
+                       required>
+            </div>
+
+            <div class="input-group">
+                <label for="senha">Senha de acesso</label>
+                <input type="password" 
+                       id="senha"
+                       name="senha" 
+                       {% if editando %}
+                       placeholder="Deixe em branco para manter a senha atual"
+                       {% else %}
+                       required minlength="6"
+                       {% endif %}>
+            </div>
+
+            <div class="input-group">
+                <label for="role">Perfil de acesso</label>
+                <select id="role" name="role">
+                    <option value="operador" {{ 'selected' if (editando and editando.role == 'operador') or (valores and valores.role == 'operador') else '' }}>
+                        Operador
+                    </option>
+                    <option value="admin" {{ 'selected' if (editando and editando.role == 'admin') or (valores and valores.role == 'admin') else '' }}>
+                        Administrador
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">
+                    {{ "Salvar alterações" if editando else "Cadastrar usuário" }}
+                </button>
+                <a href="/usuarios" class="btn-cancel">Cancelar</a>
+            </div>
+
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | M&J Store</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background: #060606;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: #d2ff1f;
+            z-index: 10;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 5%;
+            background-color: #000;
+            border-bottom: 1px solid #141414;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: baseline;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .logo-main {
+            font-family: 'Anton', sans-serif;
+            font-size: 32px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .logo-sub {
+            color: #d2ff1f;
+            font-size: 11px;
+            font-weight: 900;
+            margin-left: 4px;
+            letter-spacing: 1px;
+        }
+
+        .btn-logout {
+            text-decoration: none;
+            color: #fff;
+            border: 1px solid #262626;
+            padding: 12px 28px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 60px 5%;
+            flex: 1;
+        }
+
+        .tag-bem-vindo {
+            color: #d2ff1f;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+
+        .titulo-usuario {
+            font-family: 'Anton', sans-serif;
+            font-size: clamp(38px, 6vw, 60px);
+            margin-top: 10px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.1;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            align-items: start;
+        }
+
+        .profile-card {
+            background: #0d0d0d;
+            border: 1px solid #1a1a1a;
+            padding: 40px;
+        }
+
+        .info-grupo {
+            margin-bottom: 30px;
+        }
+
+        .info-grupo:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-label {
+            color: #666;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: block;
+            letter-spacing: 1px;
+        }
+
+        .info-valor {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .role-badge {
+            background: #d2ff1f;
+            color: #000;
+            padding: 6px 16px;
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 4px;
+        }
+        
+        .role-badge.admin-role {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        .panel-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .btn-action {
+            display: block;
+            text-align: center;
+            background: #d2ff1f;
+            color: #000;
+            padding: 18px 30px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action:hover {
+            background: #beee16;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(210, 255, 31, 0.15);
+        }
+
+        .btn-action-secondary {
+            display: block;
+            text-align: center;
+            background: transparent;
+            color: #fff;
+            border: 1px solid #262626;
+            padding: 18px 30px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-action-secondary:hover {
+            border-color: #fff;
+            transform: translateY(-2px);
+        }
+
+        footer {
+            text-align: center;
+            color: #444;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            padding: 40px;
+            border-top: 1px solid #141414;
+            margin-top: auto;
+            text-transform: uppercase;
+        }
+    </style>
+    <link rel="stylesheet" href="/static/css/navbar.css">
+</head>
+
+<body>
+    {% include "shared/navbar.html" %}
+
+
+<header>
+    <a href="/" class="logo-container">
+        <span class="logo-main">M&J</span>
+        <span class="logo-sub">STORE</span>
+    </a>
+    <a href="/auth/logout" class="btn-logout">Sair</a>
+</header>
+
+<main class="container">
+
+    <span class="tag-bem-vindo">
+        Painel de Controle Corporativo
+    </span>
+
+    <h1 class="titulo-usuario">
+        Olá, {{ usuario.nome }}
+    </h1>
+
+    <div class="dashboard-grid">
+        
+        <div class="profile-card">
+            <div class="info-grupo">
+                <span class="info-label">Usuário Autenticado</span>
+                <span class="info-valor">{{ usuario.email }}</span>
+            </div>
+
+            <div class="info-grupo">
+                <span class="info-label">Nível de Permissão</span>
+                <span class="role-badge {% if usuario.role == 'admin' %}admin-role{% endif %}">
+                    {% if usuario.role == 'admin' %}
+                        Administrador
+                    {% else %}
+                        Operador
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+
+        <div class="panel-menu">
+            <a href="/produtos" class="btn-action">
+                Gerenciar Produtos
+            </a>
+
+            <a href="/categorias" class="btn-action-secondary" style="background-color: rgba(210, 255, 31, 0.05); border-color: #d2ff1f; color: #d2ff1f;">
+                Gerenciar Categorias & Estoque
+            </a>
+            
+            {% if usuario.role == 'admin' %}
+                <a href="/usuarios" class="btn-action-secondary">
+                    Controle de Usuários
+                </a>
+            {% endif %}
+        </div>
+
+    </div>
+
+</main>
+
+<footer>
+    © 2026 M&J Store — Sistema Interno
+</footer>
+
+</body>
+</html>

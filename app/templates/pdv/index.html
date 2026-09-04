@@ -1,0 +1,1910 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PDV — M&J Store</title>
+
+    <link rel="stylesheet" href="/static/css/navbar.css">
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #0b0b0b;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* =========================================================
+           TOPO
+        ========================================================= */
+
+        .topbar {
+            background: #050505;
+            color: #ffffff;
+            padding: 0 24px;
+            min-height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            border-bottom: 1px solid #222222;
+        }
+
+        .topbar-title {
+            font-weight: 800;
+            font-size: 16px;
+            letter-spacing: .02em;
+            color: #00ff88;
+        }
+
+        .topbar-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .topbar-links a {
+            color: #b5b5b5;
+            font-size: 13px;
+            text-decoration: none;
+            transition: color .2s;
+        }
+
+        .topbar-links a:hover {
+            color: #00ff88;
+        }
+
+        /* =========================================================
+           LAYOUT
+        ========================================================= */
+
+        .pdv-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 380px;
+            flex: 1;
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        /* =========================================================
+           PRODUTOS
+        ========================================================= */
+
+        .produtos-col {
+            display: flex;
+            flex-direction: column;
+            background: #0b0b0b;
+            border-right: 1px solid #292929;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .produtos-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #292929;
+            background: #111111;
+            flex-shrink: 0;
+        }
+
+        .busca-input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid #333333;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            background: #191919;
+            color: #ffffff;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        .busca-input::placeholder {
+            color: #777777;
+        }
+
+        .busca-input:focus {
+            border-color: #00ff88;
+            box-shadow: 0 0 0 2px rgba(0, 255, 136, .10);
+        }
+
+        /* =========================================================
+           GRID DOS PRODUTOS
+        ========================================================= */
+
+        .produtos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 220px));
+            grid-auto-rows: max-content;
+            align-content: start;
+            align-items: start;
+            justify-content: start;
+            gap: 16px;
+            padding: 18px 20px;
+            overflow-y: auto;
+            flex: 1;
+            min-height: 0;
+        }
+
+        /* =========================================================
+           CARD DO PRODUTO
+        ========================================================= */
+
+        .produto-card {
+            width: 100%;
+            background: #151515;
+            border: 1px solid #2b2b2b;
+            border-radius: 11px;
+            padding: 11px;
+            cursor: pointer;
+            user-select: none;
+            align-self: start;
+            height: auto;
+            min-height: 0;
+            transition:
+                border-color .2s,
+                transform .15s,
+                box-shadow .2s,
+                background .2s;
+        }
+
+        .produto-card:hover {
+            border-color: #00ff88;
+            background: #181818;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 22px rgba(0, 255, 136, .10);
+        }
+
+        .produto-card:active {
+            transform: translateY(0);
+        }
+
+        .produto-card img {
+            display: block;
+            width: 100%;
+            height: 125px;
+            object-fit: contain;
+            border-radius: 7px;
+            margin-bottom: 11px;
+            background: #e9e9e9;
+        }
+
+        .produto-card-nome {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.35;
+            margin-bottom: 6px;
+            min-height: 18px;
+        }
+
+        .produto-card-preco {
+            font-size: 16px;
+            font-weight: 800;
+            color: #00ff88;
+            margin-bottom: 4px;
+        }
+
+        .produto-card-estoque {
+            font-size: 11px;
+            color: #888888;
+        }
+
+        .produto-card.sem-estoque {
+            opacity: .4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        /* =========================================================
+           PAGINAÇÃO
+        ========================================================= */
+
+        .paginacao {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px 20px 16px;
+            background: #111111;
+            border-top: 1px solid #292929;
+            flex-shrink: 0;
+        }
+
+        #numeros-paginas {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pagina-btn {
+            min-width: 36px;
+            height: 36px;
+            padding: 0 10px;
+            border: 1px solid #333333;
+            border-radius: 7px;
+            background: #191919;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            transition: .15s;
+        }
+
+        .pagina-btn:hover:not(:disabled) {
+            background: #00ff88;
+            color: #050505;
+            border-color: #00ff88;
+        }
+
+        .pagina-btn.ativa {
+            background: #00ff88;
+            color: #050505;
+            border-color: #00ff88;
+        }
+
+        .pagina-btn:disabled {
+            opacity: .35;
+            cursor: not-allowed;
+        }
+
+        /* =========================================================
+           CARRINHO
+        ========================================================= */
+
+        .carrinho-col {
+            display: flex;
+            flex-direction: column;
+            background: #111111;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        .carrinho-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #292929;
+            font-weight: 800;
+            font-size: 15px;
+            color: #00ff88;
+            flex-shrink: 0;
+        }
+
+        /* =========================================================
+           CLIENTE
+        ========================================================= */
+
+        .cliente-section {
+            padding: 14px 20px;
+            border-bottom: 1px solid #292929;
+            flex-shrink: 0;
+        }
+
+        .cliente-section label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #a3a3a3;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+        }
+
+        .cliente-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #333333;
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+            cursor: pointer;
+            background: #191919;
+            color: #ffffff;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        .cliente-select:focus {
+            border-color: #00ff88;
+            box-shadow: 0 0 0 2px rgba(0, 255, 136, .10);
+        }
+
+        .desconto-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #0d2e20;
+            color: #00ff88;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 999px;
+            margin-top: 8px;
+        }
+
+        /* =========================================================
+           ITENS DO CARRINHO
+        ========================================================= */
+
+        .carrinho-itens {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 0;
+            min-height: 0;
+        }
+
+        .carrinho-vazio {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #777777;
+            font-size: 13px;
+            gap: 8px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .carrinho-vazio-icon {
+            font-size: 34px;
+        }
+
+        .item-carrinho {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 11px 20px;
+            border-bottom: 1px solid #222222;
+            transition: background .1s;
+        }
+
+        .item-carrinho:hover {
+            background: #181818;
+        }
+
+        .item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .item-nome {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+            line-height: 1.3;
+        }
+
+        .item-preco-unit {
+            font-size: 11px;
+            color: #888888;
+            margin-top: 3px;
+        }
+
+        /* =========================================================
+           CONTROLE DE QUANTIDADE
+        ========================================================= */
+
+        .item-qty-ctrl {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .qty-btn {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #333333;
+            border-radius: 6px;
+            background: #191919;
+            color: #ffffff;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            line-height: 1;
+            transition: .15s;
+        }
+
+        .qty-btn:hover:not(:disabled) {
+            background: #00ff88;
+            color: #050505;
+            border-color: #00ff88;
+        }
+
+        .qty-btn:disabled {
+            opacity: .3;
+            cursor: not-allowed;
+        }
+
+        .qty-value {
+            font-size: 14px;
+            font-weight: 700;
+            min-width: 22px;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .item-subtotal {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+            min-width: 70px;
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .item-remover {
+            color: #ff4d4d;
+            cursor: pointer;
+            font-size: 19px;
+            padding: 2px 4px;
+            border-radius: 4px;
+            background: none;
+            border: none;
+            transition: background .15s;
+        }
+
+        .item-remover:hover {
+            background: #351313;
+        }
+
+        /* =========================================================
+           RODAPÉ
+        ========================================================= */
+
+        .carrinho-footer {
+            border-top: 1px solid #292929;
+            padding: 16px 20px;
+            flex-shrink: 0;
+            background: #111111;
+        }
+
+        .totais {
+            margin-bottom: 14px;
+        }
+
+        .total-linha {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #a3a3a3;
+            margin-bottom: 6px;
+        }
+
+        .total-linha.desconto {
+            color: #00ff88;
+        }
+
+        .total-linha.final {
+            font-size: 19px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #333333;
+        }
+
+        .obs-input {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid #333333;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 12px;
+            outline: none;
+            resize: none;
+            background: #191919;
+            color: #ffffff;
+        }
+
+        .obs-input::placeholder {
+            color: #777777;
+        }
+
+        .obs-input:focus {
+            border-color: #00ff88;
+            box-shadow: 0 0 0 2px rgba(0, 255, 136, .10);
+        }
+
+        /* =========================================================
+           BOTÃO FINALIZAR
+        ========================================================= */
+
+        .btn-finalizar {
+            width: 100%;
+            padding: 14px;
+            background: #00ff88;
+            color: #050505;
+            border: none;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background .15s, transform .15s, box-shadow .15s;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, .15);
+        }
+
+        .btn-finalizar:hover {
+            background: #00d977;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(0, 255, 136, .20);
+        }
+
+        .btn-finalizar:disabled {
+            background: #2a2a2a;
+            color: #777777;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
+        }
+
+        /* =========================================================
+           ALERTAS
+        ========================================================= */
+
+        .alerta {
+            background: #351313;
+            color: #ff6b6b;
+            border: 1px solid #5a2020;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin: 12px 20px;
+        }
+
+        select option {
+            background: #151515;
+            color: #ffffff;
+        }
+
+        /* =========================================================
+           SCROLLBAR
+        ========================================================= */
+
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0b0b0b;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333333;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00ff88;
+        }
+
+        /* =========================================================
+           RESPONSIVO
+        ========================================================= */
+
+        @media (max-width: 1000px) {
+
+            .pdv-layout {
+                grid-template-columns: minmax(0, 1fr) 340px;
+            }
+
+            .produtos-grid {
+                grid-template-columns: repeat(auto-fill, minmax(170px, 200px));
+            }
+
+            .item-carrinho {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+        }
+
+        @media (max-width: 750px) {
+
+            body {
+                height: auto;
+                overflow: auto;
+            }
+
+            .pdv-layout {
+                grid-template-columns: 1fr;
+                overflow: visible;
+            }
+
+            .produtos-col {
+                border-right: none;
+                min-height: 550px;
+            }
+
+            .carrinho-col {
+                min-height: 550px;
+            }
+
+            .topbar {
+                height: auto;
+                padding: 12px 15px;
+                gap: 10px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .topbar-links {
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .produtos-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                justify-content: stretch;
+            }
+
+            .produto-card {
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 450px) {
+
+            .produtos-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                padding: 12px;
+            }
+
+            .produto-card {
+                padding: 9px;
+            }
+
+            .produto-card img {
+                height: 105px;
+            }
+
+            .produto-card-nome {
+                font-size: 12px;
+            }
+
+            .produto-card-preco {
+                font-size: 14px;
+            }
+
+            .paginacao {
+                padding: 10px;
+                gap: 4px;
+            }
+
+            .pagina-btn {
+                min-width: 32px;
+                height: 32px;
+                padding: 0 7px;
+            }
+
+            .item-carrinho {
+                gap: 5px;
+                padding: 10px 8px;
+            }
+
+            .item-nome {
+                font-size: 12px;
+            }
+
+            .item-preco-unit {
+                font-size: 10px;
+            }
+
+            .qty-btn {
+                width: 27px;
+                height: 27px;
+            }
+
+            .item-subtotal {
+                min-width: 58px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include "shared/navbar.html" %}
+
+    <!-- =========================================================
+         TOPO
+    ========================================================== -->
+
+    <header class="topbar">
+
+        <span class="topbar-title">
+             PDV — M&J Store
+        </span>
+
+        <nav class="topbar-links">
+
+            <a href="/pdv/historico">
+                Histórico de vendas
+            </a>
+
+            <a href="/clientes">
+                Clientes
+            </a>
+
+            <a href="/dashboard">
+                Dashboard
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =========================================================
+         ALERTAS
+    ========================================================== -->
+
+    {% set erro = request.query_params.get('erro') %}
+
+    {% if erro %}
+
+    <div class="alerta">
+
+        {% if erro == 'vazio' %}
+
+            Carrinho vazio. Adicione produtos antes de finalizar.
+
+        {% elif erro == 'estoque' %}
+
+            Estoque insuficiente para:
+            {{ request.query_params.get('produto') }}
+
+        {% elif erro == 'quantidade' %}
+
+            Quantidade inválida.
+
+        {% else %}
+
+            Ocorreu um erro. Tente novamente.
+
+        {% endif %}
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- =========================================================
+         LAYOUT DO PDV
+    ========================================================== -->
+
+    <div class="pdv-layout">
+
+        <!-- =====================================================
+             PRODUTOS
+        ====================================================== -->
+
+        <section class="produtos-col">
+
+            <div class="produtos-header">
+
+                <input
+                    class="busca-input"
+                    type="text"
+                    id="busca-produto"
+                    placeholder="🔍 Buscar produto..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <div
+                class="produtos-grid"
+                id="grade-produtos"
+            >
+
+                {% for p in produtos %}
+
+                <div
+                    class="produto-card {% if p.estoque_atual == 0 %}sem-estoque{% endif %}"
+                    data-id="{{ p.id }}"
+                    data-nome="{{ p.nome }}"
+                    data-preco="{{ p.preco }}"
+                    data-estoque="{{ p.estoque_atual }}"
+                    data-nome-lower="{{ p.nome.lower() }}"
+                    onclick="adicionarAoCarrinho(this)"
+                >
+
+                    <img
+                        src="{{ p.imagem_url }}"
+                        alt="{{ p.nome }}"
+                        onerror="this.style.display='none'"
+                    >
+
+                    <div class="produto-card-nome">
+                        {{ p.nome }}
+                    </div>
+
+                    <div class="produto-card-preco">
+                        R$ {{ "%.2f"|format(p.preco) }}
+                    </div>
+
+                    <div class="produto-card-estoque">
+                        Estoque: {{ p.estoque_atual }}
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- =================================================
+                 PAGINAÇÃO
+            ================================================== -->
+
+            <div
+                class="paginacao"
+                id="paginacao"
+            >
+
+                <button
+                    type="button"
+                    class="pagina-btn"
+                    id="btn-anterior"
+                    onclick="paginaAnterior()"
+                >
+                    ←
+                </button>
+
+
+                <div id="numeros-paginas"></div>
+
+
+                <button
+                    type="button"
+                    class="pagina-btn"
+                    id="btn-proximo"
+                    onclick="paginaProxima()"
+                >
+                    →
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             CARRINHO
+        ====================================================== -->
+
+        <aside class="carrinho-col">
+
+            <div class="carrinho-header">
+                 Carrinho
+            </div>
+
+
+            <!-- CLIENTE -->
+
+            <div class="cliente-section">
+
+                <label for="select-cliente">
+                    Cliente
+                </label>
+
+                <select
+                    class="cliente-select"
+                    id="select-cliente"
+                    onchange="atualizarCliente(this)"
+                >
+
+                    <option
+                        value="0"
+                        data-associado="false"
+                    >
+                        Sem identificação
+                    </option>
+
+                    {% for c in clientes %}
+
+                    <option
+                        value="{{ c.id }}"
+                        data-associado="{{ 'true' if c.is_associado else 'false' }}"
+                    >
+
+                        {{ c.nome }}
+
+                        {% if c.matricula %}
+                            ({{ c.matricula }})
+                        {% endif %}
+
+                        {% if c.is_associado %}
+                            — ASSOCIADO
+                        {% endif %}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+
+                <div
+                    class="desconto-badge"
+                    id="badge-desconto"
+                    style="display:none"
+                >
+                    ✓ {{ desconto_associado|int }}% de desconto aplicado
+                </div>
+
+            </div>
+
+
+            <!-- ITENS -->
+
+            <div
+                class="carrinho-itens"
+                id="lista-carrinho"
+            >
+
+                <div
+                    class="carrinho-vazio"
+                    id="msg-vazio"
+                >
+
+                    <span class="carrinho-vazio-icon">
+                        
+                    </span>
+
+                    Clique nos produtos para adicionar
+
+                </div>
+
+            </div>
+
+
+            <!-- RODAPÉ -->
+
+            <div class="carrinho-footer">
+
+                <div
+                    class="totais"
+                    id="totais"
+                    style="display:none"
+                >
+
+                    <div class="total-linha">
+
+                        <span>
+                            Subtotal
+                        </span>
+
+                        <span id="val-subtotal">
+                            R$ 0,00
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="total-linha desconto"
+                        id="linha-desconto"
+                        style="display:none"
+                    >
+
+                        <span id="label-desconto">
+                            Desconto (0%)
+                        </span>
+
+                        <span id="val-desconto">
+                            — R$ 0,00
+                        </span>
+
+                    </div>
+
+
+                    <div class="total-linha final">
+
+                        <span>
+                            Total
+                        </span>
+
+                        <span id="val-total">
+                            R$ 0,00
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <textarea
+                    class="obs-input"
+                    id="obs-input"
+                    rows="2"
+                    placeholder="Observação (opcional)..."
+                ></textarea>
+
+
+                <form
+                    id="form-venda"
+                    action="/pdv/finalizar"
+                    method="post"
+                >
+
+                    <input
+                        type="hidden"
+                        name="carrinho_json"
+                        id="input-carrinho"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="cliente_id"
+                        id="input-cliente-id"
+                        value="0"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="observacao"
+                        id="input-obs"
+                    >
+
+
+                    <button
+                        class="btn-finalizar"
+                        id="btn-finalizar"
+                        type="button"
+                        disabled
+                        onclick="finalizarVenda()"
+                    >
+                        Finalizar venda
+                    </button>
+
+                </form>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+
+    <script>
+
+        // ============================================================
+        // CONFIGURAÇÕES
+        // ============================================================
+
+        const ITENS_POR_PAGINA = 3;
+
+        let paginaAtual = 1;
+
+        let carrinho = [];
+
+        let clienteAtual = {
+            id: 0,
+            associado: false
+        };
+
+        const DESCONTO_PCT = Number({{ desconto_associado|default(0) }}) || 0;
+
+
+        // ============================================================
+        // FORMATAÇÃO DE PREÇO
+        // ============================================================
+
+        function formatarMoeda(valor) {
+
+            return 'R$ ' +
+                Number(valor)
+                    .toFixed(2)
+                    .replace('.', ',');
+
+        }
+
+
+        // ============================================================
+        // PAGINAÇÃO
+        // ============================================================
+
+        function obterProdutosVisiveis() {
+
+            const input =
+                document.getElementById('busca-produto');
+
+            const termo =
+                input
+                    ? input.value.toLowerCase().trim()
+                    : '';
+
+            return Array.from(
+                document.querySelectorAll('.produto-card')
+            ).filter(card => {
+
+                const nome =
+                    card.dataset.nomeLower || '';
+
+                return nome.includes(termo);
+
+            });
+
+        }
+
+
+        function renderizarPaginacao() {
+
+            const produtos =
+                obterProdutosVisiveis();
+
+
+            const totalPaginas =
+                Math.max(
+                    1,
+                    Math.ceil(
+                        produtos.length /
+                        ITENS_POR_PAGINA
+                    )
+                );
+
+
+            if (paginaAtual > totalPaginas) {
+
+                paginaAtual = totalPaginas;
+
+            }
+
+
+            const inicio =
+                (paginaAtual - 1) *
+                ITENS_POR_PAGINA;
+
+
+            const fim =
+                inicio +
+                ITENS_POR_PAGINA;
+
+
+            // Esconde todos
+            document
+                .querySelectorAll('.produto-card')
+                .forEach(card => {
+
+                    card.style.display = 'none';
+
+                });
+
+
+            // Mostra somente os produtos da página
+            produtos
+                .slice(inicio, fim)
+                .forEach(card => {
+
+                    card.style.display = '';
+
+                });
+
+
+            const container =
+                document.getElementById(
+                    'numeros-paginas'
+                );
+
+
+            container.innerHTML = '';
+
+
+            // Cria números das páginas
+            for (
+                let i = 1;
+                i <= totalPaginas;
+                i++
+            ) {
+
+                const botao =
+                    document.createElement('button');
+
+
+                botao.type = 'button';
+
+
+                botao.className =
+                    'pagina-btn' +
+                    (
+                        i === paginaAtual
+                            ? ' ativa'
+                            : ''
+                    );
+
+
+                botao.textContent = i;
+
+
+                botao.addEventListener(
+                    'click',
+                    function () {
+
+                        paginaAtual = i;
+
+                        renderizarPaginacao();
+
+                    }
+                );
+
+
+                container.appendChild(botao);
+
+            }
+
+
+            document.getElementById(
+                'btn-anterior'
+            ).disabled =
+                paginaAtual === 1;
+
+
+            document.getElementById(
+                'btn-proximo'
+            ).disabled =
+                paginaAtual === totalPaginas;
+
+
+            document.getElementById(
+                'paginacao'
+            ).style.display =
+                produtos.length === 0
+                    ? 'none'
+                    : 'flex';
+
+        }
+
+
+        function paginaAnterior() {
+
+            if (paginaAtual <= 1)
+                return;
+
+
+            paginaAtual--;
+
+            renderizarPaginacao();
+
+        }
+
+
+        function paginaProxima() {
+
+            const produtos =
+                obterProdutosVisiveis();
+
+
+            const totalPaginas =
+                Math.ceil(
+                    produtos.length /
+                    ITENS_POR_PAGINA
+                );
+
+
+            if (
+                paginaAtual >=
+                totalPaginas
+            )
+                return;
+
+
+            paginaAtual++;
+
+            renderizarPaginacao();
+
+        }
+
+
+        // ============================================================
+        // ADICIONAR PRODUTO AO CARRINHO
+        // ============================================================
+
+        function adicionarAoCarrinho(card) {
+
+            const id =
+                Number(card.dataset.id);
+
+
+            const nome =
+                card.dataset.nome;
+
+
+            const preco =
+                Number(card.dataset.preco);
+
+
+            const estoque =
+                Number(card.dataset.estoque);
+
+
+            if (
+                !Number.isFinite(id) ||
+                !Number.isFinite(preco)
+            ) {
+
+                alert('Erro ao identificar o produto.');
+
+                return;
+
+            }
+
+
+            if (
+                !Number.isFinite(estoque) ||
+                estoque <= 0
+            ) {
+
+                alert('Produto sem estoque.');
+
+                return;
+
+            }
+
+
+            const existente =
+                carrinho.find(
+                    item =>
+                        item.produto_id === id
+                );
+
+
+            // Se já existe no carrinho
+            if (existente) {
+
+                if (
+                    existente.quantidade >=
+                    existente.estoque_max
+                ) {
+
+                    alert(
+                        `Você pode comprar no máximo ${existente.estoque_max} unidade(s) deste produto.`
+                    );
+
+                    return;
+
+                }
+
+
+                existente.quantidade++;
+
+            }
+
+            // Se ainda não existe
+            else {
+
+                carrinho.push({
+
+                    produto_id: id,
+
+                    nome: nome,
+
+                    preco: preco,
+
+                    quantidade: 1,
+
+                    estoque_max: estoque
+
+                });
+
+            }
+
+
+            renderizarCarrinho();
+
+        }
+
+
+        // ============================================================
+        // ALTERAR QUANTIDADE
+        // ============================================================
+
+        function alterarQtd(produtoId, delta) {
+
+            const item =
+                carrinho.find(
+                    i =>
+                        i.produto_id ===
+                        produtoId
+                );
+
+
+            if (!item)
+                return;
+
+
+            const novaQuantidade =
+                item.quantidade + delta;
+
+
+            // Menor que 1 remove
+            if (novaQuantidade <= 0) {
+
+                removerItem(produtoId);
+
+                return;
+
+            }
+
+
+            // Não deixa ultrapassar o estoque
+            if (
+                novaQuantidade >
+                item.estoque_max
+            ) {
+
+                alert(
+                    `Estoque disponível: ${item.estoque_max} unidade(s).`
+                );
+
+                return;
+
+            }
+
+
+            item.quantidade =
+                novaQuantidade;
+
+
+            renderizarCarrinho();
+
+        }
+
+
+        // ============================================================
+        // REMOVER ITEM
+        // ============================================================
+
+        function removerItem(produtoId) {
+
+            carrinho =
+                carrinho.filter(
+                    item =>
+                        item.produto_id !==
+                        produtoId
+                );
+
+
+            renderizarCarrinho();
+
+        }
+
+
+        // ============================================================
+        // CLIENTE
+        // ============================================================
+
+        function atualizarCliente(select) {
+
+            const option =
+                select.options[
+                    select.selectedIndex
+                ];
+
+
+            clienteAtual.id =
+                Number(option.value) || 0;
+
+
+            clienteAtual.associado =
+                option.dataset.associado === 'true';
+
+
+            const badge =
+                document.getElementById(
+                    'badge-desconto'
+                );
+
+
+            badge.style.display =
+                clienteAtual.associado
+                    ? 'inline-flex'
+                    : 'none';
+
+
+            renderizarTotais();
+
+        }
+
+
+        // ============================================================
+        // RENDERIZAR CARRINHO
+        // ============================================================
+
+        function renderizarCarrinho() {
+
+            const lista =
+                document.getElementById(
+                    'lista-carrinho'
+                );
+
+
+            const totais =
+                document.getElementById(
+                    'totais'
+                );
+
+
+            const btnFinal =
+                document.getElementById(
+                    'btn-finalizar'
+                );
+
+
+            // Carrinho vazio
+            if (carrinho.length === 0) {
+
+                lista.innerHTML = `
+
+                    <div
+                        class="carrinho-vazio"
+                        id="msg-vazio"
+                    >
+
+                        <span class="carrinho-vazio-icon">
+                            
+                        </span>
+
+                        Clique nos produtos para adicionar
+
+                    </div>
+
+                `;
+
+
+                totais.style.display =
+                    'none';
+
+
+                btnFinal.disabled = true;
+
+
+                return;
+
+            }
+
+
+            // Carrinho com produtos
+            totais.style.display =
+                'block';
+
+
+            btnFinal.disabled = false;
+
+
+            lista.innerHTML = '';
+
+
+            carrinho.forEach(item => {
+
+                const subtotal =
+                    item.preco *
+                    item.quantidade;
+
+
+                const div =
+                    document.createElement(
+                        'div'
+                    );
+
+
+                div.className =
+                    'item-carrinho';
+
+
+                const limiteAtingido =
+                    item.quantidade >=
+                    item.estoque_max;
+
+
+                div.innerHTML = `
+
+                    <div class="item-info">
+
+                        <div class="item-nome">
+                            ${item.nome}
+                        </div>
+
+                        <div class="item-preco-unit">
+                            ${formatarMoeda(item.preco)}
+                            / un.
+                        </div>
+
+                    </div>
+
+
+                    <div class="item-qty-ctrl">
+
+                        <button
+                            type="button"
+                            class="qty-btn"
+                            onclick="alterarQtd(${item.produto_id}, -1)"
+                            title="Diminuir quantidade"
+                        >
+                            −
+                        </button>
+
+
+                        <span class="qty-value">
+                            ${item.quantidade}
+                        </span>
+
+
+                        <button
+                            type="button"
+                            class="qty-btn"
+                            onclick="alterarQtd(${item.produto_id}, 1)"
+                            title="${limiteAtingido ? 'Estoque máximo atingido' : 'Aumentar quantidade'}"
+                            ${limiteAtingido ? 'disabled' : ''}
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+
+                    <div class="item-subtotal">
+                        ${formatarMoeda(subtotal)}
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="item-remover"
+                        onclick="removerItem(${item.produto_id})"
+                        title="Remover produto"
+                    >
+                        ×
+                    </button>
+
+                `;
+
+
+                lista.appendChild(div);
+
+            });
+
+
+            renderizarTotais();
+
+        }
+
+
+        // ============================================================
+        // TOTAIS
+        // ============================================================
+
+        function renderizarTotais() {
+
+            const subtotal =
+                carrinho.reduce(
+                    (total, item) => {
+
+                        return total +
+                            (
+                                item.preco *
+                                item.quantidade
+                            );
+
+                    },
+                    0
+                );
+
+
+            const descontoValor =
+                clienteAtual.associado
+                    ? subtotal *
+                      (DESCONTO_PCT / 100)
+                    : 0;
+
+
+            const total =
+                subtotal -
+                descontoValor;
+
+
+            document.getElementById(
+                'val-subtotal'
+            ).textContent =
+                formatarMoeda(subtotal);
+
+
+            document.getElementById(
+                'val-total'
+            ).textContent =
+                formatarMoeda(total);
+
+
+            const linhaDesconto =
+                document.getElementById(
+                    'linha-desconto'
+                );
+
+
+            const labelDesconto =
+                document.getElementById(
+                    'label-desconto'
+                );
+
+
+            const valorDesconto =
+                document.getElementById(
+                    'val-desconto'
+                );
+
+
+            if (
+                clienteAtual.associado &&
+                descontoValor > 0
+            ) {
+
+                linhaDesconto.style.display =
+                    'flex';
+
+
+                labelDesconto.textContent =
+                    `Desconto (${DESCONTO_PCT}%)`;
+
+
+                valorDesconto.textContent =
+                    `− ${formatarMoeda(descontoValor)}`;
+
+            }
+
+            else {
+
+                linhaDesconto.style.display =
+                    'none';
+
+            }
+
+        }
+
+
+        // ============================================================
+        // FINALIZAR VENDA
+        // ============================================================
+
+        function finalizarVenda() {
+
+            if (carrinho.length === 0) {
+
+                alert(
+                    'Adicione pelo menos um produto ao carrinho.'
+                );
+
+                return;
+
+            }
+
+
+            // Confere novamente as quantidades
+            for (const item of carrinho) {
+
+                if (
+                    item.quantidade <= 0 ||
+                    item.quantidade >
+                    item.estoque_max
+                ) {
+
+                    alert(
+                        `Quantidade inválida para ${item.nome}.`
+                    );
+
+                    return;
+
+                }
+
+            }
+
+
+            const dadosCarrinho =
+                carrinho.map(item => ({
+
+                    produto_id:
+                        item.produto_id,
+
+                    nome:
+                        item.nome,
+
+                    preco:
+                        item.preco,
+
+                    quantidade:
+                        item.quantidade
+
+                }));
+
+
+            document.getElementById(
+                'input-carrinho'
+            ).value =
+                JSON.stringify(
+                    dadosCarrinho
+                );
+
+
+            document.getElementById(
+                'input-cliente-id'
+            ).value =
+                clienteAtual.id;
+
+
+            document.getElementById(
+                'input-obs'
+            ).value =
+                document.getElementById(
+                    'obs-input'
+                ).value;
+
+
+            document.getElementById(
+                'form-venda'
+            ).submit();
+
+        }
+
+
+        // ============================================================
+        // BUSCA
+        // ============================================================
+
+        const campoBusca =
+            document.getElementById(
+                'busca-produto'
+            );
+
+
+        campoBusca.addEventListener(
+            'input',
+            function () {
+
+                paginaAtual = 1;
+
+                renderizarPaginacao();
+
+            }
+        );
+
+
+        // ============================================================
+        // INICIALIZAÇÃO
+        // ============================================================
+
+        document.addEventListener(
+            'DOMContentLoaded',
+            function () {
+
+                renderizarPaginacao();
+
+                renderizarCarrinho();
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Checkout | M&J Store</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Montserrat',sans-serif;
+}
+
+body{
+    background:#050505;
+    color:#fff;
+}
+
+header{
+    width:100%;
+    background:#0b0b0b;
+    border-bottom:1px solid #181818;
+    padding:25px 60px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+
+    color:#c8ff1a;
+    text-decoration:none;
+    font-size:32px;
+    font-weight:900;
+}
+
+.voltar{
+
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+main{
+
+    width:95%;
+    max-width:1450px;
+
+    margin:auto;
+    padding:40px 0;
+
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:40px;
+}
+
+.box{
+
+    background:#0d0d0d;
+    border:1px solid #1d1d1d;
+
+    padding:30px;
+    border-radius:8px;
+}
+
+h2{
+
+    margin-bottom:25px;
+    color:#c8ff1a;
+}
+
+.input-group{
+
+    display:flex;
+    flex-direction:column;
+
+    margin-bottom:18px;
+}
+
+.input-group label{
+
+    margin-bottom:8px;
+    font-size:14px;
+}
+
+.input-group input,
+.input-group select{
+
+    height:48px;
+
+    border:none;
+    outline:none;
+
+    border-radius:5px;
+
+    background:#171717;
+
+    color:white;
+
+    padding:12px;
+}
+
+.row{
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.cart-item{
+
+    display:flex;
+    gap:15px;
+
+    padding:15px 0;
+
+    border-bottom:1px solid #222;
+}
+
+.cart-item img{
+
+    width:90px;
+    height:90px;
+
+    object-fit:cover;
+
+    border-radius:5px;
+}
+
+.item-info{
+
+    flex:1;
+}
+
+.item-info h3{
+
+    font-size:15px;
+    margin-bottom:8px;
+}
+
+.item-info p{
+
+    color:#999;
+}
+
+.price{
+
+    color:#c8ff1a;
+    font-weight:900;
+    margin-top:8px;
+}
+
+.resumo{
+
+    display:flex;
+    justify-content:space-between;
+
+    margin:15px 0;
+
+    font-size:17px;
+}
+
+.total{
+
+    border-top:1px solid #222;
+
+    padding-top:20px;
+
+    font-size:22px;
+    font-weight:900;
+}
+
+button{
+
+    width:100%;
+
+    margin-top:30px;
+
+    padding:18px;
+
+    border:none;
+
+    background:#c8ff1a;
+
+    color:black;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    font-size:16px;
+
+    letter-spacing:2px;
+
+    transition:.3s;
+}
+
+button:hover{
+
+    opacity:.85;
+}
+
+.success{
+
+    display:none;
+
+    margin-top:20px;
+
+    background:#102000;
+
+    color:#c8ff1a;
+
+    padding:18px;
+
+    border-radius:5px;
+
+    text-align:center;
+
+    font-weight:bold;
+}
+
+@media(max-width:900px){
+
+main{
+
+grid-template-columns:1fr;
+
+}
+
+.row{
+
+grid-template-columns:1fr;
+
+}
+
+header{
+
+padding:20px;
+
+}
+
+}
+
+</style>
+
+    <link rel="stylesheet" href="/static/css/navbar.css">
+</head>
+
+<body>
+    {% include "shared/navbar.html" %}
+
+
+<header>
+
+<a href="/produtos" class="logo">
+
+M&J STORE
+
+</a>
+
+<a href="/produtos" class="voltar">
+
+← Continuar comprando
+
+</a>
+
+</header>
+
+<main>
+
+<section class="box">
+
+<h2>Endereço de Entrega</h2>
+
+<form id="checkoutForm">
+
+<div class="input-group">
+
+<label>Nome Completo</label>
+
+<input required>
+
+</div>
+
+<div class="row">
+
+<div class="input-group">
+
+<label>CPF</label>
+
+<input required>
+
+</div>
+
+<div class="input-group">
+
+<label>CEP</label>
+
+<input required>
+
+</div>
+
+</div>
+
+<div class="input-group">
+
+<label>Rua</label>
+
+<input required>
+
+</div>
+
+<div class="row">
+
+<div class="input-group">
+
+<label>Número</label>
+
+<input required>
+
+</div>
+
+<div class="input-group">
+
+<label>Bairro</label>
+
+<input required>
+
+</div>
+
+</div>
+
+<div class="row">
+
+<div class="input-group">
+
+<label>Cidade</label>
+
+<input required>
+
+</div>
+
+<div class="input-group">
+
+<label>Estado</label>
+
+<input required>
+
+</div>
+
+</div>
+
+<h2 style="margin-top:40px">
+
+Forma de Pagamento
+
+</h2>
+
+<div class="input-group">
+
+<select required>
+
+<option value="">Selecione</option>
+
+<option>PIX</option>
+
+<option>Cartão de Crédito</option>
+
+<option>Cartão de Débito</option>
+
+<option>Boleto Bancário</option>
+
+</select>
+
+</div>
+
+<button type="submit">
+
+FINALIZAR PEDIDO
+
+</button>
+
+<div class="success" id="success">
+
+Compra realizada com sucesso!
+
+</div>
+
+</form>
+
+</section>
+
+<aside class="box">
+
+<h2>
+
+Resumo do Pedido
+
+</h2>
+
+<div id="cartItems">
+
+</div>
+
+<div class="resumo">
+
+<span>Subtotal</span>
+
+<span id="subtotal">
+
+R$0,00
+
+</span>
+
+</div>
+
+<div class="resumo">
+
+<span>Frete</span>
+
+<span>
+
+Grátis
+
+</span>
+
+</div>
+
+<div class="resumo total">
+
+<span>Total</span>
+
+<span id="total">
+
+R$0,00
+
+</span>
+
+</div>
+
+</aside>
+
+</main>
+
+<script>
+
+let cart=JSON.parse(localStorage.getItem("mj_cart"))||[];
+
+const container=document.getElementById("cartItems");
+
+let total=0;
+
+cart.forEach(item=>{
+
+total+=item.price*item.quantity;
+
+container.innerHTML+=`
+
+<div class="cart-item">
+
+<img src="${item.img}">
+
+<div class="item-info">
+
+<h3>${item.name}</h3>
+
+<p>Quantidade: ${item.quantity}</p>
+
+<div class="price">
+
+R$ ${(item.price*item.quantity).toFixed(2).replace(".",",")}
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("subtotal").innerHTML=`R$ ${total.toFixed(2).replace(".",",")}`;
+
+document.getElementById("total").innerHTML=`R$ ${total.toFixed(2).replace(".",",")}`;
+
+document.getElementById("checkoutForm").onsubmit=function(e){
+
+e.preventDefault();
+
+localStorage.removeItem("mj_cart");
+
+document.getElementById("success").style.display="block";
+
+setTimeout(()=>{
+
+window.location="/produtos";
+
+},2500);
+
+}
+
+</script>
+
+</body>
+</html>

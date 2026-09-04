@@ -1,0 +1,802 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nova Movimentação</title>
+
+    <link rel="stylesheet" href="/static/css/navbar.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 255, 136, 0.07),
+                    transparent 32%
+                ),
+                #090909;
+
+            color: #fff;
+        }
+
+        /* CONTAINER */
+
+        .container {
+            width: 92%;
+            max-width: 850px;
+
+            margin: 0 auto;
+
+            padding: 45px 0 70px;
+        }
+
+        /* CABEÇALHO */
+
+        .topo {
+            margin-bottom: 25px;
+        }
+
+        .topo h1 {
+            margin: 0 0 8px;
+
+            font-size: 30px;
+            font-weight: 800;
+
+            letter-spacing: -0.5px;
+        }
+
+        .topo p {
+            margin: 0;
+
+            color: #888;
+            font-size: 14px;
+        }
+
+        .linha-verde {
+            width: 55px;
+            height: 4px;
+
+            margin-top: 12px;
+
+            background: #00ff88;
+            border-radius: 20px;
+        }
+
+        /* CARD */
+
+        .form-card {
+            background: #111;
+
+            border: 1px solid #242424;
+
+            border-radius: 14px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .card-topo {
+            padding: 20px 25px;
+
+            background: #131313;
+
+            border-bottom: 1px solid #242424;
+        }
+
+        .card-topo h2 {
+            margin: 0 0 5px;
+
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .card-topo span {
+            color: #777;
+            font-size: 12px;
+        }
+
+        .formulario {
+            padding: 28px 25px;
+        }
+
+        /* ERRO */
+
+        .erro {
+            margin-bottom: 20px;
+
+            padding: 13px 15px;
+
+            background: rgba(255, 60, 60, 0.08);
+
+            border: 1px solid rgba(255, 60, 60, 0.25);
+
+            border-radius: 8px;
+
+            color: #ff6b6b;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* CAMPOS */
+
+        .campo {
+            margin-bottom: 20px;
+        }
+
+        .campo label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #ddd;
+
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .obrigatorio {
+            color: #00ff88;
+        }
+
+        .opcional {
+            color: #666;
+
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        select,
+        input[type="number"],
+        input[type="text"] {
+
+            width: 100%;
+            height: 46px;
+
+            padding: 0 14px;
+
+            background: #181818;
+
+            border: 1px solid #2b2b2b;
+
+            border-radius: 8px;
+
+            outline: none;
+
+            color: #fff;
+
+            font-size: 13px;
+
+            transition: 0.2s;
+        }
+
+        select:focus,
+        input[type="number"]:focus,
+        input[type="text"]:focus {
+
+            border-color: #00ff88;
+
+            box-shadow:
+                0 0 0 3px rgba(0, 255, 136, 0.08);
+        }
+
+        select option {
+            background: #181818;
+            color: #fff;
+        }
+
+        input::placeholder {
+            color: #555;
+        }
+
+        /* GRID */
+
+        .linha-campos {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 18px;
+        }
+
+        /* ESTOQUE */
+
+        .info-estoque {
+            display: none;
+
+            margin-top: -7px;
+            margin-bottom: 20px;
+
+            padding: 13px 15px;
+
+            background: rgba(0, 255, 136, 0.06);
+
+            border: 1px solid rgba(0, 255, 136, 0.15);
+
+            border-radius: 8px;
+
+            color: #888;
+
+            font-size: 12px;
+        }
+
+        .info-estoque strong {
+            color: #00ff88;
+
+            font-size: 13px;
+        }
+
+        /* SUBTOTAL */
+
+        .subtotal {
+            display: none;
+
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            margin: 5px 0 25px;
+
+            padding: 18px;
+
+            background: #151515;
+
+            border: 1px solid #292929;
+
+            border-left: 3px solid #00ff88;
+
+            border-radius: 9px;
+        }
+
+        .subtotal-label {
+            color: #999;
+
+            font-size: 12px;
+        }
+
+        .subtotal-valor {
+            color: #00ff88;
+
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        /* OBSERVAÇÃO */
+
+        .observacao {
+            margin-bottom: 25px;
+        }
+
+        /* BOTÕES */
+
+        .acoes {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding-top: 5px;
+        }
+
+        .btn {
+            display: inline-flex;
+
+            align-items: center;
+            justify-content: center;
+
+            min-height: 44px;
+
+            padding: 0 22px;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition: all 0.25s ease;
+        }
+
+        .btn-registrar {
+            border: none;
+
+            background: #00ff88;
+
+            color: #000;
+
+            box-shadow:
+                0 5px 18px rgba(0, 255, 136, 0.10);
+        }
+
+        .btn-registrar:hover {
+            background: #00d977;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 25px rgba(0, 255, 136, 0.18);
+        }
+
+        .btn-cancelar {
+            background: #1a1a1a;
+
+            border: 1px solid #303030;
+
+            color: #aaa;
+        }
+
+        .btn-cancelar:hover {
+            background: #222;
+
+            color: #fff;
+
+            border-color: #444;
+        }
+
+        /* RODAPÉ */
+
+        .rodape-info {
+            margin-top: 20px;
+
+            text-align: center;
+
+            color: #555;
+
+            font-size: 11px;
+        }
+
+        /* RESPONSIVO */
+
+        @media (max-width: 650px) {
+
+            .container {
+                width: 92%;
+
+                padding-top: 30px;
+            }
+
+            .topo h1 {
+                font-size: 24px;
+            }
+
+            .formulario {
+                padding: 22px 18px;
+            }
+
+            .card-topo {
+                padding: 18px;
+            }
+
+            .linha-campos {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .acoes {
+                flex-direction: column-reverse;
+
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .subtotal {
+                align-items: flex-start;
+
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include "shared/navbar.html" %}
+
+    <main class="container">
+
+        <!-- CABEÇALHO -->
+
+        <div class="topo">
+
+            <h1>Registrar movimentação</h1>
+
+            <p>
+                Registre entradas e saídas de produtos no estoque.
+            </p>
+
+            <div class="linha-verde"></div>
+
+        </div>
+
+        <!-- CARD -->
+
+        <section class="form-card">
+
+            <div class="card-topo">
+
+                <h2>Dados da movimentação</h2>
+
+                <span>
+                    Preencha as informações abaixo
+                </span>
+
+            </div>
+
+            <form
+                class="formulario"
+                action="/movimentacoes/nova"
+                method="post"
+            >
+
+                <!-- ERRO -->
+
+                {% if erro %}
+
+                <div class="erro">
+                    {{ erro }}
+                </div>
+
+                {% endif %}
+
+                <!-- PRODUTO -->
+
+                <div class="campo">
+
+                    <label for="select-produto">
+                        Produto
+                        <span class="obrigatorio">*</span>
+                    </label>
+
+                    <select
+                        name="produto_id"
+                        required
+                        id="select-produto"
+                    >
+
+                        <option value="">
+                            Selecione um produto...
+                        </option>
+
+                        {% for p in produtos %}
+
+                        <option
+                            value="{{ p.id }}"
+                            data-estoque="{{ p.estoque_atual }}"
+                            data-preco="{{ p.preco }}"
+                            {{ 'selected' if produto_id == p.id else '' }}
+                        >
+                            {{ p.nome }} — estoque: {{ p.estoque_atual }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <!-- ESTOQUE -->
+
+                <div
+                    id="info-estoque"
+                    class="info-estoque"
+                >
+
+                    Estoque atual:
+                    <strong id="valor-estoque">0</strong>
+
+                    unidade(s)
+
+                </div>
+
+                <!-- TIPO -->
+
+                <div class="campo">
+
+                    <label for="select-tipo">
+                        Tipo de movimentação
+                        <span class="obrigatorio">*</span>
+                    </label>
+
+                    <select
+                        name="tipo"
+                        required
+                        id="select-tipo"
+                    >
+
+                        <option value="">
+                            Selecione...
+                        </option>
+
+                        {% for t in tipos %}
+
+                        <option value="{{ t.value }}">
+
+                            {{ "▲ Entrada"
+                            if t.value == 'entrada'
+                            else "▼ Saída" }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <!-- QUANTIDADE E PREÇO -->
+
+                <div class="linha-campos">
+
+                    <div class="campo">
+
+                        <label for="input-quantidade">
+                            Quantidade
+                            <span class="obrigatorio">*</span>
+                        </label>
+
+                        <input
+                            type="number"
+                            name="quantidade"
+                            min="1"
+                            required
+                            id="input-quantidade"
+                            placeholder="Ex: 10"
+                        >
+
+                    </div>
+
+                    <div class="campo">
+
+                        <label for="input-preco">
+                            Preço unitário
+                            <span class="obrigatorio">*</span>
+                        </label>
+
+                        <input
+                            type="number"
+                            name="preco_unitario"
+                            step="0.01"
+                            min="0"
+                            required
+                            id="input-preco"
+                            placeholder="R$ 0,00"
+                        >
+
+                    </div>
+
+                </div>
+
+                <!-- SUBTOTAL -->
+
+                <div
+                    id="info-subtotal"
+                    class="subtotal"
+                >
+
+                    <span class="subtotal-label">
+                        Valor total da movimentação
+                    </span>
+
+                    <strong
+                        id="valor-subtotal"
+                        class="subtotal-valor"
+                    >
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+                <!-- OBSERVAÇÃO -->
+
+                <div class="campo observacao">
+
+                    <label for="observacao">
+                        Observação
+                        <span class="opcional">(opcional)</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="observacao"
+                        name="observacao"
+                        maxlength="255"
+                        placeholder="Ex: Compra de fornecedor, ajuste de estoque..."
+                    >
+
+                </div>
+
+                <!-- BOTÕES -->
+
+                <div class="acoes">
+
+                    <button
+                        type="submit"
+                        class="btn btn-registrar"
+                    >
+                        Registrar movimentação
+                    </button>
+
+                    <a
+                        href="/movimentacoes"
+                        class="btn btn-cancelar"
+                    >
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+        <div class="rodape-info">
+            Os campos marcados com * são obrigatórios.
+        </div>
+
+    </main>
+
+
+    <script>
+
+        const selectProduto =
+            document.getElementById('select-produto');
+
+        const inputQuantidade =
+            document.getElementById('input-quantidade');
+
+        const inputPreco =
+            document.getElementById('input-preco');
+
+        const infoEstoque =
+            document.getElementById('info-estoque');
+
+        const valorEstoque =
+            document.getElementById('valor-estoque');
+
+        const infoSubtotal =
+            document.getElementById('info-subtotal');
+
+        const valorSubtotal =
+            document.getElementById('valor-subtotal');
+
+
+        /*
+         * Ao selecionar um produto:
+         * mostra o estoque atual
+         * e preenche o preço automaticamente.
+         */
+
+        selectProduto.addEventListener('change', function () {
+
+            const option =
+                this.options[this.selectedIndex];
+
+            const estoque =
+                option.dataset.estoque;
+
+            const preco =
+                option.dataset.preco;
+
+
+            if (estoque !== undefined) {
+
+                valorEstoque.textContent = estoque;
+
+                infoEstoque.style.display = 'block';
+
+
+                if (preco !== undefined) {
+
+                    inputPreco.value =
+                        parseFloat(preco).toFixed(2);
+
+                }
+
+            } else {
+
+                infoEstoque.style.display = 'none';
+
+                inputPreco.value = '';
+
+            }
+
+
+            atualizarSubtotal();
+
+        });
+
+
+        /*
+         * Calcula o subtotal automaticamente.
+         */
+
+        function atualizarSubtotal() {
+
+            const qtd =
+                parseFloat(inputQuantidade.value) || 0;
+
+            const preco =
+                parseFloat(inputPreco.value) || 0;
+
+            const total =
+                qtd * preco;
+
+
+            if (qtd > 0 && preco > 0) {
+
+                valorSubtotal.textContent =
+                    total.toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    });
+
+                infoSubtotal.style.display = 'flex';
+
+            } else {
+
+                infoSubtotal.style.display = 'none';
+
+            }
+
+        }
+
+
+        inputQuantidade.addEventListener(
+            'input',
+            atualizarSubtotal
+        );
+
+
+        inputPreco.addEventListener(
+            'input',
+            atualizarSubtotal
+        );
+
+
+        /*
+         * Caso já exista um produto selecionado
+         * quando a página carregar.
+         */
+
+        if (selectProduto.value) {
+
+            selectProduto.dispatchEvent(
+                new Event('change')
+            );
+
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ "Editar" if editando else "Novo" }} Cliente</title>
+
+    <link rel="stylesheet" href="/static/css/navbar.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(0, 255, 136, 0.07),
+                    transparent 32%
+                ),
+                #090909;
+
+            color: #fff;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 45px 0 70px;
+        }
+
+        .topo {
+            margin-bottom: 25px;
+        }
+
+        .topo h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .topo p {
+            margin: 0;
+            color: #888;
+            font-size: 14px;
+        }
+
+        .linha-verde {
+            width: 55px;
+            height: 4px;
+            margin-top: 12px;
+            background: #00ff88;
+            border-radius: 20px;
+        }
+
+        .form-card {
+            background: #111;
+            border: 1px solid #242424;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .card-topo {
+            padding: 20px 25px;
+            background: #131313;
+            border-bottom: 1px solid #242424;
+        }
+
+        .card-topo h2 {
+            margin: 0 0 5px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .card-topo span {
+            color: #777;
+            font-size: 12px;
+        }
+
+        .formulario {
+            padding: 28px 25px;
+        }
+
+        .erro {
+            margin-bottom: 20px;
+            padding: 13px 15px;
+            background: rgba(255, 60, 60, 0.08);
+            border: 1px solid rgba(255, 60, 60, 0.25);
+            border-radius: 8px;
+            color: #ff6b6b;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .campo {
+            margin-bottom: 20px;
+        }
+
+        .campo label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ddd;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .obrigatorio {
+            color: #00ff88;
+        }
+
+        .opcional {
+            color: #666;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            height: 46px;
+            padding: 0 14px;
+            background: #181818;
+            border: 1px solid #2b2b2b;
+            border-radius: 8px;
+            outline: none;
+            color: #fff;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        input[type="text"]::placeholder {
+            color: #555;
+        }
+
+        input[type="text"]:focus {
+            border-color: #00ff88;
+            box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.08);
+        }
+
+        /* TIPO DO CLIENTE */
+
+        .tipo-cliente {
+            margin-bottom: 25px;
+        }
+
+        .tipo-cliente > label {
+            display: block;
+            margin-bottom: 10px;
+            color: #ddd;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .opcoes-tipo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .opcao-tipo {
+            position: relative;
+        }
+
+        .opcao-tipo input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .tipo-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            min-height: 70px;
+            padding: 14px;
+
+            background: #181818;
+            border: 1px solid #2b2b2b;
+            border-radius: 10px;
+
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .tipo-box:hover {
+            background: #1d1d1d;
+            border-color: #3a3a3a;
+        }
+
+        .bolinha {
+            width: 21px;
+            height: 21px;
+            flex-shrink: 0;
+
+            border: 2px solid #555;
+            border-radius: 50%;
+
+            position: relative;
+        }
+
+        .texto-tipo strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .texto-tipo small {
+            color: #666;
+            font-size: 10px;
+        }
+
+        .opcao-tipo input:checked + .tipo-box {
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.06);
+            box-shadow: 0 0 0 1px rgba(0, 255, 136, 0.12);
+        }
+
+        .opcao-tipo input:checked + .tipo-box .bolinha {
+            border-color: #00ff88;
+        }
+
+        .opcao-tipo input:checked + .tipo-box .bolinha::after {
+            content: "";
+
+            position: absolute;
+
+            width: 9px;
+            height: 9px;
+
+            background: #00ff88;
+
+            border-radius: 50%;
+
+            top: 4px;
+            left: 4px;
+        }
+
+        /* AVISO DO ASSOCIADO */
+
+        .aviso-associado {
+            display: none;
+
+            margin-top: -8px;
+            margin-bottom: 20px;
+
+            padding: 12px 14px;
+
+            background: rgba(0, 255, 136, 0.06);
+
+            border: 1px solid rgba(0, 255, 136, 0.18);
+
+            border-radius: 8px;
+
+            color: #00ff88;
+
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .aviso-associado.ativo {
+            display: block;
+        }
+
+        /* BOTÕES */
+
+        .acoes {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-top: 5px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 44px;
+            padding: 0 22px;
+
+            border-radius: 8px;
+
+            text-decoration: none;
+
+            font-size: 13px;
+            font-weight: 800;
+
+            cursor: pointer;
+
+            transition: all 0.25s ease;
+        }
+
+        .btn-salvar {
+            border: none;
+            background: #00ff88;
+            color: #000;
+
+            box-shadow:
+                0 5px 18px rgba(0, 255, 136, 0.10);
+        }
+
+        .btn-salvar:hover {
+            background: #00d977;
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 8px 25px rgba(0, 255, 136, 0.18);
+        }
+
+        .btn-cancelar {
+            background: #1a1a1a;
+            border: 1px solid #303030;
+            color: #aaa;
+        }
+
+        .btn-cancelar:hover {
+            background: #222;
+            color: #fff;
+            border-color: #444;
+        }
+
+        .rodape-info {
+            margin-top: 20px;
+            text-align: center;
+            color: #555;
+            font-size: 11px;
+        }
+
+        @media (max-width: 600px) {
+
+            .container {
+                width: 92%;
+                padding-top: 30px;
+            }
+
+            .topo h1 {
+                font-size: 24px;
+            }
+
+            .formulario {
+                padding: 22px 18px;
+            }
+
+            .card-topo {
+                padding: 18px;
+            }
+
+            .opcoes-tipo {
+                grid-template-columns: 1fr;
+            }
+
+            .acoes {
+                flex-direction: column-reverse;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include "shared/navbar.html" %}
+
+    <main class="container">
+
+        <div class="topo">
+
+            <h1>
+                {{ "Editar cliente" if editando else "Novo cliente" }}
+            </h1>
+
+            <p>
+                {{ "Atualize as informações do cliente."
+                if editando
+                else "Cadastre um novo cliente no sistema." }}
+            </p>
+
+            <div class="linha-verde"></div>
+
+        </div>
+
+        <section class="form-card">
+
+            <div class="card-topo">
+
+                <h2>
+                    Dados do cliente
+                </h2>
+
+                <span>
+                    Preencha as informações abaixo
+                </span>
+
+            </div>
+
+            <form
+                class="formulario"
+                action="{{ '/clientes/' + editando.id|string + '/editar' if editando else '/clientes/novo' }}"
+                method="post"
+            >
+
+                {% if erro %}
+                <div class="erro">
+                    {{ erro }}
+                </div>
+                {% endif %}
+
+                <!-- NOME -->
+
+                <div class="campo">
+
+                    <label for="nome">
+                        Nome completo
+                        <span class="obrigatorio">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="nome"
+                        name="nome"
+                        required
+                        autofocus
+                        placeholder="Digite o nome completo"
+                        value="{{ editando.nome if editando else (valores.nome if valores else '') }}"
+                    >
+
+                </div>
+
+                <!-- MATRÍCULA -->
+
+                <div class="campo">
+
+                    <label for="matricula">
+                        Identificação
+                        <span class="opcional">(opcional)</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="matricula"
+                        name="matricula"
+                        placeholder="Digite uma identificação"
+                        value="{{ editando.matricula if editando else (valores.matricula if valores else '') }}"
+                    >
+
+                </div>
+
+                <!-- TELEFONE -->
+
+                <div class="campo">
+
+                    <label for="telefone">
+                        Telefone
+                        <span class="opcional">(opcional)</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="telefone"
+                        name="telefone"
+                        placeholder="Ex: (11) 99999-9999"
+                        value="{{ editando.telefone if editando else (valores.telefone if valores else '') }}"
+                    >
+
+                </div>
+
+                <!-- TIPO DO CLIENTE -->
+
+                <div class="tipo-cliente">
+
+                    <label>
+                        Tipo de cliente
+                        <span class="obrigatorio">*</span>
+                    </label>
+
+                    <div class="opcoes-tipo">
+
+                        <!-- CLIENTE NORMAL -->
+
+                        <div class="opcao-tipo">
+
+                            <input
+                                type="radio"
+                                id="normal"
+                                name="tipo_cliente"
+                                value="normal"
+                                {% if not editando %}
+                                    checked
+                                {% elif editando.tipo_cliente == "normal" %}
+                                    checked
+                                {% endif %}
+                                onchange="verificarTipoCliente()"
+                            >
+
+                            <label
+                                for="normal"
+                                class="tipo-box"
+                            >
+
+                                <div class="bolinha"></div>
+
+                                <div class="texto-tipo">
+
+                                    <strong>
+                                        Cliente Normal
+                                    </strong>
+
+                                    <small>
+                                        Sem desconto
+                                    </small>
+
+                                </div>
+
+                            </label>
+
+                        </div>
+
+                        <!-- CLIENTE ASSOCIADO -->
+
+                        <div class="opcao-tipo">
+
+                            <input
+                                type="radio"
+                                id="associado"
+                                name="tipo_cliente"
+                                value="associado"
+                                {% if editando and editando.tipo_cliente == "associado" %}
+                                    checked
+                                {% endif %}
+                                onchange="verificarTipoCliente()"
+                            >
+
+                            <label
+                                for="associado"
+                                class="tipo-box"
+                            >
+
+                                <div class="bolinha"></div>
+
+                                <div class="texto-tipo">
+
+                                    <strong>
+                                        Cliente Associado
+                                    </strong>
+
+                                    <small>
+                                        Recebe desconto
+                                    </small>
+
+                                </div>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- AVISO -->
+
+                <div
+                    id="avisoAssociado"
+                    class="aviso-associado"
+                >
+                    ✓ Cliente associado selecionado. O desconto de associado será aplicado nas vendas.
+                </div>
+
+                <!-- BOTÕES -->
+
+                <div class="acoes">
+
+                    <button
+                        type="submit"
+                        class="btn btn-salvar"
+                    >
+                        {{ "Salvar alterações"
+                        if editando
+                        else "Cadastrar cliente" }}
+                    </button>
+
+                    <a
+                        href="/clientes"
+                        class="btn btn-cancelar"
+                    >
+                        Cancelar
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+        <div class="rodape-info">
+            Campos marcados com * são obrigatórios.
+        </div>
+
+    </main>
+
+    <script>
+
+        function verificarTipoCliente() {
+
+            const associado =
+                document.getElementById("associado");
+
+            const aviso =
+                document.getElementById("avisoAssociado");
+
+            if (associado.checked) {
+                aviso.classList.add("ativo");
+            } else {
+                aviso.classList.remove("ativo");
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            verificarTipoCliente();
+        });
+
+    </script>
+
+</body>
+
+</html>

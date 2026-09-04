@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {{ 'Editar Produto' if editando else 'Novo Produto' }} — M&J Store
+    </title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #050505;
+        }
+
+        .text-neon {
+            color: #c8ff1a;
+        }
+
+        .bg-neon {
+            background-color: #c8ff1a;
+        }
+
+        .bg-neon:hover {
+            background-color: #b2df00;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #c8ff1a !important;
+            box-shadow: 0 0 0 2px rgba(200, 255, 26, 0.2) !important;
+        }
+
+        select option {
+            background-color: #121212;
+            color: white;
+        }
+    </style>
+
+    <link rel="stylesheet" href="/static/css/navbar.css">
+</head>
+
+<body class="text-gray-200 min-h-screen flex items-center justify-center p-6 my-6">
+
+    {% include "shared/navbar.html" %}
+
+
+    <!-- ======================================================
+         CONTAINER
+    ======================================================= -->
+
+    <div class="w-full max-w-2xl bg-[#0b0b0b] border border-gray-800 rounded p-8 shadow-2xl">
+
+        <!-- ==================================================
+             CABEÇALHO
+        =================================================== -->
+
+        <div class="text-center mb-8">
+
+            <h1 class="text-2xl font-black text-white uppercase tracking-tight">
+                {{ 'Editar Produto' if editando else 'Adicionar Produto' }}
+            </h1>
+
+            <p class="text-xs text-gray-500 font-semibold uppercase tracking-wider mt-2">
+                M&J Store Backoffice System
+            </p>
+
+        </div>
+
+
+        <!-- ==================================================
+             MENSAGEM DE ERRO
+        =================================================== -->
+
+        {% if erro %}
+
+        <div class="bg-red-950/40 border border-red-500 text-red-400 p-4 rounded text-sm mb-6 font-semibold">
+
+            {{ erro }}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- ==================================================
+             FORMULÁRIO
+        =================================================== -->
+
+        <form
+            action="{{
+                '/produtos/' ~ editando.id ~ '/editar'
+                if editando
+                else '/produtos/novo'
+            }}"
+            method="post"
+            enctype="multipart/form-data"
+            class="space-y-6"
+        >
+
+
+            <!-- ==================================================
+                 NOME
+            =================================================== -->
+
+            <div class="flex flex-col">
+
+                <label
+                    for="nome"
+                    class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2"
+                >
+                    Nome do Produto
+                </label>
+
+                <input
+                    type="text"
+                    id="nome"
+                    name="nome"
+                    required
+                    value="{{
+                        editando.nome
+                        if editando
+                        else (valores.nome if valores else '')
+                    }}"
+                    placeholder="Ex: CAMISETA NIKE DRI-FIT PRETA"
+                    class="bg-[#121212] border border-gray-800 rounded p-3.5 text-white outline-none transition text-sm font-semibold uppercase"
+                >
+
+            </div>
+
+
+            <!-- ==================================================
+                 PREÇO + ESTOQUE
+            =================================================== -->
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+                <!-- PREÇO -->
+
+                <div class="flex flex-col">
+
+                    <label
+                        for="preco"
+                        class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2"
+                    >
+                        Preço (R$)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="preco"
+                        name="preco"
+                        step="0.01"
+                        min="0"
+                        required
+                        value="{{
+                            editando.preco
+                            if editando
+                            else (valores.preco if valores else '0.00')
+                        }}"
+                        placeholder="0.00"
+                        class="bg-[#121212] border border-gray-800 rounded p-3.5 text-white outline-none transition text-sm font-semibold"
+                    >
+
+                </div>
+
+
+                <!-- ESTOQUE -->
+
+                <div class="flex flex-col">
+
+                    <label
+                        for="estoque_atual"
+                        class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2"
+                    >
+                        Quantidade em Estoque
+                    </label>
+
+                    <input
+                        type="number"
+                        id="estoque_atual"
+                        name="estoque_atual"
+                        min="0"
+                        required
+                        value="{{
+                            editando.estoque_atual
+                            if editando
+                            else (valores.estoque_atual if valores else '0')
+                        }}"
+                        placeholder="Quantidade"
+                        class="bg-[#121212] border border-gray-800 rounded p-3.5 text-white outline-none transition text-sm font-semibold"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 CATEGORIA
+            =================================================== -->
+
+            <div class="flex flex-col">
+
+                <label
+                    for="categoria_id"
+                    class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2"
+                >
+                    Categoria
+                </label>
+
+                <select
+                    id="categoria_id"
+                    name="categoria_id"
+                    required
+                    class="bg-[#121212] border border-gray-800 rounded p-3.5 text-white outline-none transition text-sm font-bold uppercase cursor-pointer"
+                >
+
+                    <!-- OPÇÃO PADRÃO -->
+
+                    <option value="0">
+                        Selecione uma categoria
+                    </option>
+
+
+                    <!-- ==================================================
+                         CATEGORIAS VINDAS DO BANCO
+                    =================================================== -->
+
+                    {% for categoria in categorias %}
+
+                    <option
+                        value="{{ categoria.id }}"
+
+                        {% if editando and editando.categoria_id == categoria.id %}
+                            selected
+                        {% elif valores and valores.categoria_id == categoria.id %}
+                            selected
+                        {% endif %}
+                    >
+
+                        {{ categoria.nome }}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- ==================================================
+                 AVISO SE NÃO EXISTIR CATEGORIA
+            =================================================== -->
+
+            {% if not categorias %}
+
+            <div class="border border-yellow-500/50 bg-yellow-950/20 text-yellow-400 p-4 rounded text-sm">
+
+                <strong>Nenhuma categoria encontrada.</strong>
+
+                <br>
+
+                Cadastre uma categoria antes de adicionar um produto.
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- ==================================================
+                 IMAGEM ATUAL
+            =================================================== -->
+
+            {% if editando and editando.imagem_path %}
+
+            <div class="bg-[#121212] border border-gray-800 p-4 rounded text-center">
+
+                <p class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">
+                    Imagem Atual
+                </p>
+
+                <div class="flex justify-center">
+
+                    <img
+                        src="/static/{{ editando.imagem_path }}"
+                        alt="{{ editando.nome }}"
+                        class="w-32 h-32 object-contain border border-gray-800 rounded bg-[#0b0b0b] p-2"
+                    >
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- ==================================================
+                 NOVA IMAGEM
+            =================================================== -->
+
+            <div class="flex flex-col">
+
+                <label
+                    for="imagem"
+                    class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2"
+                >
+                    {{ 'Alterar Imagem' if editando else 'Imagem do Produto' }}
+                </label>
+
+                <input
+                    type="file"
+                    id="imagem"
+                    name="imagem"
+                    accept=".jpg,.jpeg,.png,.webp"
+                    class="bg-[#121212] border border-gray-800 rounded p-2.5 text-gray-400 text-xs font-mono file:mr-4 file:py-1.5 file:px-4 file:rounded file:border-0 file:text-xs file:font-black file:bg-zinc-800 file:text-white hover:file:bg-zinc-700 file:cursor-pointer cursor-pointer"
+                >
+
+                <p class="text-[10px] text-gray-600 mt-2 uppercase">
+                    Formatos permitidos: JPG, JPEG, PNG e WEBP
+                </p>
+
+            </div>
+
+
+            <!-- ==================================================
+                 BOTÕES
+            =================================================== -->
+
+            <div class="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                <!-- SALVAR -->
+
+                <button
+                    type="submit"
+                    class="bg-neon text-black font-black uppercase text-xs tracking-widest py-4 transition rounded-none shadow-lg"
+                >
+
+                    {{ 'Atualizar Produto' if editando else 'Salvar Produto' }}
+
+                </button>
+
+
+                <!-- CANCELAR -->
+
+                <a
+                    href="/produtos"
+                    class="border border-gray-800 hover:border-gray-600 bg-transparent text-gray-400 hover:text-white font-black uppercase text-xs tracking-widest py-4 text-center transition"
+                >
+                    Cancelar
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</body>
+
+</html>

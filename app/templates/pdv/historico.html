@@ -1,0 +1,671 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Histórico de Vendas — AAPM SENAI</title>
+
+    <link rel="stylesheet" href="/static/css/navbar.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top right, rgba(0, 255, 136, 0.06), transparent 30%),
+                #090909;
+            color: #fff;
+        }
+
+        .container {
+            width: 94%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 42px 0 70px;
+        }
+
+        /* TOPO */
+
+        .topo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .titulo-area {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .titulo-area h1 {
+            margin: 0;
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .titulo-area p {
+            margin: 0;
+            color: #888;
+            font-size: 14px;
+        }
+
+        .titulo-linha {
+            width: 55px;
+            height: 4px;
+            margin-top: 7px;
+            background: #00ff88;
+            border-radius: 20px;
+        }
+
+        /* BOTÃO */
+
+        .btn-voltar {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+
+            padding: 12px 20px;
+
+            background: #00ff88;
+            color: #000;
+
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 800;
+
+            border-radius: 9px;
+
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.12);
+
+            transition: all 0.25s ease;
+        }
+
+        .btn-voltar:hover {
+            background: #00d977;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.18);
+        }
+
+        /* RESUMO */
+
+        .resumo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 12px;
+
+            padding: 18px 22px;
+            margin-bottom: 18px;
+
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        }
+
+        .resumo-info {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .resumo-icone {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: rgba(0, 255, 136, 0.08);
+            color: #00ff88;
+
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .resumo-texto strong {
+            display: block;
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 3px;
+        }
+
+        .resumo-texto span {
+            color: #777;
+            font-size: 12px;
+        }
+
+        .contador {
+            color: #00ff88;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        /* CARD */
+
+        .tabela-card {
+            background: #111;
+            border: 1px solid #242424;
+            border-radius: 14px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .tabela-topo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 18px 22px;
+
+            border-bottom: 1px solid #242424;
+            background: #131313;
+        }
+
+        .tabela-topo h2 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .tabela-topo span {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .tabela-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        /* TABELA */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        thead {
+            background: #181818;
+        }
+
+        th {
+            padding: 16px 20px;
+
+            text-align: left;
+
+            color: #00ff88;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+
+            border-bottom: 1px solid #292929;
+        }
+
+        td {
+            padding: 17px 20px;
+
+            color: #d5d5d5;
+
+            font-size: 13px;
+
+            border-bottom: 1px solid #202020;
+        }
+
+        tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: #161616;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ID DA VENDA */
+
+        .venda-link {
+            display: inline-flex;
+            align-items: center;
+
+            padding: 6px 9px;
+
+            border-radius: 6px;
+
+            background: rgba(0, 255, 136, 0.07);
+
+            color: #00ff88;
+
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 12px;
+
+            transition: 0.2s;
+        }
+
+        .venda-link:hover {
+            background: rgba(0, 255, 136, 0.15);
+        }
+
+        /* CLIENTE */
+
+        .cliente {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .cliente-balcao {
+            color: #999;
+        }
+
+        /* ITENS */
+
+        .quantidade {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-width: 30px;
+            height: 27px;
+
+            padding: 0 8px;
+
+            background: #1c1c1c;
+            border: 1px solid #292929;
+
+            border-radius: 6px;
+
+            color: #ddd;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        /* DESCONTO */
+
+        .desconto {
+            display: inline-block;
+
+            color: #00ff88;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+
+        .desconto small {
+            color: #888;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .sem-desconto {
+            color: #555;
+        }
+
+        /* TOTAL */
+
+        .total {
+            color: #00ff88;
+            font-weight: 800;
+            font-size: 14px;
+        }
+
+        /* OPERADOR */
+
+        .operador {
+            color: #bbb;
+            font-weight: 500;
+        }
+
+        /* NENHUMA VENDA */
+
+        .nenhuma-venda {
+            text-align: center !important;
+            padding: 65px 20px !important;
+            color: #666 !important;
+        }
+
+        .nenhuma-icone {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 50px;
+            height: 50px;
+
+            margin: 0 auto 15px;
+
+            border-radius: 12px;
+
+            background: #181818;
+            border: 1px solid #292929;
+
+            color: #00ff88;
+
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        .nenhuma-venda span {
+            display: block;
+
+            color: #ddd;
+
+            font-size: 15px;
+            font-weight: 700;
+
+            margin-bottom: 7px;
+        }
+
+        .nenhuma-venda small {
+            color: #666;
+            font-size: 12px;
+        }
+
+        /* SCROLLBAR */
+
+        .tabela-container::-webkit-scrollbar {
+            height: 7px;
+        }
+
+        .tabela-container::-webkit-scrollbar-track {
+            background: #101010;
+        }
+
+        .tabela-container::-webkit-scrollbar-thumb {
+            background: #303030;
+            border-radius: 10px;
+        }
+
+        .tabela-container::-webkit-scrollbar-thumb:hover {
+            background: #00ff88;
+        }
+
+        /* RESPONSIVO */
+
+        @media (max-width: 768px) {
+
+            .container {
+                width: 92%;
+                padding-top: 28px;
+            }
+
+            .topo {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .titulo-area h1 {
+                font-size: 24px;
+            }
+
+            .btn-voltar {
+                width: 100%;
+            }
+
+            .resumo {
+                padding: 15px;
+            }
+
+            .tabela-topo {
+                padding: 16px;
+            }
+
+            th,
+            td {
+                padding: 13px 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% include "shared/navbar.html" %}
+
+    <main class="container">
+
+        <!-- CABEÇALHO -->
+
+        <div class="topo">
+
+            <div class="titulo-area">
+
+                <h1>Histórico de vendas</h1>
+
+                <p>
+                    Confira todas as vendas realizadas no sistema.
+                </p>
+
+                <div class="titulo-linha"></div>
+
+            </div>
+
+            <a href="/pdv" class="btn-voltar">
+                ← Voltar ao PDV
+            </a>
+
+        </div>
+
+        <!-- RESUMO -->
+
+        <div class="resumo">
+
+            <div class="resumo-info">
+
+                <div class="resumo-icone">
+                    $
+                </div>
+
+                <div class="resumo-texto">
+                    <strong>Vendas registradas</strong>
+                    <span>Histórico completo das operações realizadas</span>
+                </div>
+
+            </div>
+
+            <div class="contador">
+                {{ vendas | length }}
+            </div>
+
+        </div>
+
+        <!-- TABELA -->
+
+        <div class="tabela-card">
+
+            <div class="tabela-topo">
+
+                <h2>Registro de vendas</h2>
+
+                <span>
+                    Detalhes das operações
+                </span>
+
+            </div>
+
+            <div class="tabela-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>#</th>
+                            <th>Data</th>
+                            <th>Cliente</th>
+                            <th>Itens</th>
+                            <th>Desconto</th>
+                            <th>Total</th>
+                            <th>Operador</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for v in vendas %}
+
+                        <tr>
+
+                            <!-- ID -->
+
+                            <td>
+                                <a href="/pdv/venda/{{ v.id }}" class="venda-link">
+                                    #{{ v.id }}
+                                </a>
+                            </td>
+
+                            <!-- DATA -->
+
+                            <td>
+                                {{ v.criado_em.strftime('%d/%m/%Y %H:%M') }}
+                            </td>
+
+                            <!-- CLIENTE -->
+
+                            <td>
+
+                                {% if v.cliente %}
+
+                                <span class="cliente">
+                                    {{ v.cliente.nome }}
+                                </span>
+
+                                {% else %}
+
+                                <span class="cliente-balcao">
+                                    Balcão
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <!-- ITENS -->
+
+                            <td>
+
+                                <span class="quantidade">
+                                    {{ v.itens | length }}
+                                </span>
+
+                            </td>
+
+                            <!-- DESCONTO -->
+
+                            <td>
+
+                                {% if v.desconto_percentual > 0 %}
+
+                                <span class="desconto">
+
+                                    {{ v.desconto_percentual|int }}%
+
+                                    <br>
+
+                                    <small>
+                                        − R$ {{ "%.2f"|format(v.desconto_valor) }}
+                                    </small>
+
+                                </span>
+
+                                {% else %}
+
+                                <span class="sem-desconto">
+                                    —
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <!-- TOTAL -->
+
+                            <td class="total">
+                                R$ {{ "%.2f"|format(v.total_liquido) }}
+                            </td>
+
+                            <!-- OPERADOR -->
+
+                            <td>
+
+                                <span class="operador">
+                                    {{ v.usuario.nome if v.usuario else "—" }}
+                                </span>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                        <!-- SEM VENDAS -->
+
+                        {% if not vendas %}
+
+                        <tr>
+
+                            <td colspan="7" class="nenhuma-venda">
+
+                                <div class="nenhuma-icone">
+                                    $
+                                </div>
+
+                                <span>
+                                    Nenhuma venda encontrada
+                                </span>
+
+                                <small>
+                                    Ainda não existem vendas registradas no sistema.
+                                </small>
+
+                            </td>
+
+                        </tr>
+
+                        {% endif %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</body>
+
+</html>
+

@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Adicionar Produto — M&J Store</title>
+
+    <link rel="stylesheet" href="/static/css/navbar.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #080808;
+            color: #ffffff;
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+        }
+
+        .pagina {
+            width: 100%;
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 45px 35px 80px;
+        }
+
+        /* CABEÇALHO */
+
+        .cabecalho {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 35px;
+        }
+
+        .cabecalho h1 {
+            font-size: 36px;
+            font-weight: 800;
+            color: #b6ff00;
+            letter-spacing: -1px;
+        }
+
+        .cabecalho p {
+            color: #777;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        .voltar {
+            color: #b6ff00;
+            text-decoration: none;
+            font-weight: bold;
+            border: 1px solid #b6ff00;
+            padding: 12px 20px;
+            transition: 0.2s;
+        }
+
+        .voltar:hover {
+            background: #b6ff00;
+            color: #000;
+        }
+
+        /* FORMULÁRIO */
+
+        .formulario {
+            background: #101010;
+            border: 1px solid #222;
+            padding: 35px;
+            width: 100%;
+        }
+
+        .titulo-form {
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 28px;
+            border-left: 4px solid #b6ff00;
+            padding-left: 12px;
+        }
+
+        .linha {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 24px;
+        }
+
+        .linha-tres {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 24px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .campo label {
+            color: #dddddd;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .campo input,
+        .campo select,
+        .campo textarea {
+            width: 100%;
+            background: #181818;
+            border: 1px solid #303030;
+            color: #ffffff;
+            padding: 14px;
+            outline: none;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .campo input {
+            height: 48px;
+        }
+
+        .campo select {
+            height: 48px;
+            cursor: pointer;
+        }
+
+        .campo select option {
+            background: #181818;
+            color: #ffffff;
+        }
+
+        .campo input:focus,
+        .campo select:focus {
+            border-color: #b6ff00;
+            box-shadow: 0 0 0 1px #b6ff00;
+        }
+
+        .campo input::placeholder {
+            color: #666;
+        }
+
+        /* PREÇO */
+
+        .preco-wrapper {
+            position: relative;
+        }
+
+        .preco-wrapper span {
+            position: absolute;
+            left: 14px;
+            top: 15px;
+            color: #b6ff00;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .preco-wrapper input {
+            padding-left: 42px;
+        }
+
+        /* UPLOAD */
+
+        .upload-area {
+            border: 1px dashed #444;
+            background: #151515;
+            min-height: 190px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 25px;
+            transition: 0.2s;
+        }
+
+        .upload-area:hover {
+            border-color: #b6ff00;
+            background: #191919;
+        }
+
+        .upload-icon {
+            font-size: 38px;
+            margin-bottom: 12px;
+            color: #b6ff00;
+        }
+
+        .upload-area strong {
+            color: #ffffff;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .upload-area span {
+            color: #666;
+            font-size: 12px;
+        }
+
+        .upload-area input {
+            margin-top: 18px;
+            border: none;
+            background: transparent;
+            padding: 0;
+            height: auto;
+            color: #aaa;
+        }
+
+        .upload-area input:focus {
+            box-shadow: none;
+        }
+
+        /* MENSAGENS */
+
+        .mensagem {
+            margin-bottom: 25px;
+            padding: 15px 18px;
+            border: 1px solid #285900;
+            background: #0e1c05;
+            color: #b6ff00;
+            font-weight: bold;
+        }
+
+        .erro {
+            border-color: #632222;
+            background: #210d0d;
+            color: #ff6b6b;
+        }
+
+        .aviso {
+            border-color: #806600;
+            background: #211b05;
+            color: #ffd84d;
+        }
+
+        /* BOTÕES */
+
+        .acoes {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 1px solid #252525;
+        }
+
+        .btn {
+            min-width: 190px;
+            height: 50px;
+            padding: 0 25px;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
+        }
+
+        .btn-cancelar {
+            background: transparent;
+            color: #ffffff;
+            border: 1px solid #444;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-cancelar:hover {
+            border-color: #ffffff;
+            background: #1a1a1a;
+        }
+
+        .btn-cadastrar {
+            background: #b6ff00;
+            color: #000000;
+            border: 1px solid #b6ff00;
+        }
+
+        .btn-cadastrar:hover {
+            background: #d0ff55;
+            transform: translateY(-1px);
+        }
+
+        .btn-cadastrar:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* RESPONSIVO */
+
+        @media (max-width: 800px) {
+
+            .pagina {
+                padding: 30px 20px 60px;
+            }
+
+            .cabecalho {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .cabecalho h1 {
+                font-size: 30px;
+            }
+
+            .linha,
+            .linha-tres {
+                grid-template-columns: 1fr;
+            }
+
+            .formulario {
+                padding: 25px 20px;
+            }
+
+            .acoes {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* SCROLLBAR */
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #080808;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b6ff00;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    {% include "shared/navbar.html" %}
+
+
+    <main class="pagina">
+
+        <!-- CABEÇALHO -->
+
+        <div class="cabecalho">
+
+            <div>
+
+                <h1>
+                    Adicionar Produto
+                </h1>
+
+                <p>
+                    Cadastre um novo produto para a AAPM SENAI.
+                </p>
+
+            </div>
+
+            <a
+                href="/produtos"
+                class="voltar"
+            >
+                ← VOLTAR
+            </a>
+
+        </div>
+
+
+        <!-- MENSAGEM DE SUCESSO -->
+
+        {% if request.query_params.get('criado') == 'ok' %}
+
+        <div class="mensagem">
+
+            Produto cadastrado com sucesso!
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- MENSAGEM DE ERRO -->
+
+        {% if erro %}
+
+        <div class="mensagem erro">
+
+            {{ erro }}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- FORMULÁRIO -->
+
+        <form
+            method="post"
+            action="/produtos/novo"
+            enctype="multipart/form-data"
+            class="formulario"
+        >
+
+            <div class="titulo-form">
+
+                Informações do produto
+
+            </div>
+
+
+            <!-- NOME -->
+
+            <div
+                class="campo"
+                style="margin-bottom: 24px;"
+            >
+
+                <label for="nome">
+                    Nome do produto
+                </label>
+
+                <input
+                    type="text"
+                    id="nome"
+                    name="nome"
+                    placeholder="Ex: Camiseta Nike Dri-FIT"
+                    required
+                >
+
+            </div>
+
+
+            <!-- CATEGORIA / PREÇO / ESTOQUE -->
+
+            <div class="linha-tres">
+
+
+                <!-- CATEGORIA -->
+
+                <div class="campo">
+
+                    <label for="categoria_id">
+                        Categoria
+                    </label>
+
+                    <select
+                        id="categoria_id"
+                        name="categoria_id"
+                        required
+                    >
+
+                        <option value="0">
+                            Selecione uma categoria
+                        </option>
+
+
+                        {% for categoria in categorias %}
+
+                        <option value="{{ categoria.id }}">
+                            {{ categoria.nome }}
+                        </option>
+
+                        {% endfor %}
+
+
+                    </select>
+
+                </div>
+
+
+                <!-- PREÇO -->
+
+                <div class="campo">
+
+                    <label for="preco">
+                        Preço
+                    </label>
+
+                    <div class="preco-wrapper">
+
+                        <span>
+                            R$
+                        </span>
+
+                        <input
+                            type="number"
+                            id="preco"
+                            name="preco"
+                            placeholder="0,00"
+                            step="0.01"
+                            min="0"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- ESTOQUE -->
+
+                <div class="campo">
+
+                    <label for="estoque_atual">
+                        Estoque
+                    </label>
+
+                    <input
+                        type="number"
+                        id="estoque_atual"
+                        name="estoque_atual"
+                        placeholder="Quantidade"
+                        min="0"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- AVISO DE CATEGORIA -->
+
+            {% if not categorias %}
+
+            <div class="mensagem aviso">
+
+                Nenhuma categoria foi encontrada no banco de dados.
+
+                <br><br>
+
+                Cadastre uma categoria antes de cadastrar um produto.
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- IMAGEM -->
+
+            <div
+                class="campo"
+                style="margin-top: 10px;"
+            >
+
+                <label for="imagem">
+                    Imagem do produto
+                </label>
+
+                <div class="upload-area">
+
+                    <div class="upload-icon">
+                        +
+                    </div>
+
+                    <strong>
+                        Adicionar imagem
+                    </strong>
+
+                    <span>
+                        PNG, JPG, JPEG ou WEBP
+                    </span>
+
+                    <input
+                        type="file"
+                        id="imagem"
+                        name="imagem"
+                        accept=".jpg,.jpeg,.png,.webp"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTÕES -->
+
+            <div class="acoes">
+
+                <a
+                    href="/produtos"
+                    class="btn btn-cancelar"
+                >
+                    Cancelar
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="btn btn-cadastrar"
+                    {% if not categorias %}
+                        disabled
+                    {% endif %}
+                >
+                    Cadastrar Produto
+                </button>
+
+            </div>
+
+        </form>
+
+    </main>
+
+</body>
+
+</html>

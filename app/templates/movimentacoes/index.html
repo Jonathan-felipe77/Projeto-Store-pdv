@@ -1,0 +1,902 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Movimentações — M&J STORE</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --preto: #050505;
+            --preto-card: #0d0d0d;
+            --preto-card-2: #111111;
+            --cinza: #a1a1aa;
+            --cinza-escuro: #242424;
+            --branco: #ffffff;
+            --verde: #c8ff1a;
+            --verde-hover: #d9ff4d;
+            --verde-fraco: rgba(200, 255, 26, 0.10);
+            --vermelho: #ff4d4d;
+            --vermelho-fraco: rgba(255, 77, 77, 0.10);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(200, 255, 26, 0.08),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(200, 255, 26, 0.04),
+                    transparent 25%
+                ),
+                var(--preto);
+            color: var(--branco);
+            min-height: 100vh;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+            width: 100%;
+            height: 75px;
+            background: rgba(5, 5, 5, 0.95);
+            border-bottom: 1px solid #1f1f1f;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 45px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: var(--verde);
+        }
+
+        .logo span {
+            color: white;
+        }
+
+        .header-status {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--cinza);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--verde);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--verde);
+        }
+
+        /* =========================
+           CONTAINER
+        ========================= */
+
+        .container {
+            width: min(1450px, 94%);
+            margin: 0 auto;
+            padding: 45px 0 60px;
+        }
+
+        /* =========================
+           TITULO
+        ========================= */
+
+        .page-title {
+            margin-bottom: 30px;
+        }
+
+        .page-title .mini-title {
+            color: var(--verde);
+            font-size: 12px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 9px;
+        }
+
+        .page-title h1 {
+            font-size: clamp(28px, 4vw, 42px);
+            font-weight: 800;
+            letter-spacing: -1.5px;
+        }
+
+        .page-title p {
+            color: var(--cinza);
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        /* =========================
+           CARDS DE RESUMO
+        ========================= */
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .summary-card {
+            background: linear-gradient(145deg, #101010, #090909);
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 22px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-card::after {
+            content: "";
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: var(--verde);
+            opacity: 0.04;
+            border-radius: 50%;
+            right: -25px;
+            bottom: -25px;
+        }
+
+        .summary-label {
+            color: var(--cinza);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .summary-value {
+            font-size: 27px;
+            font-weight: 800;
+            margin-top: 8px;
+        }
+
+        .summary-value.green {
+            color: var(--verde);
+        }
+
+        /* =========================
+           FILTROS
+        ========================= */
+
+        .filter-card {
+            background: var(--preto-card);
+            border: 1px solid #222;
+            border-radius: 18px;
+            padding: 22px;
+            margin-bottom: 20px;
+        }
+
+        .filter-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 17px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .filter-title::before {
+            content: "";
+            width: 4px;
+            height: 18px;
+            background: var(--verde);
+            border-radius: 5px;
+        }
+
+        .filters {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        select {
+            background: #080808;
+            color: white;
+            border: 1px solid #292929;
+            border-radius: 10px;
+            padding: 13px 42px 13px 14px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            min-width: 210px;
+            transition: 0.2s;
+        }
+
+        select:hover,
+        select:focus {
+            border-color: var(--verde);
+            box-shadow: 0 0 0 3px rgba(200, 255, 26, 0.08);
+        }
+
+        button {
+            border: none;
+            background: var(--verde);
+            color: #050505;
+            padding: 13px 24px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: var(--verde-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(200, 255, 26, 0.12);
+        }
+
+        .clear-btn {
+            display: flex;
+            align-items: center;
+            padding: 0 18px;
+            color: var(--cinza);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .clear-btn:hover {
+            color: var(--verde);
+        }
+
+        /* =========================
+           BOTÃO NOVA MOVIMENTAÇÃO
+        ========================= */
+
+        .action-area {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .new-movement {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            background: var(--verde);
+            color: #050505;
+            padding: 13px 20px;
+            border-radius: 11px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 800;
+            transition: 0.2s;
+        }
+
+        .new-movement:hover {
+            background: var(--verde-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(200, 255, 26, 0.14);
+        }
+
+        .plus {
+            font-size: 19px;
+            line-height: 1;
+        }
+
+        /* =========================
+           TABELA
+        ========================= */
+
+        .table-card {
+            background: var(--preto-card);
+            border: 1px solid #222;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px 22px;
+            border-bottom: 1px solid #222;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .table-header h2 {
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .table-header span {
+            color: var(--cinza);
+            font-size: 11px;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1050px;
+        }
+
+        thead {
+            background: #111111;
+        }
+
+        th {
+            padding: 15px 18px;
+            text-align: left;
+            color: #85858c;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 17px 18px;
+            border-top: 1px solid #1d1d1d;
+            color: #d8d8dc;
+            font-size: 12px;
+            font-weight: 500;
+            vertical-align: middle;
+        }
+
+        tbody tr {
+            transition: 0.2s;
+        }
+
+        tbody tr:hover {
+            background: rgba(200, 255, 26, 0.025);
+        }
+
+        /* =========================
+           PRODUTO
+        ========================= */
+
+        .product-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .product-link:hover {
+            color: var(--verde);
+        }
+
+        /* =========================
+           BADGES
+        ========================= */
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 10px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .badge-entrada {
+            color: var(--verde);
+            background: var(--verde-fraco);
+            border: 1px solid rgba(200, 255, 26, 0.14);
+        }
+
+        .badge-saida {
+            color: var(--vermelho);
+            background: var(--vermelho-fraco);
+            border: 1px solid rgba(255, 77, 77, 0.14);
+        }
+
+        .quantity {
+            font-weight: 800;
+            color: white;
+        }
+
+        .price {
+            color: #cfcfcf;
+            white-space: nowrap;
+        }
+
+        .total {
+            color: var(--verde);
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .observation {
+            color: #999;
+            max-width: 180px;
+        }
+
+        .user {
+            font-weight: 700;
+            color: white;
+        }
+
+        /* =========================
+           VAZIO
+        ========================= */
+
+        .empty {
+            text-align: center !important;
+            padding: 60px 20px !important;
+            color: #777;
+        }
+
+        .empty-icon {
+            font-size: 35px;
+            margin-bottom: 12px;
+            opacity: 0.6;
+        }
+
+        .empty strong {
+            display: block;
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        /* =========================
+           VOLTAR
+        ========================= */
+
+        .back {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 25px;
+            color: var(--cinza);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+            transition: 0.2s;
+        }
+
+        .back:hover {
+            color: var(--verde);
+        }
+
+        /* =========================
+           RESPONSIVO
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            header {
+                padding: 0 20px;
+            }
+
+            .header-status {
+                display: none;
+            }
+
+            .container {
+                width: 92%;
+                padding-top: 30px;
+            }
+
+            .summary {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                flex-direction: column;
+            }
+
+            select,
+            button {
+                width: 100%;
+            }
+
+            .clear-btn {
+                padding: 5px 0;
+            }
+
+            .action-area {
+                justify-content: stretch;
+            }
+
+            .new-movement {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+
+    <link rel="stylesheet" href="/static/css/navbar.css">
+</head>
+
+<body>
+
+    {% include "shared/navbar.html" %}
+
+    <header>
+        <div class="logo">
+            M&J <span>STORE</span>
+        </div>
+
+        <div class="header-status">
+            <span class="status-dot"></span>
+            Sistema de estoque
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- TÍTULO -->
+        <section class="page-title">
+            <div class="mini-title">Controle de estoque</div>
+
+            <h1>
+                Histórico de movimentações
+            </h1>
+
+            <p>
+                Consulte todas as entradas e saídas registradas no sistema.
+            </p>
+        </section>
+
+
+        <!-- RESUMO -->
+        <section class="summary">
+
+            <div class="summary-card">
+                <div class="summary-label">
+                    Movimentações
+                </div>
+
+                <div class="summary-value">
+                    {{ movimentacoes|length }}
+                </div>
+            </div>
+
+
+            <div class="summary-card">
+                <div class="summary-label">
+                    Entradas
+                </div>
+
+                <div class="summary-value green">
+                    {{ movimentacoes|selectattr('tipo', 'equalto', 'entrada')|list|length }}
+                </div>
+            </div>
+
+
+            <div class="summary-card">
+                <div class="summary-label">
+                    Saídas
+                </div>
+
+                <div class="summary-value">
+                    {{ movimentacoes|selectattr('tipo', 'equalto', 'saida')|list|length }}
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- FILTROS -->
+        <section class="filter-card">
+
+            <div class="filter-title">
+                Filtrar movimentações
+            </div>
+
+            <form method="get" action="/movimentacoes">
+
+                <div class="filters">
+
+                    <!-- FILTRO POR PRODUTO -->
+                    <select name="produto_id">
+
+                        <option value="0">
+                            Todos os produtos
+                        </option>
+
+                        {% for p in produtos %}
+
+                            <option
+                                value="{{ p.id }}"
+                                {% if produto_id == p.id %}
+                                    selected
+                                {% endif %}
+                            >
+                                {{ p.nome }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+
+                    <!-- FILTRO POR TIPO -->
+                    <select name="tipo">
+
+                        <option value="">
+                            Todos os tipos
+                        </option>
+
+                        <option
+                            value="entrada"
+                            {% if tipo == 'entrada' %}
+                                selected
+                            {% endif %}
+                        >
+                            ▲ Entrada
+                        </option>
+
+                        <option
+                            value="saida"
+                            {% if tipo == 'saida' %}
+                                selected
+                            {% endif %}
+                        >
+                            ▼ Saída
+                        </option>
+
+                    </select>
+
+
+                    <button type="submit">
+                        Filtrar
+                    </button>
+
+
+                    <a
+                        href="/movimentacoes"
+                        class="clear-btn"
+                    >
+                        Limpar filtros
+                    </a>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- NOVA MOVIMENTAÇÃO -->
+        <div class="action-area">
+
+            <a
+                href="/movimentacoes/nova"
+                class="new-movement"
+            >
+                <span class="plus">+</span>
+                Registrar movimentação
+            </a>
+
+        </div>
+
+
+        <!-- TABELA -->
+        <section class="table-card">
+
+            <div class="table-header">
+
+                <h2>
+                    Movimentações recentes
+                </h2>
+
+                <span>
+                    Histórico do estoque
+                </span>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Data</th>
+                            <th>Produto</th>
+                            <th>Tipo</th>
+                            <th>Quantidade</th>
+                            <th>Preço unit.</th>
+                            <th>Total</th>
+                            <th>Observação</th>
+                            <th>Registrado por</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% if movimentacoes %}
+
+                            {% for m in movimentacoes %}
+
+                                <tr>
+
+                                    <!-- DATA -->
+                                    <td>
+                                        {% if m.criado_em %}
+                                            {{ m.criado_em.strftime('%d/%m/%Y %H:%M') }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+
+
+                                    <!-- PRODUTO -->
+                                    <td>
+
+                                        <a
+                                            href="/produtos/{{ m.produto_id }}"
+                                            class="product-link"
+                                        >
+                                            {% if m.produto %}
+                                                {{ m.produto.nome }}
+                                            {% else %}
+                                                Produto removido
+                                            {% endif %}
+                                        </a>
+
+                                    </td>
+
+
+                                    <!-- TIPO -->
+                                    <td>
+
+                                        {% if m.tipo == 'entrada' %}
+
+                                            <span class="badge badge-entrada">
+                                                ▲ Entrada
+                                            </span>
+
+                                        {% elif m.tipo == 'saida' %}
+
+                                            <span class="badge badge-saida">
+                                                ▼ Saída
+                                            </span>
+
+                                        {% else %}
+
+                                            <span class="badge">
+                                                {{ m.tipo }}
+                                            </span>
+
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- QUANTIDADE -->
+                                    <td>
+
+                                        <span class="quantity">
+                                            {{ m.quantidade }}
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- PREÇO UNITÁRIO -->
+                                    <td class="price">
+                                        R$
+                                        {{ "%.2f"|format(m.preco_unitario or 0) }}
+                                    </td>
+
+
+                                    <!-- TOTAL -->
+                                    <td class="total">
+                                        R$
+                                        {{ "%.2f"|format(
+                                            (m.quantidade or 0) *
+                                            (m.preco_unitario or 0)
+                                        ) }}
+                                    </td>
+
+
+                                    <!-- OBSERVAÇÃO -->
+                                    <td class="observation">
+                                        {{ m.observacao or '-' }}
+                                    </td>
+
+
+                                    <!-- USUÁRIO -->
+                                    <td class="user">
+
+                                        {% if m.usuario %}
+                                            {{ m.usuario.nome }}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <tr>
+
+                                <td
+                                    colspan="8"
+                                    class="empty"
+                                >
+
+                                    <div class="empty-icon">
+                                        ◌
+                                    </div>
+
+                                    <strong>
+                                        Nenhuma movimentação encontrada
+                                    </strong>
+
+                                    Não existem registros para os filtros selecionados.
+
+                                </td>
+
+                            </tr>
+
+                        {% endif %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- VOLTAR -->
+        <a
+            href="/"
+            class="back"
+        >
+            ← Voltar para o Dashboard
+        </a>
+
+    </main>
+
+</body>
+
+</html>
+

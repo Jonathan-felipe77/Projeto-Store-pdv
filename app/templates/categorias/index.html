@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorias | M&J Store</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background: #060606;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: #c8ff1a;
+            z-index: 10;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 5%;
+            background-color: #000;
+            border-bottom: 1px solid #141414;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: baseline;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .logo-main {
+            font-family: 'Anton', sans-serif;
+            font-size: 32px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .logo-sub {
+            color: #c8ff1a;
+            font-size: 11px;
+            font-weight: 900;
+            margin-left: 4px;
+            letter-spacing: 1px;
+        }
+
+        .btn-voltar-painel {
+            text-decoration: none;
+            color: #aaa;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.2s ease;
+        }
+
+        .btn-voltar-painel:hover {
+            color: #c8ff1a;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 60px 5%;
+            flex: 1;
+        }
+
+        .top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 35px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .titulo-bloco {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tag-contexto {
+            color: #c8ff1a;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .titulo-pagina {
+            font-family: 'Anton', sans-serif;
+            font-size: clamp(32px, 5vw, 48px);
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1;
+        }
+
+        .btn-add-nova {
+            background: #c8ff1a;
+            color: #000;
+            text-decoration: none;
+            padding: 16px 28px;
+            font-size: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-add-nova:hover {
+            background: #b1e012;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(200, 255, 26, 0.15);
+        }
+
+        .alert-toast {
+            padding: 16px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+        }
+
+        .alert-sucesso {
+            background: rgba(200, 255, 26, 0.08);
+            border-left: 4px solid #c8ff1a;
+            color: #c8ff1a;
+        }
+
+        .alert-erro {
+            background: rgba(255, 76, 76, 0.08);
+            border-left: 4px solid #ff4c4c;
+            color: #ff8888;
+            line-height: 1.4;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid #1a1a1a;
+            background: #0d0d0d;
+        }
+
+        .mj-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            color: #fff;
+            min-width: 600px;
+        }
+
+        .mj-table th {
+            background: #000;
+            color: #666;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 20px;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .mj-table td {
+            padding: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            border-bottom: 1px solid #141414;
+            color: #ccc;
+            vertical-align: middle;
+        }
+
+        .mj-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .mj-table tr:hover td {
+            background: #111;
+            color: #fff;
+        }
+
+        .categoria-nome {
+            font-weight: 700;
+            color: #fff;
+            font-size: 15px;
+        }
+
+        .status-badge {
+            font-size: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 6px 12px;
+            display: inline-block;
+        }
+
+        .status-badge.ativa {
+            background: rgba(200, 255, 26, 0.1);
+            color: #c8ff1a;
+            border: 1px solid rgba(200, 255, 26, 0.2);
+        }
+
+        .status-badge.inativa {
+            background: rgba(255, 255, 255, 0.05);
+            color: #666;
+            border: 1px solid #222;
+        }
+
+        .actions-cell {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn-link-edit {
+            text-decoration: none;
+            color: #aaa;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: color 0.2s ease;
+        }
+
+        .btn-link-edit:hover {
+            color: #fff;
+        }
+
+        .btn-toggle-status {
+            background: transparent;
+            border: 1px solid #262626;
+            color: #fff;
+            padding: 8px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-toggle-status:hover {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+        }
+
+        .empty-row {
+            text-align: center;
+            color: #555;
+            font-style: italic;
+            padding: 40px !important;
+        }
+
+        footer {
+            text-align: center;
+            color: #444;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            padding: 40px;
+            border-top: 1px solid #141414;
+            margin-top: auto;
+            text-transform: uppercase;
+        }
+    </style>
+    <link rel="stylesheet" href="/static/css/navbar.css">
+</head>
+<body>
+    {% include "shared/navbar.html" %}
+
+
+<header>
+    <a href="/" class="logo-container">
+        <span class="logo-main">M&J</span>
+        <span class="logo-sub">STORE</span>
+    </a>
+    <a href="/" class="btn-voltar-painel">← Dashboard</a>
+</header>
+
+<main class="container">
+
+    <div class="top-row">
+        <div class="titulo-bloco">
+            <span class="tag-contexto">Controle de Estoque</span>
+            <h1 class="titulo-pagina">Categorias</h1>
+        </div>
+        <a href="/categorias/nova" class="btn-add-nova">+ Nova Categoria</a>
+    </div>
+
+    {% if request.query_params.get('criado') == 'ok' %}
+        <div class="alert-toast alert-sucesso">
+            ✓ Categoria criada com sucesso no sistema!
+        </div>
+    {% endif %}
+    
+    {% if request.query_params.get('editado') == 'ok' %}
+        <div class="alert-toast alert-sucesso">
+            ✓ Definições da categoria atualizadas com sucesso!
+        </div>
+    {% endif %}
+   
+    {% if request.query_params.get('erro') == 'vinculo' %}
+        <div class="alert-toast alert-erro">
+             Não é possível desativar uma categoria que possui produtos vinculados no estoque.
+        </div>
+    {% endif %}
+
+    <div class="table-responsive">
+        <table class="mj-table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Produtos Ativos</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                {% for c in categorias %}
+                <tr>
+                    <td class="categoria-nome">{{ c.nome }}</td>
+                    
+                    <td>
+                        {{ c.produtos|length if c.produtos else 0 }} itens
+                    </td>
+                    
+                    <td>
+                        {% if c.ativo %}
+                            <span class="status-badge ativa">Ativa</span>
+                        {% else %}
+                            <span class="status-badge inativa">Inativa</span>
+                        {% endif %}
+                    </td>
+                    
+                    <td>
+                        <div class="actions-cell">
+                            <a href="/categorias/{{ c.id }}/editar" class="btn-link-edit">Editar</a>
+                            
+                            <form action="/categorias/{{ c.id }}/toggle-ativo" method="post" style="display:inline">
+                                <button type="submit" class="btn-toggle-status">
+                                    {% if c.ativo %}
+                                        Desativar
+                                    {% else %}
+                                        Ativar
+                                    {% endif %}
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="empty-row">
+                        Nenhuma categoria cadastrada.
+                    </td>
+                </tr>
+                {% endfor %}
+                
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
+<footer>
+    © 2026 M&J Store — Gestão de Inventário de Produtos
+</footer>
+
+</body>
+</html>

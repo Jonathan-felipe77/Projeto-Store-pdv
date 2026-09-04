@@ -1,0 +1,255 @@
+/* ==========================================================
+   NAVBAR GLOBAL - M&J STORE
+   Aplicada nas telas internas do sistema.
+   ========================================================== */
+:root {
+    --navbar-bg: #080808;
+    --navbar-border: #202020;
+    --navbar-text: #a5a5a5;
+    --navbar-hover: #ffffff;
+    --navbar-neon: #c8ff1a;
+}
+
+body {
+    padding-top: 78px !important;
+}
+
+.app-navbar {
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: 78px;
+    width: 100%;
+    z-index: 9999;
+    background: rgba(8, 8, 8, 0.97);
+    border-bottom: 1px solid var(--navbar-border);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.app-navbar-inner {
+    width: min(1500px, calc(100% - 36px));
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.app-navbar-brand {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    min-width: 165px;
+    text-decoration: none;
+    line-height: 1;
+}
+
+.app-navbar-brand-main {
+    color: #ffffff;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 25px;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
+
+.app-navbar-brand-sub {
+    color: var(--navbar-neon);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+}
+
+.app-navbar-menu {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.app-navbar-links {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+}
+
+.app-navbar-link,
+.app-navbar-logout {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 40px;
+    padding: 0 12px;
+    color: var(--navbar-text);
+    text-decoration: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .35px;
+    white-space: nowrap;
+    transition: color .2s ease, background-color .2s ease;
+    border-radius: 6px;
+}
+
+.app-navbar-link:hover,
+.app-navbar-link.active,
+.app-navbar-logout:hover {
+    color: var(--navbar-hover);
+    background: #111111;
+}
+
+.app-navbar-link.active {
+    color: var(--navbar-neon);
+}
+
+.app-navbar-link.active::after {
+    content: '';
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: -1px;
+    height: 2px;
+    background: var(--navbar-neon);
+    border-radius: 2px;
+}
+
+.app-navbar-icon {
+    display: inline-flex;
+    width: 16px;
+    justify-content: center;
+    color: currentColor;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.app-navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.app-navbar-user {
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #676767;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.app-navbar-logout {
+    border: 1px solid #292929;
+    padding-inline: 14px;
+}
+
+.app-navbar-toggle {
+    display: none;
+    margin-left: auto;
+    width: 42px;
+    height: 42px;
+    padding: 8px;
+    background: transparent;
+    border: 1px solid #2a2a2a;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.app-navbar-toggle span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    margin: 5px auto;
+    background: #ffffff;
+    transition: transform .2s ease, opacity .2s ease;
+}
+
+@media (max-width: 1180px) {
+    .app-navbar-inner {
+        width: min(100%, calc(100% - 24px));
+    }
+
+    .app-navbar-brand {
+        min-width: 145px;
+    }
+
+    .app-navbar-link {
+        padding-inline: 9px;
+        font-size: 11px;
+    }
+
+    .app-navbar-icon {
+        display: none;
+    }
+}
+
+@media (max-width: 920px) {
+    .app-navbar {
+        height: 70px;
+    }
+
+    body {
+        padding-top: 70px !important;
+    }
+
+    .app-navbar-inner {
+        position: relative;
+    }
+
+    .app-navbar-brand-main {
+        font-size: 22px;
+    }
+
+    .app-navbar-toggle {
+        display: block;
+    }
+
+    .app-navbar-menu {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 12px;
+        background: #0b0b0b;
+        border: 1px solid var(--navbar-border);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, .4);
+    }
+
+    .app-navbar-menu.is-open {
+        display: flex;
+    }
+
+    .app-navbar-links {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .app-navbar-link {
+        justify-content: flex-start;
+        width: 100%;
+        padding: 0 14px;
+    }
+
+    .app-navbar-icon {
+        display: inline-flex;
+    }
+
+    .app-navbar-actions {
+        justify-content: space-between;
+        padding-top: 10px;
+        border-top: 1px solid #1d1d1d;
+    }
+
+    .app-navbar-user {
+        max-width: 60%;
+    }
+}
