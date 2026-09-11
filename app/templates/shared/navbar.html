@@ -26,18 +26,28 @@
                     <span class="app-navbar-icon">□</span>
                     Produtos
                 </a>
+
+                {% if usuario and usuario.get('role') == 'admin' %}
                 <a href="/categorias" class="app-navbar-link {% if request.url.path.startswith('/categorias') %}active{% endif %}">
                     <span class="app-navbar-icon">◫</span>
                     Categorias
                 </a>
+                {% endif %}
+                
+                {% if usuario and usuario.get('role') == 'admin' %}
                 <a href="/clientes" class="app-navbar-link {% if request.url.path.startswith('/clientes') %}active{% endif %}">
                     <span class="app-navbar-icon">♙</span>
                     Clientes
                 </a>
+                {% endif %}
+
+                {% if usuario and usuario.get('role') == 'admin' %}
                 <a href="/movimentacoes" class="app-navbar-link {% if request.url.path.startswith('/movimentacoes') %}active{% endif %}">
                     <span class="app-navbar-icon">↕</span>
                     Estoque
                 </a>
+                {% endif %}
+
                 {% if usuario and usuario.get('role') == 'admin' %}
                 <a href="/usuarios" class="app-navbar-link {% if request.url.path.startswith('/usuarios') %}active{% endif %}">
                     <span class="app-navbar-icon">♚</span>
