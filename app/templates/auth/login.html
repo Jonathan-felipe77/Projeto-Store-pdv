@@ -27,15 +27,11 @@
 
         body {
             min-height: 100vh;
-
             font-family: 'Montserrat', sans-serif;
-
             color: white;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             overflow: hidden;
 
             background:
@@ -50,137 +46,78 @@
             background-position: center;
         }
 
-
-        /* =========================
-           EFEITOS DE FUNDO
-        ========================= */
-
         body::before {
             content: "";
-
             position: fixed;
-
             width: 500px;
             height: 500px;
-
             background: var(--verde);
-
             border-radius: 50%;
-
             filter: blur(180px);
-
             opacity: .08;
-
             top: -200px;
             left: -150px;
-
             pointer-events: none;
         }
 
         body::after {
             content: "";
-
             position: fixed;
-
             width: 450px;
             height: 450px;
-
             background: var(--verde);
-
             border-radius: 50%;
-
             filter: blur(180px);
-
             opacity: .06;
-
             bottom: -200px;
             right: -150px;
-
             pointer-events: none;
         }
 
-
-        /* =========================
-           CONTAINER
-        ========================= */
-
         .login-wrapper {
-
             width: 100%;
             max-width: 440px;
-
             padding: 25px;
-
             position: relative;
             z-index: 2;
         }
 
-
-        /* =========================
-           LOGO
-        ========================= */
-
         .logo {
-
             text-align: center;
-
             margin-bottom: 32px;
         }
 
         .logo-name {
-
             font-size: 38px;
-
             font-weight: 900;
-
             letter-spacing: -2px;
-
             line-height: 1;
         }
 
         .logo-name span {
-
             color: var(--verde);
         }
 
         .logo-line {
-
             width: 45px;
             height: 3px;
-
             background: var(--verde);
-
             margin: 13px auto 10px;
-
             border-radius: 10px;
         }
 
         .logo-subtitle {
-
             color: #666;
-
             font-size: 9px;
-
             font-weight: 700;
-
             letter-spacing: 4px;
         }
 
-
-        /* =========================
-           CARD
-        ========================= */
-
         .login-card {
-
             position: relative;
-
             background: rgba(10,10,10,.90);
-
             border: 1px solid var(--borda);
-
             border-radius: 18px;
-
             padding: 42px;
 
             box-shadow:
@@ -188,23 +125,15 @@
                 inset 0 1px 0 rgba(255,255,255,.03);
 
             backdrop-filter: blur(15px);
-
             -webkit-backdrop-filter: blur(15px);
         }
 
-
-        /* LINHA VERDE NO TOPO */
-
         .login-card::before {
-
             content: "";
-
             position: absolute;
-
             top: 0;
             left: 40px;
             right: 40px;
-
             height: 2px;
 
             background: linear-gradient(
@@ -217,153 +146,93 @@
             border-radius: 10px;
         }
 
-
-        /* =========================
-           CABEÇALHO
-        ========================= */
-
         .login-header {
-
             margin-bottom: 30px;
         }
 
         .access {
-
             display: inline-flex;
-
             align-items: center;
-
             gap: 7px;
-
             color: var(--verde);
-
             font-size: 9px;
-
             font-weight: 800;
-
             letter-spacing: 2px;
-
             margin-bottom: 12px;
         }
 
         .access-dot {
-
             width: 6px;
             height: 6px;
-
             border-radius: 50%;
-
             background: var(--verde);
-
             box-shadow: 0 0 10px var(--verde);
         }
 
         .login-header h1 {
-
             font-size: 32px;
-
             font-weight: 900;
-
             letter-spacing: -1px;
-
             margin-bottom: 9px;
         }
 
         .login-header p {
-
             color: #666;
-
             font-size: 12px;
-
             line-height: 1.7;
         }
 
-
-        /* =========================
-           CAMPOS
-        ========================= */
-
         .field {
-
             margin-bottom: 20px;
         }
 
         .field label {
-
             display: block;
-
             color: #aaa;
-
             font-size: 10px;
-
             font-weight: 800;
-
             letter-spacing: 1.5px;
-
             margin-bottom: 8px;
         }
 
         .input-box {
-
             position: relative;
         }
 
         .input-icon {
-
             position: absolute;
-
             left: 16px;
-
             top: 50%;
-
             transform: translateY(-50%);
-
             color: #555;
-
             font-size: 15px;
-
             pointer-events: none;
         }
 
         input {
-
             width: 100%;
-
             height: 54px;
-
-            padding: 0 16px 0 45px;
-
+            padding: 0 50px 0 45px;
             border-radius: 9px;
-
             border: 1px solid #242424;
-
             outline: none;
-
             background: #111;
-
             color: white;
-
             font-family: 'Montserrat', sans-serif;
-
             font-size: 12px;
-
             transition: .25s;
         }
 
         input::placeholder {
-
             color: #505050;
         }
 
         input:hover {
-
             border-color: #333;
         }
 
         input:focus {
-
             border-color: var(--verde);
-
             background: #141414;
 
             box-shadow:
@@ -372,71 +241,60 @@
         }
 
         input:focus + .input-icon {
-
             color: var(--verde);
         }
 
+        /* OLHO DA SENHA */
+        .password-eye {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 0;
+            z-index: 5;
+        }
 
-        /* =========================
-           BOTÃO
-        ========================= */
+        .password-eye:hover {
+            color: var(--verde);
+        }
 
         .login-button {
-
             width: 100%;
-
             height: 55px;
-
             margin-top: 5px;
-
             border: none;
-
             border-radius: 9px;
-
             background: var(--verde);
-
             color: #050505;
-
             font-family: 'Montserrat', sans-serif;
-
             font-size: 11px;
-
             font-weight: 900;
-
             letter-spacing: 2px;
-
             cursor: pointer;
-
             position: relative;
-
             overflow: hidden;
-
             transition: .25s;
         }
 
         .login-button::before {
-
             content: "";
-
             position: absolute;
-
             top: 0;
             left: -100%;
-
             width: 100%;
             height: 100%;
-
             background: rgba(255,255,255,.25);
-
             transform: skewX(-20deg);
-
             transition: .5s;
         }
 
         .login-button:hover {
-
             background: var(--verde-hover);
-
             transform: translateY(-2px);
 
             box-shadow:
@@ -444,93 +302,61 @@
         }
 
         .login-button:hover::before {
-
             left: 120%;
         }
 
         .login-button:active {
-
             transform: translateY(0);
         }
 
-
-        /* =========================
-           RODAPÉ
-        ========================= */
-
         .security {
-
             display: flex;
-
             align-items: center;
             justify-content: center;
-
             gap: 7px;
-
             margin-top: 25px;
-
             color: #444;
-
             font-size: 9px;
-
             font-weight: 600;
         }
 
         .security-icon {
-
             color: #555;
         }
 
         .footer {
-
             text-align: center;
-
             margin-top: 22px;
-
             color: #3d3d3d;
-
             font-size: 9px;
-
             font-weight: 500;
         }
 
         .footer span {
-
             color: #666;
         }
-
-
-        /* =========================
-           RESPONSIVO
-        ========================= */
 
         @media (max-width: 500px) {
 
             .login-wrapper {
-
                 padding: 18px;
             }
 
             .login-card {
-
                 padding: 32px 24px;
-
                 border-radius: 15px;
             }
 
             .login-card::before {
-
                 left: 25px;
                 right: 25px;
             }
 
             .logo-name {
-
                 font-size: 32px;
             }
 
             .login-header h1 {
-
                 font-size: 28px;
             }
         }
@@ -542,7 +368,6 @@
 
     <main class="login-wrapper">
 
-        <!-- LOGO -->
         <div class="logo">
 
             <div class="logo-name">
@@ -557,8 +382,6 @@
 
         </div>
 
-
-        <!-- CARD DE LOGIN -->
         <section class="login-card">
 
             <div class="login-header">
@@ -576,8 +399,6 @@
 
             </div>
 
-
-            <!-- FORMULÁRIO -->
             <form action="/auth/login" method="post">
 
                 <!-- EMAIL -->
@@ -606,7 +427,6 @@
 
                 </div>
 
-
                 <!-- SENHA -->
                 <div class="field">
 
@@ -629,12 +449,19 @@
                             ●
                         </span>
 
+                        <button
+                            type="button"
+                            class="password-eye"
+                            onclick="mostrarSenha()"
+                            aria-label="Mostrar senha"
+                        >
+                            👁
+                        </button>
+
                     </div>
 
                 </div>
 
-
-                <!-- BOTÃO -->
                 <button
                     type="submit"
                     class="login-button"
@@ -644,8 +471,6 @@
 
             </form>
 
-
-            <!-- SEGURANÇA -->
             <div class="security">
 
                 <span class="security-icon"></span>
@@ -656,8 +481,6 @@
 
         </section>
 
-
-        <!-- FOOTER -->
         <div class="footer">
 
             M&J Store © 2026
@@ -667,7 +490,18 @@
 
     </main>
 
+    <script>
+        function mostrarSenha() {
+            const senha = document.getElementById("senha");
+
+            if (senha.type === "password") {
+                senha.type = "text";
+            } else {
+                senha.type = "password";
+            }
+        }
+    </script>
+
 </body>
 
 </html>
-
