@@ -7,8 +7,10 @@
 
     <title>Login | M&J Store</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
 
     <style>
 
@@ -18,43 +20,46 @@
             box-sizing: border-box;
         }
 
+        /* =========================================
+           VARIÁVEIS
+           ========================================= */
+
         :root {
             --verde: #c8ff1a;
             --verde-hover: #b7ec0e;
 
-            --bg-principal: #050505;
-            --bg-card: rgba(10,10,10,.90);
-            --bg-input: #111;
+            --bg-card: rgba(10, 10, 10, .90);
+            --bg-input: #111111;
 
             --texto-principal: #ffffff;
-            --texto-secundario: #666;
+            --texto-secundario: #666666;
 
             --borda: rgba(255,255,255,0.09);
             --borda-input: #242424;
         }
 
-        /* =========================
+        /* =========================================
            TEMA CLARO
-           ========================= */
+           ========================================= */
 
         body.light-theme {
-            --bg-principal: #e9ecef;
-            --bg-card: #1f2328;
-            --bg-input: #2b3036;
+            --bg-card: rgba(248, 249, 250, .96);
+            --bg-input: #f1f3f5;
 
-            --texto-principal: #4a4f55;
-            --texto-secundario: #7a8087;
+            --texto-principal: #343a40;
+            --texto-secundario: #6c757d;
 
-            --borda: rgba(0,0,0,0.10);
-            --borda-input: #3a4149;
+            --borda: rgba(0,0,0,0.08);
+            --borda-input: #d6d9dd;
         }
 
-        /* =========================
+        /* =========================================
            BODY
-           ========================= */
+           ========================================= */
 
         body {
             min-height: 100vh;
+
             font-family: 'Montserrat', sans-serif;
 
             color: var(--texto-principal);
@@ -81,7 +86,9 @@
                 color .35s ease;
         }
 
-        /* Fundo do tema claro */
+        /* =========================================
+           FUNDO DO TEMA CLARO
+           ========================================= */
 
         body.light-theme {
             background:
@@ -95,12 +102,13 @@
             background-position: center;
         }
 
-        /* =========================
-           EFEITOS DE FUNDO
-           ========================= */
+        /* =========================================
+           BRILHOS
+           ========================================= */
 
         body::before {
             content: "";
+
             position: fixed;
 
             width: 500px;
@@ -122,6 +130,7 @@
 
         body::after {
             content: "";
+
             position: fixed;
 
             width: 450px;
@@ -141,9 +150,149 @@
             pointer-events: none;
         }
 
-        /* =========================
+        /* =========================================
+           BOLHAS
+           ========================================= */
+
+        .bolhas {
+            position: fixed;
+
+            inset: 0;
+
+            overflow: hidden;
+
+            pointer-events: none;
+
+            z-index: 0;
+        }
+
+        .bolha {
+            position: absolute;
+
+            bottom: -120px;
+
+            border-radius: 50%;
+
+            background: rgba(200, 255, 26, 0.035);
+
+            border: 1px solid rgba(200, 255, 26, 0.10);
+
+            box-shadow:
+                0 0 20px rgba(200, 255, 26, 0.03);
+
+            animation:
+                subirBolha 15s linear infinite;
+        }
+
+        /* Bolhas mais discretas no tema claro */
+
+        body.light-theme .bolha {
+            background: rgba(120, 145, 25, 0.035);
+
+            border: 1px solid rgba(120, 145, 25, 0.10);
+
+            box-shadow:
+                0 0 20px rgba(120, 145, 25, 0.03);
+        }
+
+        .bolha:nth-child(1) {
+            width: 70px;
+            height: 70px;
+
+            left: 8%;
+
+            animation-duration: 16s;
+        }
+
+        .bolha:nth-child(2) {
+            width: 35px;
+            height: 35px;
+
+            left: 22%;
+
+            animation-duration: 11s;
+
+            animation-delay: 2s;
+        }
+
+        .bolha:nth-child(3) {
+            width: 110px;
+            height: 110px;
+
+            left: 40%;
+
+            animation-duration: 19s;
+
+            animation-delay: 4s;
+        }
+
+        .bolha:nth-child(4) {
+            width: 45px;
+            height: 45px;
+
+            left: 60%;
+
+            animation-duration: 12s;
+
+            animation-delay: 1s;
+        }
+
+        .bolha:nth-child(5) {
+            width: 85px;
+            height: 85px;
+
+            left: 76%;
+
+            animation-duration: 17s;
+
+            animation-delay: 3s;
+        }
+
+        .bolha:nth-child(6) {
+            width: 28px;
+            height: 28px;
+
+            left: 90%;
+
+            animation-duration: 10s;
+
+            animation-delay: 5s;
+        }
+
+        @keyframes subirBolha {
+
+            0% {
+                transform:
+                    translateY(0)
+                    translateX(0);
+
+                opacity: 0;
+            }
+
+            10% {
+                opacity: .8;
+            }
+
+            50% {
+                transform:
+                    translateY(-50vh)
+                    translateX(30px);
+
+                opacity: .55;
+            }
+
+            100% {
+                transform:
+                    translateY(-120vh)
+                    translateX(-30px);
+
+                opacity: 0;
+            }
+        }
+
+        /* =========================================
            BOTÃO DE TEMA
-           ========================= */
+           ========================================= */
 
         .theme-toggle {
             position: fixed;
@@ -171,10 +320,11 @@
             cursor: pointer;
 
             backdrop-filter: blur(10px);
+
             -webkit-backdrop-filter: blur(10px);
 
             box-shadow:
-                0 8px 25px rgba(0,0,0,.25);
+                0 8px 25px rgba(0,0,0,.20);
 
             transition:
                 transform .25s ease,
@@ -185,15 +335,18 @@
         }
 
         .theme-toggle:hover {
-            transform: rotate(15deg) scale(1.08);
+            transform:
+                rotate(15deg)
+                scale(1.08);
         }
 
-        /* =========================
-           LOGIN WRAPPER
-           ========================= */
+        /* =========================================
+           LOGIN
+           ========================================= */
 
         .login-wrapper {
             width: 100%;
+
             max-width: 440px;
 
             padding: 25px;
@@ -203,9 +356,9 @@
             z-index: 2;
         }
 
-        /* =========================
+        /* =========================================
            LOGO
-           ========================= */
+           ========================================= */
 
         .logo {
             text-align: center;
@@ -222,9 +375,10 @@
 
             line-height: 1;
 
-            color: #ffffff;
+            color: var(--texto-principal);
 
-            transition: color .35s ease;
+            transition:
+                color .35s ease;
         }
 
         .logo-name span {
@@ -252,26 +406,28 @@
             letter-spacing: 4px;
         }
 
-        /* =========================
-           LOGIN CARD
-           ========================= */
+        /* =========================================
+           CARD
+           ========================================= */
 
         .login-card {
             position: relative;
 
             background: var(--bg-card);
 
-            border: 1px solid var(--borda);
+            border:
+                1px solid var(--borda);
 
             border-radius: 18px;
 
             padding: 42px;
 
             box-shadow:
-                0 30px 80px rgba(0,0,0,.30),
+                0 30px 80px rgba(0,0,0,.25),
                 inset 0 1px 0 rgba(255,255,255,.03);
 
             backdrop-filter: blur(15px);
+
             -webkit-backdrop-filter: blur(15px);
 
             transition:
@@ -286,24 +442,26 @@
             position: absolute;
 
             top: 0;
+
             left: 40px;
             right: 40px;
 
             height: 2px;
 
-            background: linear-gradient(
-                90deg,
-                transparent,
-                var(--verde),
-                transparent
-            );
+            background:
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    var(--verde),
+                    transparent
+                );
 
             border-radius: 10px;
         }
 
-        /* =========================
+        /* =========================================
            CABEÇALHO
-           ========================= */
+           ========================================= */
 
         .login-header {
             margin-bottom: 30px;
@@ -348,9 +506,7 @@
 
             margin-bottom: 9px;
 
-            color: #ffffff;
-
-            transition: color .35s ease;
+            color: var(--texto-principal);
         }
 
         .login-header p {
@@ -361,9 +517,9 @@
             line-height: 1.7;
         }
 
-        /* =========================
+        /* =========================================
            CAMPOS
-           ========================= */
+           ========================================= */
 
         .field {
             margin-bottom: 20px;
@@ -393,9 +549,10 @@
             left: 16px;
             top: 50%;
 
-            transform: translateY(-50%);
+            transform:
+                translateY(-50%);
 
-            color: #555;
+            color: #777;
 
             font-size: 15px;
 
@@ -409,11 +566,13 @@
 
             height: 54px;
 
-            padding: 0 50px 0 45px;
+            padding:
+                0 50px 0 45px;
 
             border-radius: 9px;
 
-            border: 1px solid var(--borda-input);
+            border:
+                1px solid var(--borda-input);
 
             outline: none;
 
@@ -421,7 +580,9 @@
 
             color: var(--texto-principal);
 
-            font-family: 'Montserrat', sans-serif;
+            font-family:
+                'Montserrat',
+                sans-serif;
 
             font-size: 12px;
 
@@ -433,7 +594,7 @@
         }
 
         input::placeholder {
-            color: #8b9197;
+            color: #9aa0a6;
         }
 
         input:hover {
@@ -441,22 +602,28 @@
         }
 
         input:focus {
-            border-color: var(--verde);
+            border-color:
+                var(--verde);
 
-            background: var(--bg-input);
+            background:
+                var(--bg-input);
 
             box-shadow:
-                0 0 0 3px rgba(200,255,26,.07),
-                0 0 20px rgba(200,255,26,.04);
+                0 0 0 3px
+                rgba(200,255,26,.07),
+
+                0 0 20px
+                rgba(200,255,26,.04);
         }
 
         input:focus + .input-icon {
-            color: var(--verde);
+            color:
+                var(--verde);
         }
 
-        /* =========================
+        /* =========================================
            OLHO DA SENHA
-           ========================= */
+           ========================================= */
 
         .password-eye {
             position: absolute;
@@ -464,13 +631,16 @@
             right: 15px;
             top: 50%;
 
-            transform: translateY(-50%);
+            transform:
+                translateY(-50%);
 
-            background: transparent;
+            background:
+                transparent;
 
             border: none;
 
-            color: var(--texto-principal);
+            color:
+                var(--texto-principal);
 
             font-size: 18px;
 
@@ -482,19 +652,22 @@
         }
 
         .password-eye:hover {
-            color: var(--verde);
+            color:
+                var(--verde);
         }
 
-        /* =========================
+        /* =========================================
            MENSAGEM DE ERRO
-           ========================= */
+           ========================================= */
 
         .mensagem-erro {
             color: #ff3b3b;
 
-            background: rgba(255,59,59,.08);
+            background:
+                rgba(255,59,59,.08);
 
-            border: 1px solid rgba(255,59,59,.25);
+            border:
+                1px solid rgba(255,59,59,.25);
 
             border-radius: 8px;
 
@@ -509,9 +682,9 @@
             font-weight: 700;
         }
 
-        /* =========================
+        /* =========================================
            BOTÃO LOGIN
-           ========================= */
+           ========================================= */
 
         .login-button {
             width: 100%;
@@ -524,11 +697,14 @@
 
             border-radius: 9px;
 
-            background: var(--verde);
+            background:
+                var(--verde);
 
-            color: #050505;
+            color: #202428;
 
-            font-family: 'Montserrat', sans-serif;
+            font-family:
+                'Montserrat',
+                sans-serif;
 
             font-size: 11px;
 
@@ -556,20 +732,25 @@
             width: 100%;
             height: 100%;
 
-            background: rgba(255,255,255,.25);
+            background:
+                rgba(255,255,255,.25);
 
-            transform: skewX(-20deg);
+            transform:
+                skewX(-20deg);
 
             transition: .5s;
         }
 
         .login-button:hover {
-            background: var(--verde-hover);
+            background:
+                var(--verde-hover);
 
-            transform: translateY(-2px);
+            transform:
+                translateY(-2px);
 
             box-shadow:
-                0 10px 30px rgba(200,255,26,.16);
+                0 10px 30px
+                rgba(200,255,26,.16);
         }
 
         .login-button:hover::before {
@@ -577,12 +758,13 @@
         }
 
         .login-button:active {
-            transform: translateY(0);
+            transform:
+                translateY(0);
         }
 
-        /* =========================
+        /* =========================================
            SEGURANÇA
-           ========================= */
+           ========================================= */
 
         .security {
             display: flex;
@@ -595,7 +777,8 @@
 
             margin-top: 25px;
 
-            color: var(--texto-secundario);
+            color:
+                var(--texto-secundario);
 
             font-size: 9px;
 
@@ -606,16 +789,17 @@
             color: #777;
         }
 
-        /* =========================
-           RODAPÉ
-           ========================= */
+        /* =========================================
+           FOOTER
+           ========================================= */
 
         .footer {
             text-align: center;
 
             margin-top: 22px;
 
-            color: var(--texto-secundario);
+            color:
+                var(--texto-secundario);
 
             font-size: 9px;
 
@@ -626,40 +810,42 @@
             color: #9aa0a6;
         }
 
-        /* =================================================
-           TEMA CLARO - LETRAS MAIS PROFISSIONAIS
-           ================================================= */
+        /* =========================================
+           AJUSTES DO TEMA CLARO
+           ========================================= */
 
         body.light-theme .logo-name {
-            color: #4a4f55;
+            color: #343a40;
         }
 
         body.light-theme .login-header h1 {
-            color: #3f444a;
+            color: #343a40;
         }
 
         body.light-theme .login-header p {
-            color: #7a8087;
+            color: #6c757d;
         }
 
         body.light-theme .field label {
-            color: #5f666d;
-        }
-
-        body.light-theme .input-icon {
-            color: #858b91;
+            color: #555b61;
         }
 
         body.light-theme input {
-            color: #4a4f55;
+            background: #f1f3f5;
+            color: #343a40;
+            border-color: #d6d9dd;
         }
 
         body.light-theme input::placeholder {
             color: #9aa0a6;
         }
 
+        body.light-theme .input-icon {
+            color: #858b91;
+        }
+
         body.light-theme .password-eye {
-            color: #6f767d;
+            color: #626970;
         }
 
         body.light-theme .password-eye:hover {
@@ -667,7 +853,7 @@
         }
 
         body.light-theme .security {
-            color: #7a8087;
+            color: #737a81;
         }
 
         body.light-theme .footer {
@@ -676,6 +862,12 @@
 
         body.light-theme .footer span {
             color: #9aa0a6;
+        }
+
+        body.light-theme .login-card {
+            box-shadow:
+                0 25px 60px
+                rgba(0,0,0,.12);
         }
 
         body.light-theme .login-button {
@@ -687,9 +879,9 @@
             background: #a9e914;
         }
 
-        /* =========================
+        /* =========================================
            RESPONSIVO
-           ========================= */
+           ========================================= */
 
         @media (max-width: 500px) {
 
@@ -730,7 +922,25 @@
 
 <body>
 
-    <!-- BOTÃO DE TEMA -->
+    <!-- =========================================
+         BOLHAS
+         ========================================= -->
+
+    <div class="bolhas">
+
+        <span class="bolha"></span>
+        <span class="bolha"></span>
+        <span class="bolha"></span>
+        <span class="bolha"></span>
+        <span class="bolha"></span>
+        <span class="bolha"></span>
+
+    </div>
+
+    <!-- =========================================
+         BOTÃO TEMA
+         ========================================= -->
+
     <button
         type="button"
         class="theme-toggle"
@@ -741,9 +951,12 @@
         🌙
     </button>
 
+    <!-- =========================================
+         LOGIN
+         ========================================= -->
+
     <main class="login-wrapper">
 
-        <!-- LOGO -->
         <div class="logo">
 
             <div class="logo-name">
@@ -758,7 +971,6 @@
 
         </div>
 
-        <!-- CARD -->
         <section class="login-card">
 
             <div class="login-header">
@@ -771,7 +983,9 @@
 
                 </div>
 
-                <h1>Bem-vindo.</h1>
+                <h1>
+                    Bem-vindo.
+                </h1>
 
                 <p>
                     Entre com suas credenciais para continuar.
@@ -779,8 +993,10 @@
 
             </div>
 
-            <!-- FORMULÁRIO -->
-            <form action="/auth/login" method="post">
+            <form
+                action="/auth/login"
+                method="post"
+            >
 
                 <!-- EMAIL -->
 
@@ -849,7 +1065,10 @@
 
                 {% if erro %}
 
-                    <div class="mensagem-erro" id="mensagemErro">
+                    <div
+                        class="mensagem-erro"
+                        id="mensagemErro"
+                    >
                         {{ erro }}
                     </div>
 
@@ -896,9 +1115,9 @@
 
     <script>
 
-        /* ==========================================
+        /* =========================================
            MOSTRAR / ESCONDER SENHA
-           ========================================== */
+           ========================================= */
 
         function mostrarSenha() {
 
@@ -914,12 +1133,13 @@
                 senha.type = "password";
 
             }
+
         }
 
 
-        /* ==========================================
-           ALTERAR TEMA
-           ========================================== */
+        /* =========================================
+           TEMA CLARO / ESCURO
+           ========================================= */
 
         function alternarTema() {
 
@@ -927,11 +1147,19 @@
                 document.body;
 
             const botao =
-                document.getElementById("themeToggle");
+                document.getElementById(
+                    "themeToggle"
+                );
 
-            body.classList.toggle("light-theme");
+            body.classList.toggle(
+                "light-theme"
+            );
 
-            if (body.classList.contains("light-theme")) {
+            if (
+                body.classList.contains(
+                    "light-theme"
+                )
+            ) {
 
                 botao.textContent = "☀️";
 
@@ -948,25 +1176,33 @@
                     "tema",
                     "escuro"
                 );
+
             }
+
         }
 
 
-        /* ==========================================
+        /* =========================================
            CARREGAR TEMA SALVO
-           ========================================== */
+           ========================================= */
 
         document.addEventListener(
             "DOMContentLoaded",
             function () {
 
                 const temaSalvo =
-                    localStorage.getItem("tema");
+                    localStorage.getItem(
+                        "tema"
+                    );
 
                 const botao =
-                    document.getElementById("themeToggle");
+                    document.getElementById(
+                        "themeToggle"
+                    );
 
-                if (temaSalvo === "claro") {
+                if (
+                    temaSalvo === "claro"
+                ) {
 
                     document.body.classList.add(
                         "light-theme"
@@ -984,36 +1220,32 @@
         );
 
 
-        /* ==========================================
+        /* =========================================
            REMOVER ERRO AO RECARREGAR
-           ========================================== */
+           ========================================= */
 
-        document.addEventListener(
-            "DOMContentLoaded",
+        window.addEventListener(
+            "pageshow",
             function () {
 
                 const mensagem =
-                    document.getElementById("mensagemErro");
-
-                if (!mensagem) {
-                    return;
-                }
-
-                const navigationEntries =
-                    performance.getEntriesByType(
-                        "navigation"
+                    document.getElementById(
+                        "mensagemErro"
                     );
 
-                if (navigationEntries.length > 0) {
+                const navegacao =
+                    performance.getEntriesByType(
+                        "navigation"
+                    )[0];
 
-                    const navigationType =
-                        navigationEntries[0].type;
+                if (
+                    mensagem &&
+                    navegacao &&
+                    navegacao.type === "reload"
+                ) {
 
-                    if (navigationType === "reload") {
+                    mensagem.remove();
 
-                        mensagem.remove();
-
-                    }
                 }
 
             }
