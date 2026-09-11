@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -22,18 +21,48 @@
         :root {
             --verde: #c8ff1a;
             --verde-hover: #b7ec0e;
-            --preto: #050505;
-            --cinza: #777;
+
+            --bg-principal: #050505;
+            --bg-card: rgba(10,10,10,.90);
+            --bg-input: #111;
+
+            --texto-principal: #ffffff;
+            --texto-secundario: #666;
+
             --borda: rgba(255,255,255,0.09);
+            --borda-input: #242424;
         }
+
+        /* =========================
+           TEMA CLARO
+           ========================= */
+
+        body.light-theme {
+            --bg-principal: #e9ecef;
+            --bg-card: #1f2328;
+            --bg-input: #2b3036;
+
+            --texto-principal: #4a4f55;
+            --texto-secundario: #7a8087;
+
+            --borda: rgba(0,0,0,0.10);
+            --borda-input: #3a4149;
+        }
+
+        /* =========================
+           BODY
+           ========================= */
 
         body {
             min-height: 100vh;
             font-family: 'Montserrat', sans-serif;
-            color: white;
+
+            color: var(--texto-principal);
+
             display: flex;
             align-items: center;
             justify-content: center;
+
             overflow: hidden;
 
             background:
@@ -46,54 +75,156 @@
 
             background-size: cover;
             background-position: center;
+
+            transition:
+                background .35s ease,
+                color .35s ease;
         }
+
+        /* Fundo do tema claro */
+
+        body.light-theme {
+            background:
+                linear-gradient(
+                    135deg,
+                    #eef1f4,
+                    #dfe3e8
+                );
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* =========================
+           EFEITOS DE FUNDO
+           ========================= */
 
         body::before {
             content: "";
             position: fixed;
+
             width: 500px;
             height: 500px;
+
             background: var(--verde);
+
             border-radius: 50%;
+
             filter: blur(180px);
+
             opacity: .08;
+
             top: -200px;
             left: -150px;
+
             pointer-events: none;
         }
 
         body::after {
             content: "";
             position: fixed;
+
             width: 450px;
             height: 450px;
+
             background: var(--verde);
+
             border-radius: 50%;
+
             filter: blur(180px);
+
             opacity: .06;
+
             bottom: -200px;
             right: -150px;
+
             pointer-events: none;
         }
+
+        /* =========================
+           BOTÃO DE TEMA
+           ========================= */
+
+        .theme-toggle {
+            position: fixed;
+
+            top: 20px;
+            right: 20px;
+
+            width: 46px;
+            height: 46px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid var(--borda);
+
+            border-radius: 50%;
+
+            background: var(--bg-card);
+
+            color: var(--texto-principal);
+
+            font-size: 18px;
+
+            cursor: pointer;
+
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,.25);
+
+            transition:
+                transform .25s ease,
+                background .35s ease,
+                color .35s ease;
+
+            z-index: 10;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(15deg) scale(1.08);
+        }
+
+        /* =========================
+           LOGIN WRAPPER
+           ========================= */
 
         .login-wrapper {
             width: 100%;
             max-width: 440px;
+
             padding: 25px;
+
             position: relative;
+
             z-index: 2;
         }
 
+        /* =========================
+           LOGO
+           ========================= */
+
         .logo {
             text-align: center;
+
             margin-bottom: 32px;
         }
 
         .logo-name {
             font-size: 38px;
+
             font-weight: 900;
+
             letter-spacing: -2px;
+
             line-height: 1;
+
+            color: #ffffff;
+
+            transition: color .35s ease;
         }
 
         .logo-name span {
@@ -103,39 +234,61 @@
         .logo-line {
             width: 45px;
             height: 3px;
+
             background: var(--verde);
+
             margin: 13px auto 10px;
+
             border-radius: 10px;
         }
 
         .logo-subtitle {
-            color: #666;
+            color: var(--texto-secundario);
+
             font-size: 9px;
+
             font-weight: 700;
+
             letter-spacing: 4px;
         }
 
+        /* =========================
+           LOGIN CARD
+           ========================= */
+
         .login-card {
             position: relative;
-            background: rgba(10,10,10,.90);
+
+            background: var(--bg-card);
+
             border: 1px solid var(--borda);
+
             border-radius: 18px;
+
             padding: 42px;
 
             box-shadow:
-                0 30px 80px rgba(0,0,0,.65),
+                0 30px 80px rgba(0,0,0,.30),
                 inset 0 1px 0 rgba(255,255,255,.03);
 
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
+
+            transition:
+                background .35s ease,
+                border .35s ease,
+                box-shadow .35s ease;
         }
 
         .login-card::before {
             content: "";
+
             position: absolute;
+
             top: 0;
             left: 40px;
             right: 40px;
+
             height: 2px;
 
             background: linear-gradient(
@@ -148,41 +301,69 @@
             border-radius: 10px;
         }
 
+        /* =========================
+           CABEÇALHO
+           ========================= */
+
         .login-header {
             margin-bottom: 30px;
         }
 
         .access {
             display: inline-flex;
+
             align-items: center;
+
             gap: 7px;
+
             color: var(--verde);
+
             font-size: 9px;
+
             font-weight: 800;
+
             letter-spacing: 2px;
+
             margin-bottom: 12px;
         }
 
         .access-dot {
             width: 6px;
             height: 6px;
+
             border-radius: 50%;
+
             background: var(--verde);
-            box-shadow: 0 0 10px var(--verde);
+
+            box-shadow:
+                0 0 10px var(--verde);
         }
 
         .login-header h1 {
             font-size: 32px;
+
             font-weight: 900;
+
             letter-spacing: -1px;
+
             margin-bottom: 9px;
+
+            color: #ffffff;
+
+            transition: color .35s ease;
         }
 
         .login-header p {
-            color: #666;
+            color: var(--texto-secundario);
+
             font-size: 12px;
+
             line-height: 1.7;
         }
+
+        /* =========================
+           CAMPOS
+           ========================= */
 
         .field {
             margin-bottom: 20px;
@@ -190,10 +371,15 @@
 
         .field label {
             display: block;
-            color: #aaa;
+
+            color: var(--texto-secundario);
+
             font-size: 10px;
+
             font-weight: 800;
+
             letter-spacing: 1.5px;
+
             margin-bottom: 8px;
         }
 
@@ -203,39 +389,61 @@
 
         .input-icon {
             position: absolute;
+
             left: 16px;
             top: 50%;
+
             transform: translateY(-50%);
+
             color: #555;
+
             font-size: 15px;
+
             pointer-events: none;
+
+            z-index: 2;
         }
 
         input {
             width: 100%;
+
             height: 54px;
+
             padding: 0 50px 0 45px;
+
             border-radius: 9px;
-            border: 1px solid #242424;
+
+            border: 1px solid var(--borda-input);
+
             outline: none;
-            background: #111;
-            color: white;
+
+            background: var(--bg-input);
+
+            color: var(--texto-principal);
+
             font-family: 'Montserrat', sans-serif;
+
             font-size: 12px;
-            transition: .25s;
+
+            transition:
+                .25s,
+                background .35s ease,
+                color .35s ease,
+                border .35s ease;
         }
 
         input::placeholder {
-            color: #505050;
+            color: #8b9197;
         }
 
         input:hover {
-            border-color: #333;
+            border-color: #777;
         }
 
         input:focus {
             border-color: var(--verde);
-            background: #141414;
+
+            background: var(--bg-input);
 
             box-shadow:
                 0 0 0 3px rgba(200,255,26,.07),
@@ -246,18 +454,30 @@
             color: var(--verde);
         }
 
-        /* OLHO DA SENHA */
+        /* =========================
+           OLHO DA SENHA
+           ========================= */
+
         .password-eye {
             position: absolute;
+
             right: 15px;
             top: 50%;
+
             transform: translateY(-50%);
+
             background: transparent;
+
             border: none;
-            color: white;
+
+            color: var(--texto-principal);
+
             font-size: 18px;
+
             cursor: pointer;
+
             padding: 0;
+
             z-index: 5;
         }
 
@@ -265,51 +485,87 @@
             color: var(--verde);
         }
 
-        /* MENSAGEM DE ERRO */
+        /* =========================
+           MENSAGEM DE ERRO
+           ========================= */
+
         .mensagem-erro {
             color: #ff3b3b;
-            background: rgba(255, 59, 59, 0.08);
-            border: 1px solid rgba(255, 59, 59, 0.25);
+
+            background: rgba(255,59,59,.08);
+
+            border: 1px solid rgba(255,59,59,.25);
+
             border-radius: 8px;
+
             padding: 10px;
+
             margin-bottom: 15px;
+
             text-align: center;
+
             font-size: 11px;
+
             font-weight: 700;
         }
 
+        /* =========================
+           BOTÃO LOGIN
+           ========================= */
+
         .login-button {
             width: 100%;
+
             height: 55px;
+
             margin-top: 5px;
+
             border: none;
+
             border-radius: 9px;
+
             background: var(--verde);
+
             color: #050505;
+
             font-family: 'Montserrat', sans-serif;
+
             font-size: 11px;
+
             font-weight: 900;
+
             letter-spacing: 2px;
+
             cursor: pointer;
+
             position: relative;
+
             overflow: hidden;
+
             transition: .25s;
         }
 
         .login-button::before {
             content: "";
+
             position: absolute;
+
             top: 0;
             left: -100%;
+
             width: 100%;
             height: 100%;
+
             background: rgba(255,255,255,.25);
+
             transform: skewX(-20deg);
+
             transition: .5s;
         }
 
         .login-button:hover {
             background: var(--verde-hover);
+
             transform: translateY(-2px);
 
             box-shadow:
@@ -324,32 +580,116 @@
             transform: translateY(0);
         }
 
+        /* =========================
+           SEGURANÇA
+           ========================= */
+
         .security {
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             gap: 7px;
+
             margin-top: 25px;
-            color: #444;
+
+            color: var(--texto-secundario);
+
             font-size: 9px;
+
             font-weight: 600;
         }
 
         .security-icon {
-            color: #555;
+            color: #777;
         }
+
+        /* =========================
+           RODAPÉ
+           ========================= */
 
         .footer {
             text-align: center;
+
             margin-top: 22px;
-            color: #3d3d3d;
+
+            color: var(--texto-secundario);
+
             font-size: 9px;
+
             font-weight: 500;
         }
 
         .footer span {
-            color: #666;
+            color: #9aa0a6;
         }
+
+        /* =================================================
+           TEMA CLARO - LETRAS MAIS PROFISSIONAIS
+           ================================================= */
+
+        body.light-theme .logo-name {
+            color: #4a4f55;
+        }
+
+        body.light-theme .login-header h1 {
+            color: #3f444a;
+        }
+
+        body.light-theme .login-header p {
+            color: #7a8087;
+        }
+
+        body.light-theme .field label {
+            color: #5f666d;
+        }
+
+        body.light-theme .input-icon {
+            color: #858b91;
+        }
+
+        body.light-theme input {
+            color: #4a4f55;
+        }
+
+        body.light-theme input::placeholder {
+            color: #9aa0a6;
+        }
+
+        body.light-theme .password-eye {
+            color: #6f767d;
+        }
+
+        body.light-theme .password-eye:hover {
+            color: #8fba00;
+        }
+
+        body.light-theme .security {
+            color: #7a8087;
+        }
+
+        body.light-theme .footer {
+            color: #8b9197;
+        }
+
+        body.light-theme .footer span {
+            color: #9aa0a6;
+        }
+
+        body.light-theme .login-button {
+            background: #baff18;
+            color: #202428;
+        }
+
+        body.light-theme .login-button:hover {
+            background: #a9e914;
+        }
+
+        /* =========================
+           RESPONSIVO
+           ========================= */
 
         @media (max-width: 500px) {
 
@@ -359,6 +699,7 @@
 
             .login-card {
                 padding: 32px 24px;
+
                 border-radius: 15px;
             }
 
@@ -374,6 +715,14 @@
             .login-header h1 {
                 font-size: 28px;
             }
+
+            .theme-toggle {
+                top: 14px;
+                right: 14px;
+
+                width: 42px;
+                height: 42px;
+            }
         }
 
     </style>
@@ -381,8 +730,20 @@
 
 <body>
 
+    <!-- BOTÃO DE TEMA -->
+    <button
+        type="button"
+        class="theme-toggle"
+        id="themeToggle"
+        onclick="alternarTema()"
+        aria-label="Alterar tema"
+    >
+        🌙
+    </button>
+
     <main class="login-wrapper">
 
+        <!-- LOGO -->
         <div class="logo">
 
             <div class="logo-name">
@@ -397,13 +758,17 @@
 
         </div>
 
+        <!-- CARD -->
         <section class="login-card">
 
             <div class="login-header">
 
                 <div class="access">
+
                     <span class="access-dot"></span>
+
                     ACESSO AO SISTEMA
+
                 </div>
 
                 <h1>Bem-vindo.</h1>
@@ -414,9 +779,11 @@
 
             </div>
 
+            <!-- FORMULÁRIO -->
             <form action="/auth/login" method="post">
 
                 <!-- EMAIL -->
+
                 <div class="field">
 
                     <label for="email">
@@ -443,6 +810,7 @@
                 </div>
 
                 <!-- SENHA -->
+
                 <div class="field">
 
                     <label for="senha">
@@ -477,12 +845,17 @@
 
                 </div>
 
-                <!-- MENSAGEM DE ERRO -->
+                <!-- ERRO -->
+
                 {% if erro %}
+
                     <div class="mensagem-erro" id="mensagemErro">
                         {{ erro }}
                     </div>
+
                 {% endif %}
+
+                <!-- BOTÃO -->
 
                 <button
                     type="submit"
@@ -493,9 +866,13 @@
 
             </form>
 
+            <!-- SEGURANÇA -->
+
             <div class="security">
 
-                <span class="security-icon"></span>
+                <span class="security-icon">
+                    🔒
+                </span>
 
                 Acesso seguro e protegido
 
@@ -503,10 +880,15 @@
 
         </section>
 
+        <!-- FOOTER -->
+
         <div class="footer">
 
             M&J Store © 2026
-            <span>• Todos os direitos reservados</span>
+
+            <span>
+                • Todos os direitos reservados
+            </span>
 
         </div>
 
@@ -514,42 +896,131 @@
 
     <script>
 
+        /* ==========================================
+           MOSTRAR / ESCONDER SENHA
+           ========================================== */
+
         function mostrarSenha() {
-            const senha = document.getElementById("senha");
+
+            const senha =
+                document.getElementById("senha");
 
             if (senha.type === "password") {
+
                 senha.type = "text";
+
             } else {
+
                 senha.type = "password";
+
             }
         }
 
-        /*
-         * Remove a mensagem SOMENTE quando a página
-         * foi recarregada pelo navegador.
-         */
-        document.addEventListener("DOMContentLoaded", function () {
 
-            const mensagem = document.getElementById("mensagemErro");
+        /* ==========================================
+           ALTERAR TEMA
+           ========================================== */
 
-            if (!mensagem) {
-                return;
+        function alternarTema() {
+
+            const body =
+                document.body;
+
+            const botao =
+                document.getElementById("themeToggle");
+
+            body.classList.toggle("light-theme");
+
+            if (body.classList.contains("light-theme")) {
+
+                botao.textContent = "☀️";
+
+                localStorage.setItem(
+                    "tema",
+                    "claro"
+                );
+
+            } else {
+
+                botao.textContent = "🌙";
+
+                localStorage.setItem(
+                    "tema",
+                    "escuro"
+                );
             }
+        }
 
-            const navigationEntries = performance.getEntriesByType("navigation");
 
-            if (navigationEntries.length > 0) {
+        /* ==========================================
+           CARREGAR TEMA SALVO
+           ========================================== */
 
-                const navigationType = navigationEntries[0].type;
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
 
-                if (navigationType === "reload") {
-                    mensagem.remove();
+                const temaSalvo =
+                    localStorage.getItem("tema");
+
+                const botao =
+                    document.getElementById("themeToggle");
+
+                if (temaSalvo === "claro") {
+
+                    document.body.classList.add(
+                        "light-theme"
+                    );
+
+                    botao.textContent = "☀️";
+
+                } else {
+
+                    botao.textContent = "🌙";
+
                 }
+
             }
-        });
+        );
+
+
+        /* ==========================================
+           REMOVER ERRO AO RECARREGAR
+           ========================================== */
+
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
+
+                const mensagem =
+                    document.getElementById("mensagemErro");
+
+                if (!mensagem) {
+                    return;
+                }
+
+                const navigationEntries =
+                    performance.getEntriesByType(
+                        "navigation"
+                    );
+
+                if (navigationEntries.length > 0) {
+
+                    const navigationType =
+                        navigationEntries[0].type;
+
+                    if (navigationType === "reload") {
+
+                        mensagem.remove();
+
+                    }
+                }
+
+            }
+        );
 
     </script>
 
 </body>
 
-</html
+</html>
