@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Produto editado | M&J Store</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+        * {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(200,255,26,.10),
+                    transparent 35%
+                ),
+                #050505;
+        }
+
+        .card {
+            background: rgba(15,15,15,.9);
+            border: 1px solid rgba(200,255,26,.15);
+            box-shadow: 0 30px 100px rgba(0,0,0,.6);
+            backdrop-filter: blur(20px);
+        }
+
+        .success-icon {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: rgba(200,255,26,.10);
+            border: 2px solid #c8ff1a;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: #c8ff1a;
+            font-size: 42px;
+
+            margin: 0 auto;
+
+            animation: aparecer .5s ease;
+            box-shadow: 0 0 40px rgba(200,255,26,.12);
+        }
+
+        @keyframes aparecer {
+
+            from {
+                opacity: 0;
+                transform: scale(.5);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+        }
+
+        .btn {
+            transition: .2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .neon {
+            color: #c8ff1a;
+        }
+
+        .neon-bg {
+            background: #c8ff1a;
+            color: #050505;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="w-full max-w-lg px-5">
+
+        <div class="card rounded-3xl p-8 md:p-12 text-center">
+
+            <!-- ÍCONE -->
+
+            <div class="success-icon mb-7">
+                ✓
+            </div>
+
+
+            <!-- MARCA -->
+
+            <p class="text-xs font-black tracking-[.4em] neon uppercase mb-4">
+                M&J Store
+            </p>
+
+
+            <!-- TÍTULO -->
+
+            <h1 class="text-3xl md:text-4xl font-black">
+                Produto editado<span class="neon">!</span>
+            </h1>
+
+
+            <p class="text-gray-500 mt-4 leading-relaxed">
+                As alterações do produto foram salvas com sucesso.
+            </p>
+
+
+            {% if produto %}
+
+            <div class="mt-7 p-4 rounded-2xl bg-white/5 border border-white/5">
+
+                <p class="text-[10px] text-gray-600 uppercase tracking-widest">
+                    Produto atualizado
+                </p>
+
+                <p class="font-bold mt-1">
+                    {{ produto.nome }}
+                </p>
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- BOTÕES -->
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-8">
+
+                <a
+                    href="/produtos/"
+                    class="btn rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 py-4 text-xs font-black"
+                >
+                    VER PRODUTOS
+                </a>
+
+                {% if produto %}
+
+                <a
+                    href="/produtos/{{ produto.id }}/editar"
+                    class="btn neon-bg rounded-xl py-4 text-xs font-black"
+                >
+                    EDITAR NOVAMENTE
+                </a>
+
+                {% else %}
+
+                <a
+                    href="/produtos/"
+                    class="btn neon-bg rounded-xl py-4 text-xs font-black"
+                >
+                    CONTINUAR
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <p class="text-center text-[10px] text-gray-700 uppercase tracking-widest mt-6">
+            M&J Store • Sistema de gerenciamento
+        </p>
+
+    </main>
+
+</body>
+</html>
