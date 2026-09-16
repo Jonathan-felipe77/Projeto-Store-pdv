@@ -175,6 +175,52 @@ def favicon():
 
 
 # ============================================================
+# PÁGINA DE ERRO 403
+# ============================================================
+
+@app.exception_handler(403)
+async def erro_403(
+    request: Request,
+    exc: HTTPException
+):
+    return templates.TemplateResponse(
+        request,
+        "errors/erro.html",
+        {
+            "request": request,
+            "status_code": 403,
+            "titulo": "Acesso não permitido",
+            "mensagem": "Você não possui permissão para acessar esta área.",
+            "detalhe": "Entre com uma conta de administrador para continuar."
+        },
+        status_code=403
+    )
+
+
+# # ============================================================
+# # PÁGINA DE ERRO 404
+# # ============================================================
+
+# @app.exception_handler(404)
+# async def erro_404(
+#     request: Request,
+#     exc: HTTPException
+# ):
+#     return templates.TemplateResponse(
+#         request,
+#         "errors/erro.html",
+#         {
+#             "request": request,
+#             "status_code": 404,
+#             "titulo": "Rota não encontrada",
+#             "mensagem": "A página que você tentou acessar não existe.",
+#             "detalhe": "Verifique o endereço ou volte para a página inicial."
+#         },
+#         status_code=404
+#     )
+
+
+# ============================================================
 # ERRO 404
 # ============================================================
 

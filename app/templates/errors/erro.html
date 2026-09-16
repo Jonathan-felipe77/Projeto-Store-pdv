@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Erro — M&J STORE</title>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --preto: #050505;
+            --card: #0d0d0d;
+            --branco: #ffffff;
+            --cinza: #a1a1aa;
+            --cinza-escuro: #242424;
+            --verde: #c8ff1a;
+            --verde-hover: #d9ff4d;
+            --vermelho: #ff4d4d;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(200, 255, 26, 0.08),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at bottom left,
+                    rgba(200, 255, 26, 0.04),
+                    transparent 25%
+                ),
+                var(--preto);
+
+            color: var(--branco);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 25px;
+        }
+
+        .error-page {
+            width: min(600px, 100%);
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 35px;
+        }
+
+        .logo span {
+            color: var(--verde);
+        }
+
+        .error-card {
+            background: linear-gradient(
+                145deg,
+                #101010,
+                #090909
+            );
+
+            border: 1px solid #222;
+            border-radius: 18px;
+
+            padding: 55px 40px;
+
+            position: relative;
+            overflow: hidden;
+        }
+
+        .error-card::before {
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 3px;
+
+            background: var(--verde);
+        }
+
+        .error-number {
+            font-size: 95px;
+            line-height: 1;
+            font-weight: 800;
+
+            color: var(--verde);
+
+            letter-spacing: -6px;
+
+            margin-bottom: 20px;
+        }
+
+        .error-title {
+            font-size: 26px;
+            font-weight: 800;
+
+            margin-bottom: 14px;
+        }
+
+        .error-message {
+            color: var(--cinza);
+            font-size: 14px;
+            line-height: 1.7;
+
+            max-width: 450px;
+            margin: 0 auto 30px;
+        }
+
+        .error-detail {
+            color: #666;
+            font-size: 11px;
+
+            margin-bottom: 30px;
+        }
+
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-width: 210px;
+
+            padding: 14px 22px;
+
+            background: var(--verde);
+            color: #050505;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            transition: 0.2s;
+        }
+
+        .btn-home:hover {
+            background: var(--verde-hover);
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 10px 25px
+                rgba(200, 255, 26, 0.15);
+        }
+
+        .footer {
+            margin-top: 25px;
+
+            color: #555;
+
+            font-size: 10px;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 600px) {
+
+            .error-card {
+                padding: 45px 25px;
+            }
+
+            .error-number {
+                font-size: 75px;
+            }
+
+            .error-title {
+                font-size: 21px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="error-page">
+
+        <div class="logo">
+            M&J <span>STORE</span>
+        </div>
+
+        <section class="error-card">
+
+            <div class="error-number">
+                {{ status_code }}
+            </div>
+
+            <h1 class="error-title">
+                {{ titulo }}
+            </h1>
+
+            <p class="error-message">
+                {{ mensagem }}
+            </p>
+
+            {% if detalhe %}
+                <div class="error-detail">
+                    {{ detalhe }}
+                </div>
+            {% endif %}
+
+            <a
+                href="/"
+                class="btn-home"
+            >
+                ← VOLTAR PARA O INÍCIO
+            </a>
+
+        </section>
+
+        <div class="footer">
+            © 2026 M&J STORE — SISTEMA INTERNO
+        </div>
+
+    </main>
+
+</body>
+
+</html>
