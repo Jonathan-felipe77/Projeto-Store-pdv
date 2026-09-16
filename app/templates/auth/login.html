@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -20,6 +21,7 @@
             box-sizing: border-box;
         }
 
+
         /* =========================================
            VARIÁVEIS
            ========================================= */
@@ -38,6 +40,7 @@
             --borda-input: #242424;
         }
 
+
         /* =========================================
            TEMA CLARO
            ========================================= */
@@ -52,6 +55,7 @@
             --borda: rgba(0,0,0,0.08);
             --borda-input: #d6d9dd;
         }
+
 
         /* =========================================
            BODY
@@ -86,6 +90,7 @@
                 color .35s ease;
         }
 
+
         /* =========================================
            FUNDO DO TEMA CLARO
            ========================================= */
@@ -101,6 +106,7 @@
             background-size: cover;
             background-position: center;
         }
+
 
         /* =========================================
            BRILHOS
@@ -128,6 +134,7 @@
             pointer-events: none;
         }
 
+
         body::after {
             content: "";
 
@@ -150,6 +157,7 @@
             pointer-events: none;
         }
 
+
         /* =========================================
            BOLHAS
            ========================================= */
@@ -166,6 +174,7 @@
             z-index: 0;
         }
 
+
         .bolha {
             position: absolute;
 
@@ -173,27 +182,102 @@
 
             border-radius: 50%;
 
-            background: rgba(200, 255, 26, 0.035);
+            /* Bolhas mais coloridas */
+            background:
+                radial-gradient(
+                    circle at 30% 30%,
+                    rgba(220, 255, 80, 0.78),
+                    rgba(200, 255, 26, 0.34),
+                    rgba(120, 255, 0, 0.05)
+                );
 
-            border: 1px solid rgba(200, 255, 26, 0.10);
+            border: 1px solid rgba(200, 255, 26, 0.30);
 
             box-shadow:
-                0 0 20px rgba(200, 255, 26, 0.03);
+                0 0 20px rgba(200, 255, 26, 0.16),
+                0 0 45px rgba(120, 255, 0, 0.08);
 
             animation:
                 subirBolha 15s linear infinite;
         }
 
-        /* Bolhas mais discretas no tema claro */
+
+        /* =========================================
+           BOLHAS NO TEMA CLARO
+           ========================================= */
 
         body.light-theme .bolha {
-            background: rgba(120, 145, 25, 0.035);
+            background:
+                radial-gradient(
+                    circle at 30% 30%,
+                    rgba(170, 205, 55, 0.55),
+                    rgba(140, 175, 25, 0.22),
+                    rgba(120, 145, 25, 0.04)
+                );
 
-            border: 1px solid rgba(120, 145, 25, 0.10);
+            border: 1px solid rgba(120, 145, 25, 0.22);
 
             box-shadow:
-                0 0 20px rgba(120, 145, 25, 0.03);
+                0 0 20px rgba(120, 145, 25, 0.10),
+                0 0 45px rgba(120, 145, 25, 0.05);
         }
+
+
+        /* =========================================
+           VARIAÇÕES DE COR
+           ========================================= */
+
+        .bolha:nth-child(2n) {
+            background:
+                radial-gradient(
+                    circle at 30% 30%,
+                    rgba(170, 255, 70, 0.70),
+                    rgba(100, 230, 40, 0.28),
+                    rgba(80, 220, 40, 0.04)
+                );
+        }
+
+
+        .bolha:nth-child(3n) {
+            background:
+                radial-gradient(
+                    circle at 30% 30%,
+                    rgba(225, 255, 110, 0.72),
+                    rgba(150, 240, 50, 0.26),
+                    rgba(200, 255, 26, 0.04)
+                );
+        }
+
+
+        /* =========================================
+           VARIAÇÕES NO TEMA CLARO
+           ========================================= */
+
+        body.light-theme .bolha:nth-child(2n) {
+            background:
+                radial-gradient(
+                    circle at 30% 30%,
+                    rgba(175, 210, 75, 0.48),
+                    rgba(130, 165, 40, 0.18),
+                    rgba(120, 145, 25, 0.04)
+                );
+        }
+
+
+        body.light-theme .bolha:nth-child(3n) {
+            background:
+                radial-gradient(
+                    circle at 30% 30%,
+                    rgba(205, 225, 105, 0.52),
+                    rgba(155, 185, 55, 0.18),
+                    rgba(140, 170, 35, 0.04)
+                );
+        }
+
+
+        /* =========================================
+           POSIÇÃO DAS BOLHAS
+           ========================================= */
 
         .bolha:nth-child(1) {
             width: 70px;
@@ -203,6 +287,7 @@
 
             animation-duration: 16s;
         }
+
 
         .bolha:nth-child(2) {
             width: 35px;
@@ -215,6 +300,7 @@
             animation-delay: 2s;
         }
 
+
         .bolha:nth-child(3) {
             width: 110px;
             height: 110px;
@@ -225,6 +311,7 @@
 
             animation-delay: 4s;
         }
+
 
         .bolha:nth-child(4) {
             width: 45px;
@@ -237,6 +324,7 @@
             animation-delay: 1s;
         }
 
+
         .bolha:nth-child(5) {
             width: 85px;
             height: 85px;
@@ -247,6 +335,7 @@
 
             animation-delay: 3s;
         }
+
 
         .bolha:nth-child(6) {
             width: 28px;
@@ -259,6 +348,11 @@
             animation-delay: 5s;
         }
 
+
+        /* =========================================
+           ANIMAÇÃO DAS BOLHAS
+           ========================================= */
+
         @keyframes subirBolha {
 
             0% {
@@ -269,9 +363,11 @@
                 opacity: 0;
             }
 
+
             10% {
                 opacity: .8;
             }
+
 
             50% {
                 transform:
@@ -281,6 +377,7 @@
                 opacity: .55;
             }
 
+
             100% {
                 transform:
                     translateY(-120vh)
@@ -289,6 +386,7 @@
                 opacity: 0;
             }
         }
+
 
         /* =========================================
            BOTÃO DE TEMA
@@ -334,11 +432,13 @@
             z-index: 10;
         }
 
+
         .theme-toggle:hover {
             transform:
                 rotate(15deg)
                 scale(1.08);
         }
+
 
         /* =========================================
            LOGIN
@@ -356,6 +456,7 @@
             z-index: 2;
         }
 
+
         /* =========================================
            LOGO
            ========================================= */
@@ -365,6 +466,7 @@
 
             margin-bottom: 32px;
         }
+
 
         .logo-name {
             font-size: 38px;
@@ -381,9 +483,11 @@
                 color .35s ease;
         }
 
+
         .logo-name span {
             color: var(--verde);
         }
+
 
         .logo-line {
             width: 45px;
@@ -396,6 +500,7 @@
             border-radius: 10px;
         }
 
+
         .logo-subtitle {
             color: var(--texto-secundario);
 
@@ -405,6 +510,7 @@
 
             letter-spacing: 4px;
         }
+
 
         /* =========================================
            CARD
@@ -436,6 +542,7 @@
                 box-shadow .35s ease;
         }
 
+
         .login-card::before {
             content: "";
 
@@ -459,6 +566,7 @@
             border-radius: 10px;
         }
 
+
         /* =========================================
            CABEÇALHO
            ========================================= */
@@ -466,6 +574,7 @@
         .login-header {
             margin-bottom: 30px;
         }
+
 
         .access {
             display: inline-flex;
@@ -485,6 +594,7 @@
             margin-bottom: 12px;
         }
 
+
         .access-dot {
             width: 6px;
             height: 6px;
@@ -496,6 +606,7 @@
             box-shadow:
                 0 0 10px var(--verde);
         }
+
 
         .login-header h1 {
             font-size: 32px;
@@ -509,6 +620,7 @@
             color: var(--texto-principal);
         }
 
+
         .login-header p {
             color: var(--texto-secundario);
 
@@ -517,6 +629,7 @@
             line-height: 1.7;
         }
 
+
         /* =========================================
            CAMPOS
            ========================================= */
@@ -524,6 +637,7 @@
         .field {
             margin-bottom: 20px;
         }
+
 
         .field label {
             display: block;
@@ -539,9 +653,11 @@
             margin-bottom: 8px;
         }
 
+
         .input-box {
             position: relative;
         }
+
 
         .input-icon {
             position: absolute;
@@ -560,6 +676,7 @@
 
             z-index: 2;
         }
+
 
         input {
             width: 100%;
@@ -593,13 +710,16 @@
                 border .35s ease;
         }
 
+
         input::placeholder {
             color: #9aa0a6;
         }
 
+
         input:hover {
             border-color: #777;
         }
+
 
         input:focus {
             border-color:
@@ -616,10 +736,12 @@
                 rgba(200,255,26,.04);
         }
 
+
         input:focus + .input-icon {
             color:
                 var(--verde);
         }
+
 
         /* =========================================
            OLHO DA SENHA
@@ -651,10 +773,12 @@
             z-index: 5;
         }
 
+
         .password-eye:hover {
             color:
                 var(--verde);
         }
+
 
         /* =========================================
            MENSAGEM DE ERRO
@@ -681,6 +805,7 @@
 
             font-weight: 700;
         }
+
 
         /* =========================================
            BOTÃO LOGIN
@@ -721,6 +846,7 @@
             transition: .25s;
         }
 
+
         .login-button::before {
             content: "";
 
@@ -741,6 +867,7 @@
             transition: .5s;
         }
 
+
         .login-button:hover {
             background:
                 var(--verde-hover);
@@ -753,14 +880,17 @@
                 rgba(200,255,26,.16);
         }
 
+
         .login-button:hover::before {
             left: 120%;
         }
+
 
         .login-button:active {
             transform:
                 translateY(0);
         }
+
 
         /* =========================================
            SEGURANÇA
@@ -785,9 +915,11 @@
             font-weight: 600;
         }
 
+
         .security-icon {
             color: #777;
         }
+
 
         /* =========================================
            FOOTER
@@ -806,9 +938,11 @@
             font-weight: 500;
         }
 
+
         .footer span {
             color: #9aa0a6;
         }
+
 
         /* =========================================
            AJUSTES DO TEMA CLARO
@@ -818,17 +952,21 @@
             color: #343a40;
         }
 
+
         body.light-theme .login-header h1 {
             color: #343a40;
         }
+
 
         body.light-theme .login-header p {
             color: #6c757d;
         }
 
+
         body.light-theme .field label {
             color: #555b61;
         }
+
 
         body.light-theme input {
             background: #f1f3f5;
@@ -836,33 +974,41 @@
             border-color: #d6d9dd;
         }
 
+
         body.light-theme input::placeholder {
             color: #9aa0a6;
         }
+
 
         body.light-theme .input-icon {
             color: #858b91;
         }
 
+
         body.light-theme .password-eye {
             color: #626970;
         }
+
 
         body.light-theme .password-eye:hover {
             color: #8fba00;
         }
 
+
         body.light-theme .security {
             color: #737a81;
         }
+
 
         body.light-theme .footer {
             color: #8b9197;
         }
 
+
         body.light-theme .footer span {
             color: #9aa0a6;
         }
+
 
         body.light-theme .login-card {
             box-shadow:
@@ -870,14 +1016,17 @@
                 rgba(0,0,0,.12);
         }
 
+
         body.light-theme .login-button {
             background: #baff18;
             color: #202428;
         }
 
+
         body.light-theme .login-button:hover {
             background: #a9e914;
         }
+
 
         /* =========================================
            RESPONSIVO
@@ -889,24 +1038,29 @@
                 padding: 18px;
             }
 
+
             .login-card {
                 padding: 32px 24px;
 
                 border-radius: 15px;
             }
 
+
             .login-card::before {
                 left: 25px;
                 right: 25px;
             }
 
+
             .logo-name {
                 font-size: 32px;
             }
 
+
             .login-header h1 {
                 font-size: 28px;
             }
+
 
             .theme-toggle {
                 top: 14px;
@@ -920,7 +1074,9 @@
     </style>
 </head>
 
+
 <body>
+
 
     <!-- =========================================
          BOLHAS
@@ -937,6 +1093,7 @@
 
     </div>
 
+
     <!-- =========================================
          BOTÃO TEMA
          ========================================= -->
@@ -951,11 +1108,13 @@
         🌙
     </button>
 
+
     <!-- =========================================
          LOGIN
          ========================================= -->
 
     <main class="login-wrapper">
+
 
         <div class="logo">
 
@@ -971,7 +1130,9 @@
 
         </div>
 
+
         <section class="login-card">
+
 
             <div class="login-header">
 
@@ -983,9 +1144,11 @@
 
                 </div>
 
+
                 <h1>
                     Bem-vindo.
                 </h1>
+
 
                 <p>
                     Entre com suas credenciais para continuar.
@@ -993,10 +1156,12 @@
 
             </div>
 
+
             <form
                 action="/auth/login"
                 method="post"
             >
+
 
                 <!-- EMAIL -->
 
@@ -1005,6 +1170,7 @@
                     <label for="email">
                         E-MAIL
                     </label>
+
 
                     <div class="input-box">
 
@@ -1017,6 +1183,7 @@
                             required
                         >
 
+
                         <span class="input-icon">
                             @
                         </span>
@@ -1025,6 +1192,7 @@
 
                 </div>
 
+
                 <!-- SENHA -->
 
                 <div class="field">
@@ -1032,6 +1200,7 @@
                     <label for="senha">
                         SENHA
                     </label>
+
 
                     <div class="input-box">
 
@@ -1044,9 +1213,11 @@
                             required
                         >
 
+
                         <span class="input-icon">
                             ●
                         </span>
+
 
                         <button
                             type="button"
@@ -1061,6 +1232,7 @@
 
                 </div>
 
+
                 <!-- ERRO -->
 
                 {% if erro %}
@@ -1074,6 +1246,7 @@
 
                 {% endif %}
 
+
                 <!-- BOTÃO -->
 
                 <button
@@ -1083,7 +1256,9 @@
                     ENTRAR NO SISTEMA
                 </button>
 
+
             </form>
+
 
             <!-- SEGURANÇA -->
 
@@ -1097,7 +1272,9 @@
 
             </div>
 
+
         </section>
+
 
         <!-- FOOTER -->
 
@@ -1111,9 +1288,12 @@
 
         </div>
 
+
     </main>
 
+
     <script>
+
 
         /* =========================================
            MOSTRAR / ESCONDER SENHA
@@ -1123,6 +1303,7 @@
 
             const senha =
                 document.getElementById("senha");
+
 
             if (senha.type === "password") {
 
@@ -1146,14 +1327,17 @@
             const body =
                 document.body;
 
+
             const botao =
                 document.getElementById(
                     "themeToggle"
                 );
 
+
             body.classList.toggle(
                 "light-theme"
             );
+
 
             if (
                 body.classList.contains(
@@ -1163,6 +1347,7 @@
 
                 botao.textContent = "☀️";
 
+
                 localStorage.setItem(
                     "tema",
                     "claro"
@@ -1171,6 +1356,7 @@
             } else {
 
                 botao.textContent = "🌙";
+
 
                 localStorage.setItem(
                     "tema",
@@ -1190,15 +1376,18 @@
             "DOMContentLoaded",
             function () {
 
+
                 const temaSalvo =
                     localStorage.getItem(
                         "tema"
                     );
 
+
                 const botao =
                     document.getElementById(
                         "themeToggle"
                     );
+
 
                 if (
                     temaSalvo === "claro"
@@ -1207,6 +1396,7 @@
                     document.body.classList.add(
                         "light-theme"
                     );
+
 
                     botao.textContent = "☀️";
 
@@ -1228,15 +1418,18 @@
             "pageshow",
             function () {
 
+
                 const mensagem =
                     document.getElementById(
                         "mensagemErro"
                     );
 
+
                 const navegacao =
                     performance.getEntriesByType(
                         "navigation"
                     )[0];
+
 
                 if (
                     mensagem &&
@@ -1251,8 +1444,10 @@
             }
         );
 
+
     </script>
 
 </body>
 
 </html>
+
