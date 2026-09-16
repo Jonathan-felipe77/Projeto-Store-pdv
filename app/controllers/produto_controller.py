@@ -1,5 +1,3 @@
-# controllers/produto_controller.py
-# CRUD de produtos - AAPM SENAI
 
 import os
 import shutil
@@ -53,6 +51,7 @@ def buscar_categorias(db: Session):
     Busca todas as categorias cadastradas no banco.
     Ordena pelo nome para aparecer organizado no formulário.
     """
+
     return db.query(Categoria).order_by(
         Categoria.nome.asc()
     ).all()
@@ -77,12 +76,14 @@ def listar_produtos(
 
     # Busca pelo nome
     if busca:
+
         query = query.filter(
             Produto.nome.ilike(f"%{busca}%")
         )
 
     # Filtro por categoria
     if categoria_id:
+
         query = query.filter(
             Produto.categoria_id == categoria_id
         )
@@ -91,7 +92,7 @@ def listar_produtos(
         Produto.nome.asc()
     ).all()
 
-    # BUSCA AS CATEGORIAS DO BANCO
+    # Busca as categorias do banco
     categorias = buscar_categorias(db)
 
     return templates.TemplateResponse(
@@ -119,7 +120,7 @@ def form_novo_produto(
     admin=Depends(get_admin)
 ):
 
-    # BUSCA TODAS AS CATEGORIAS
+    # Busca todas as categorias
     categorias = buscar_categorias(db)
 
     return templates.TemplateResponse(
@@ -331,7 +332,7 @@ def form_editar_produto(
         Produto.id == produto_id
     ).first()
 
-    # BUSCA AS CATEGORIAS
+    # Busca as categorias
     categorias = buscar_categorias(db)
 
     if not produto:
@@ -452,10 +453,12 @@ async def editar_produto(
 
     if nova_imagem_path:
 
+        # Remove a imagem antiga
         _remover_imagem(
             produto.imagem_path
         )
 
+        # Salva o novo caminho
         produto.imagem_path = nova_imagem_path
 
     # ========================================================
@@ -472,13 +475,55 @@ async def editar_produto(
         categoria_id if categoria else None
     )
 
+    # Salva no banco
     db.commit()
 
     db.refresh(produto)
 
+    # ========================================================
+    # REDIRECIONA PARA TELA DE SUCESSO
+    # ========================================================
+
     return RedirectResponse(
-        url=f"/produtos/{produto_id}?editado=ok",
+        url=f"/produtos/{produto_id}/sucesso",
         status_code=302
+    )
+
+
+# ============================================================
+# TELA - PRODUTO EDITADO COM SUCESSO
+# ============================================================
+
+@router.get("/{produto_id}/sucesso")
+def produto_editado_sucesso(
+    produto_id: int,
+    request: Request,
+    db: Session = Depends(get_db),
+    admin=Depends(get_admin)
+):
+
+    # Busca o produto atualizado
+    produto = db.query(Produto).filter(
+        Produto.id == produto_id
+    ).first()
+
+    # Se não encontrar, volta para produtos
+    if not produto:
+
+        return RedirectResponse(
+            url="/produtos",
+            status_code=302
+        )
+
+    # Mostra a tela de sucesso
+    return templates.TemplateResponse(
+        request,
+        "produtos/sucesso.html",
+        {
+            "request": request,
+            "usuario": admin,
+            "produto": produto
+        }
     )
 
 
@@ -571,4 +616,5 @@ def _remover_imagem(
     )
 
     if os.path.exists(caminho):
+
         os.remove(caminho)
