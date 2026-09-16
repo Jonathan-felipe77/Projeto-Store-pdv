@@ -1,629 +1,542 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Adicionar Produto — M&J Store</title>
+    <title>Produtos | M&J Store</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="/static/css/navbar.css">
 
     <style>
-
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
         }
 
         body {
-            background: #080808;
-            color: #ffffff;
-            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            color: white;
             min-height: 100vh;
+            background:
+                radial-gradient(circle at 80% 0%, rgba(200,255,26,.12), transparent 25%),
+                radial-gradient(circle at 0% 100%, rgba(200,255,26,.06), transparent 25%),
+                #050505;
         }
 
-        .pagina {
-            width: 100%;
-            max-width: 1250px;
-            margin: 0 auto;
-            padding: 45px 35px 80px;
+        .neon {
+            color: #c8ff1a;
         }
 
-        /* CABEÇALHO */
-
-        .cabecalho {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 35px;
+        .neon-bg {
+            background: #c8ff1a;
+            color: #050505;
         }
 
-        .cabecalho h1 {
-            font-size: 36px;
-            font-weight: 800;
-            color: #b6ff00;
-            letter-spacing: -1px;
+        .glass {
+            background: rgba(15,15,15,.78);
+            border: 1px solid rgba(255,255,255,.08);
+            backdrop-filter: blur(15px);
         }
 
-        .cabecalho p {
-            color: #777;
-            font-size: 14px;
-            margin-top: 8px;
+        .hero {
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(110deg, rgba(200,255,26,.08), transparent 50%),
+                #0b0b0b;
         }
 
-        .voltar {
-            color: #b6ff00;
-            text-decoration: none;
-            font-weight: bold;
-            border: 1px solid #b6ff00;
-            padding: 12px 20px;
-            transition: 0.2s;
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            right: -120px;
+            top: -120px;
+            border-radius: 50%;
+            background: rgba(200,255,26,.08);
+            filter: blur(50px);
         }
 
-        .voltar:hover {
-            background: #b6ff00;
-            color: #000;
+        .product-card {
+            position: relative;
+            overflow: hidden;
+            transition: .35s ease;
         }
 
-        /* FORMULÁRIO */
-
-        .formulario {
-            background: #101010;
-            border: 1px solid #222;
-            padding: 35px;
-            width: 100%;
+        .product-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(200,255,26,.45);
+            box-shadow: 0 25px 70px rgba(0,0,0,.55);
         }
 
-        .titulo-form {
-            color: #ffffff;
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 28px;
-            border-left: 4px solid #b6ff00;
-            padding-left: 12px;
-        }
-
-        .linha {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-            margin-bottom: 24px;
-        }
-
-        .linha-tres {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 25px;
-            margin-bottom: 24px;
-        }
-
-        .campo {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .campo label {
-            color: #dddddd;
-            font-size: 13px;
-            font-weight: bold;
-            margin-bottom: 9px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .campo input,
-        .campo select,
-        .campo textarea {
-            width: 100%;
-            background: #181818;
-            border: 1px solid #303030;
-            color: #ffffff;
-            padding: 14px;
-            outline: none;
-            font-size: 15px;
-            transition: 0.2s;
-        }
-
-        .campo input {
-            height: 48px;
-        }
-
-        .campo select {
-            height: 48px;
-            cursor: pointer;
-        }
-
-        .campo select option {
-            background: #181818;
-            color: #ffffff;
-        }
-
-        .campo input:focus,
-        .campo select:focus {
-            border-color: #b6ff00;
-            box-shadow: 0 0 0 1px #b6ff00;
-        }
-
-        .campo input::placeholder {
-            color: #666;
-        }
-
-        /* PREÇO */
-
-        .preco-wrapper {
+        .image-container {
+            height: 300px;
+            overflow: hidden;
+            background: #080808;
             position: relative;
         }
 
-        .preco-wrapper span {
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform .5s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.08);
+        }
+
+        .image-overlay {
             position: absolute;
-            left: 14px;
-            top: 15px;
-            color: #b6ff00;
-            font-weight: bold;
-            z-index: 2;
-        }
-
-        .preco-wrapper input {
-            padding-left: 42px;
-        }
-
-        /* UPLOAD */
-
-        .upload-area {
-            border: 1px dashed #444;
-            background: #151515;
-            min-height: 190px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 25px;
-            transition: 0.2s;
-        }
-
-        .upload-area:hover {
-            border-color: #b6ff00;
-            background: #191919;
-        }
-
-        .upload-icon {
-            font-size: 38px;
-            margin-bottom: 12px;
-            color: #b6ff00;
-        }
-
-        .upload-area strong {
-            color: #ffffff;
-            font-size: 16px;
-            margin-bottom: 6px;
-        }
-
-        .upload-area span {
-            color: #666;
-            font-size: 12px;
-        }
-
-        .upload-area input {
-            margin-top: 18px;
-            border: none;
-            background: transparent;
-            padding: 0;
-            height: auto;
-            color: #aaa;
-        }
-
-        .upload-area input:focus {
-            box-shadow: none;
-        }
-
-        /* MENSAGENS */
-
-        .mensagem {
-            margin-bottom: 25px;
-            padding: 15px 18px;
-            border: 1px solid #285900;
-            background: #0e1c05;
-            color: #b6ff00;
-            font-weight: bold;
-        }
-
-        .erro {
-            border-color: #632222;
-            background: #210d0d;
-            color: #ff6b6b;
-        }
-
-        .aviso {
-            border-color: #806600;
-            background: #211b05;
-            color: #ffd84d;
-        }
-
-        /* BOTÕES */
-
-        .acoes {
-            display: flex;
-            justify-content: flex-end;
-            gap: 15px;
-            margin-top: 35px;
-            padding-top: 25px;
-            border-top: 1px solid #252525;
+            inset: 0;
+            background: linear-gradient(
+                to top,
+                rgba(0,0,0,.7),
+                transparent 55%
+            );
         }
 
         .btn {
-            min-width: 190px;
-            height: 50px;
-            padding: 0 25px;
-            font-size: 13px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: 0.2s;
-            text-transform: uppercase;
+            transition: .2s ease;
         }
 
-        .btn-cancelar {
-            background: transparent;
-            color: #ffffff;
-            border: 1px solid #444;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .btn:hover {
+            transform: translateY(-2px);
         }
 
-        .btn-cancelar:hover {
-            border-color: #ffffff;
-            background: #1a1a1a;
+        input,
+        select {
+            outline: none;
         }
 
-        .btn-cadastrar {
-            background: #b6ff00;
-            color: #000000;
-            border: 1px solid #b6ff00;
+        input:focus,
+        select:focus {
+            border-color: #c8ff1a !important;
+            box-shadow: 0 0 0 3px rgba(200,255,26,.08);
         }
 
-        .btn-cadastrar:hover {
-            background: #d0ff55;
-            transform: translateY(-1px);
+        .stock-bar {
+            height: 5px;
+            background: #202020;
+            border-radius: 20px;
+            overflow: hidden;
         }
 
-        .btn-cadastrar:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
+        .stock-fill {
+            height: 100%;
+            border-radius: 20px;
+            background: #c8ff1a;
         }
 
-        /* RESPONSIVO */
-
-        @media (max-width: 800px) {
-
-            .pagina {
-                padding: 30px 20px 60px;
-            }
-
-            .cabecalho {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 20px;
-            }
-
-            .cabecalho h1 {
-                font-size: 30px;
-            }
-
-            .linha,
-            .linha-tres {
-                grid-template-columns: 1fr;
-            }
-
-            .formulario {
-                padding: 25px 20px;
-            }
-
-            .acoes {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-            }
+        .low-stock .stock-fill {
+            background: #f59e0b;
         }
 
-        /* SCROLLBAR */
-
-        ::-webkit-scrollbar {
-            width: 8px;
+        .empty-icon {
+            background: linear-gradient(
+                135deg,
+                #111,
+                #080808
+            );
         }
-
-        ::-webkit-scrollbar-track {
-            background: #080808;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #333;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #b6ff00;
-        }
-
     </style>
-
 </head>
-
 
 <body>
 
-    {% include "shared/navbar.html" %}
+{% include "shared/navbar.html" %}
 
+<main class="max-w-7xl mx-auto px-5 py-8 md:py-12">
 
-    <main class="pagina">
+    <!-- HERO -->
+    <section class="hero glass rounded-3xl p-7 md:p-10 mb-8">
 
-        <!-- CABEÇALHO -->
-
-        <div class="cabecalho">
+        <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-7">
 
             <div>
 
-                <h1>
-                    Adicionar Produto
+                <div class="flex items-center gap-3 mb-4">
+
+                    <span class="w-10 h-[2px] neon-bg"></span>
+
+                    <span class="text-xs font-bold tracking-[.35em] neon uppercase">
+                        M&J Store
+                    </span>
+
+                </div>
+
+                <h1 class="text-4xl md:text-6xl font-black tracking-tight">
+                    CATÁLOGO<span class="neon">.</span>
                 </h1>
 
-                <p>
-                    Cadastre um novo produto para a AAPM SENAI.
+                <p class="text-gray-500 mt-3 max-w-xl">
+                    Gerencie seus produtos, preços, estoque e categorias
+                    em um único lugar.
                 </p>
 
             </div>
 
             <a
-                href="/produtos"
-                class="voltar"
+                href="/produtos/novo"
+                class="btn neon-bg px-7 py-4 rounded-xl font-black text-sm text-center shadow-xl shadow-lime-400/10"
             >
-                ← VOLTAR
+                + NOVO PRODUTO
             </a>
 
         </div>
 
-
-        <!-- MENSAGEM DE SUCESSO -->
-
-        {% if request.query_params.get('criado') == 'ok' %}
-
-        <div class="mensagem">
-
-            Produto cadastrado com sucesso!
-
-        </div>
-
-        {% endif %}
+    </section>
 
 
-        <!-- MENSAGEM DE ERRO -->
+    <!-- MENSAGENS -->
 
-        {% if erro %}
+    {% if request.query_params.get("criado") == "ok" %}
+    <div class="mb-6 p-4 rounded-2xl border border-lime-400/20 bg-lime-400/10 text-lime-300 font-semibold">
+        ✓ Produto cadastrado com sucesso.
+    </div>
+    {% endif %}
 
-        <div class="mensagem erro">
+    {% if request.query_params.get("editado") == "ok" %}
+    <div class="mb-6 p-4 rounded-2xl border border-lime-400/20 bg-lime-400/10 text-lime-300 font-semibold">
+        ✓ Produto atualizado com sucesso.
+    </div>
+    {% endif %}
 
-            {{ erro }}
+    {% if request.query_params.get("desativado") == "ok" %}
+    <div class="mb-6 p-4 rounded-2xl border border-red-500/20 bg-red-500/10 text-red-400 font-semibold">
+        ✓ Produto removido do catálogo.
+    </div>
+    {% endif %}
 
-        </div>
 
-        {% endif %}
+    <!-- FILTROS -->
 
-
-        <!-- FORMULÁRIO -->
+    <section class="glass rounded-2xl p-4 mb-9">
 
         <form
-            method="post"
-            action="/produtos/novo"
-            enctype="multipart/form-data"
-            class="formulario"
+            method="get"
+            action="/produtos/"
+            class="grid grid-cols-1 md:grid-cols-[1fr_230px_auto] gap-3"
         >
 
-            <div class="titulo-form">
+            <div class="relative">
 
-                Informações do produto
-
-            </div>
-
-
-            <!-- NOME -->
-
-            <div
-                class="campo"
-                style="margin-bottom: 24px;"
-            >
-
-                <label for="nome">
-                    Nome do produto
-                </label>
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">
+                    🔎
+                </span>
 
                 <input
                     type="text"
-                    id="nome"
-                    name="nome"
-                    placeholder="Ex: Camiseta Nike Dri-FIT"
-                    required
+                    name="busca"
+                    value="{{ busca or '' }}"
+                    placeholder="Pesquisar produto..."
+                    class="w-full bg-black/50 border border-white/10 rounded-xl pl-11 pr-4 py-4 text-sm"
                 >
 
             </div>
 
 
-            <!-- CATEGORIA / PREÇO / ESTOQUE -->
-
-            <div class="linha-tres">
-
-
-                <!-- CATEGORIA -->
-
-                <div class="campo">
-
-                    <label for="categoria_id">
-                        Categoria
-                    </label>
-
-                    <select
-                        id="categoria_id"
-                        name="categoria_id"
-                        required
-                    >
-
-                        <option value="0">
-                            Selecione uma categoria
-                        </option>
-
-
-                        {% for categoria in categorias %}
-
-                        <option value="{{ categoria.id }}">
-                            {{ categoria.nome }}
-                        </option>
-
-                        {% endfor %}
-
-
-                    </select>
-
-                </div>
-
-
-                <!-- PREÇO -->
-
-                <div class="campo">
-
-                    <label for="preco">
-                        Preço
-                    </label>
-
-                    <div class="preco-wrapper">
-
-                        <span>
-                            R$
-                        </span>
-
-                        <input
-                            type="number"
-                            id="preco"
-                            name="preco"
-                            placeholder="0,00"
-                            step="0.01"
-                            min="0"
-                            required
-                        >
-
-                    </div>
-
-                </div>
-
-
-                <!-- ESTOQUE -->
-
-                <div class="campo">
-
-                    <label for="estoque_atual">
-                        Estoque
-                    </label>
-
-                    <input
-                        type="number"
-                        id="estoque_atual"
-                        name="estoque_atual"
-                        placeholder="Quantidade"
-                        min="0"
-                        required
-                    >
-
-                </div>
-
-            </div>
-
-
-            <!-- AVISO DE CATEGORIA -->
-
-            {% if not categorias %}
-
-            <div class="mensagem aviso">
-
-                Nenhuma categoria foi encontrada no banco de dados.
-
-                <br><br>
-
-                Cadastre uma categoria antes de cadastrar um produto.
-
-            </div>
-
-            {% endif %}
-
-
-            <!-- IMAGEM -->
-
-            <div
-                class="campo"
-                style="margin-top: 10px;"
+            <select
+                name="categoria_id"
+                class="bg-black/50 border border-white/10 rounded-xl px-4 py-4 text-sm"
             >
 
-                <label for="imagem">
-                    Imagem do produto
-                </label>
+                <option value="">
+                    Todas as categorias
+                </option>
 
-                <div class="upload-area">
+                {% for categoria in categorias %}
 
-                    <div class="upload-icon">
-                        +
-                    </div>
-
-                    <strong>
-                        Adicionar imagem
-                    </strong>
-
-                    <span>
-                        PNG, JPG, JPEG ou WEBP
-                    </span>
-
-                    <input
-                        type="file"
-                        id="imagem"
-                        name="imagem"
-                        accept=".jpg,.jpeg,.png,.webp"
+                    <option
+                        value="{{ categoria.id }}"
+                        {% if categoria_id == categoria.id %}
+                            selected
+                        {% endif %}
                     >
+                        {{ categoria.nome }}
+                    </option>
 
-                </div>
+                {% endfor %}
 
-            </div>
-
-
-            <!-- BOTÕES -->
-
-            <div class="acoes">
-
-                <a
-                    href="/produtos"
-                    class="btn btn-cancelar"
-                >
-                    Cancelar
-                </a>
+            </select>
 
 
-                <button
-                    type="submit"
-                    class="btn btn-cadastrar"
-                    {% if not categorias %}
-                        disabled
-                    {% endif %}
-                >
-                    Cadastrar Produto
-                </button>
-
-            </div>
+            <button
+                type="submit"
+                class="btn neon-bg rounded-xl px-8 py-4 font-black text-xs"
+            >
+                BUSCAR
+            </button>
 
         </form>
 
-    </main>
+    </section>
+
+
+    <!-- TÍTULO -->
+
+    <div class="flex items-center justify-between mb-5">
+
+        <div>
+            <p class="text-xs text-gray-600 uppercase tracking-[.25em]">
+                Coleção
+            </p>
+
+            <h2 class="text-2xl font-black">
+                Seus produtos
+            </h2>
+        </div>
+
+        {% if produtos %}
+        <span class="text-xs text-gray-500">
+            {{ produtos|length }} produto(s)
+        </span>
+        {% endif %}
+
+    </div>
+
+
+    <!-- PRODUTOS -->
+
+    {% if produtos %}
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+        {% for produto in produtos %}
+
+        <article class="product-card glass rounded-3xl">
+
+            <!-- IMAGEM -->
+
+            <div class="image-container">
+
+                {% if produto.imagem_path %}
+
+                    <img
+                        src="/static/{{ produto.imagem_path }}"
+                        alt="{{ produto.nome }}"
+                        class="product-image"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                    >
+
+                    <div
+                        class="hidden absolute inset-0 items-center justify-center empty-icon"
+                    >
+                        <span class="text-gray-600 text-sm">
+                            Imagem indisponível
+                        </span>
+                    </div>
+
+                {% else %}
+
+                    <div class="w-full h-full flex items-center justify-center empty-icon">
+
+                        <div class="text-center">
+
+                            <div class="text-5xl mb-3">
+                                📦
+                            </div>
+
+                            <p class="text-xs text-gray-600">
+                                SEM IMAGEM
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+
+                <div class="image-overlay"></div>
+
+
+                <!-- STATUS -->
+
+                <div class="absolute top-4 left-4">
+
+                    {% if produto.estoque_atual == 0 %}
+
+                        <span class="px-3 py-1.5 rounded-full bg-red-500/90 text-white text-[10px] font-black uppercase">
+                            Sem estoque
+                        </span>
+
+                    {% elif produto.estoque_atual <= 5 %}
+
+                        <span class="px-3 py-1.5 rounded-full bg-amber-500/90 text-black text-[10px] font-black uppercase">
+                            Últimas unidades
+                        </span>
+
+                    {% else %}
+
+                        <span class="px-3 py-1.5 rounded-full bg-black/80 text-lime-300 text-[10px] font-black uppercase backdrop-blur">
+                            Disponível
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- ID -->
+
+                <span class="absolute bottom-4 left-4 text-[10px] text-gray-400 font-bold">
+                    #{{ produto.id }}
+                </span>
+
+            </div>
+
+
+            <!-- INFO -->
+
+            <div class="p-5">
+
+                <h3 class="font-extrabold text-lg truncate">
+                    {{ produto.nome }}
+                </h3>
+
+
+                <div class="flex items-end justify-between mt-4">
+
+                    <div>
+
+                        <p class="text-[9px] text-gray-600 uppercase tracking-widest">
+                            Preço
+                        </p>
+
+                        <p class="text-2xl font-black neon">
+                            R$ {{ "%.2f"|format(produto.preco)|replace(".", ",") }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="text-right">
+
+                        <p class="text-[9px] text-gray-600 uppercase tracking-widest">
+                            Estoque
+                        </p>
+
+                        <p class="text-sm font-bold">
+                            {{ produto.estoque_atual }} un.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BARRA DE ESTOQUE -->
+
+                {% set estoque = produto.estoque_atual %}
+                {% set porcentagem = [estoque * 5, 100]|min %}
+
+                <div class="mt-4">
+
+                    <div class="stock-bar">
+
+                        <div
+                            class="stock-fill"
+                            style="width: {{ porcentagem }}%"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BOTÕES -->
+
+                <div class="grid grid-cols-2 gap-2 mt-5">
+
+                    <a
+                        href="/produtos/{{ produto.id }}/editar"
+                        class="btn flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 py-3 text-[11px] font-black"
+                    >
+                        ✏️ EDITAR
+                    </a>
+
+
+                    <form
+                        method="post"
+                        action="/produtos/{{ produto.id }}/desativar"
+                        onsubmit="return confirmarExclusao('{{ produto.nome }}')"
+                    >
+
+                        <button
+                            type="submit"
+                            class="btn w-full flex items-center justify-center gap-2 rounded-xl border border-red-500/20 bg-red-500/5 hover:bg-red-500/15 text-red-400 py-3 text-[11px] font-black"
+                        >
+                            🗑️ EXCLUIR
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </article>
+
+        {% endfor %}
+
+    </div>
+
+
+    {% else %}
+
+    <!-- VAZIO -->
+
+    <section class="glass rounded-3xl py-20 px-6 text-center">
+
+        <div class="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center bg-white/5 text-4xl mb-6">
+            📦
+        </div>
+
+        <h2 class="text-2xl font-black">
+            Nenhum produto encontrado<span class="neon">.</span>
+        </h2>
+
+        <p class="text-gray-500 text-sm mt-2 mb-7">
+            Não encontramos produtos com os filtros selecionados.
+        </p>
+
+        <a
+            href="/produtos/novo"
+            class="inline-block neon-bg px-7 py-4 rounded-xl font-black text-xs"
+        >
+            + ADICIONAR PRODUTO
+        </a>
+
+    </section>
+
+    {% endif %}
+
+</main>
+
+
+<script>
+
+function confirmarExclusao(nome) {
+
+    return confirm(
+        "Excluir produto?\n\n" +
+        nome +
+        "\n\nO produto será retirado do catálogo."
+    );
+
+}
+
+</script>
 
 </body>
-
 </html>
