@@ -1,10 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>PDV — M&J Store</title>
 
     <style>
@@ -14,18 +12,28 @@
             padding: 0;
         }
 
+        /* =========================================================
+           CORPO DA PÁGINA
+           Permite rolar o site para cima e para baixo
+        ========================================================= */
         body {
             font-family: 'Segoe UI', sans-serif;
             background: #0b0b0b;
             color: #ffffff;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
+            min-height: 100vh;
+            display: block;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
+        /* =========================================================
+           TOPO
+        ========================================================= */
         .topbar {
             background: #050505;
+            color: #ffffff;
             padding: 0 24px;
+            min-height: 52px;
             height: 52px;
             display: flex;
             align-items: center;
@@ -35,10 +43,10 @@
         }
 
         .topbar-title {
-            color: #00ff88;
             font-weight: 700;
             font-size: 16px;
             letter-spacing: .02em;
+            color: #00ff88;
         }
 
         .topbar-links a {
@@ -53,18 +61,27 @@
             color: #00ff88;
         }
 
+        /* =========================================================
+           LAYOUT PRINCIPAL
+        ========================================================= */
         .pdv-layout {
             display: grid;
-            grid-template-columns: 1fr 380px;
-            flex: 1;
-            overflow: hidden;
+            grid-template-columns: minmax(0, 1fr) 380px;
+            width: 100%;
+            min-height: calc(100vh - 52px);
+            overflow: visible;
+            align-items: start;
         }
 
+        /* =========================================================
+           COLUNA DE PRODUTOS
+        ========================================================= */
         .produtos-col {
             display: flex;
             flex-direction: column;
             border-right: 1px solid #292929;
-            overflow: hidden;
+            overflow: visible;
+            min-width: 0;
         }
 
         .produtos-header {
@@ -81,6 +98,7 @@
             border-radius: 8px;
             font-size: 14px;
             outline: none;
+            transition: border-color .2s;
             background: #191919;
             color: #ffffff;
         }
@@ -94,22 +112,29 @@
             box-shadow: 0 0 0 2px rgba(0,255,136,.10);
         }
 
+        /* =========================================================
+           GRADE DE PRODUTOS
+           Agora a grade cresce junto com a página
+        ========================================================= */
         .produtos-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 12px;
+            gap: 14px;
             padding: 16px 20px;
-            overflow-y: auto;
-            flex: 1;
+            overflow: visible;
+            width: 100%;
         }
 
+        /* =========================================================
+           CARD DO PRODUTO
+        ========================================================= */
         .produto-card {
             background: #151515;
             border: 1px solid #2b2b2b;
             border-radius: 10px;
             padding: 14px;
             cursor: pointer;
-            transition: .15s;
+            transition: border-color .15s, transform .1s, box-shadow .15s;
             user-select: none;
         }
 
@@ -123,13 +148,18 @@
             transform: translateY(0);
         }
 
+        /* =========================================================
+           IMAGEM DAS CAMISAS
+           Aumentada de 80px para 120px
+        ========================================================= */
         .produto-card img {
             width: 100%;
-            height: 80px;
-            object-fit: cover;
+            height: 120px;
+            object-fit: contain;
             border-radius: 6px;
             margin-bottom: 10px;
             background: #0d0d0d;
+            display: block;
         }
 
         .produto-card-nome {
@@ -154,14 +184,19 @@
 
         .produto-card.sem-estoque {
             opacity: .4;
+            cursor: not-allowed;
             pointer-events: none;
         }
 
+        /* =========================================================
+           COLUNA DO CARRINHO
+        ========================================================= */
         .carrinho-col {
             display: flex;
             flex-direction: column;
             background: #111111;
-            overflow: hidden;
+            overflow: visible;
+            min-height: calc(100vh - 52px);
         }
 
         .carrinho-header {
@@ -170,8 +205,12 @@
             font-weight: 700;
             font-size: 15px;
             flex-shrink: 0;
+            color: #ffffff;
         }
 
+        /* =========================================================
+           CLIENTE
+        ========================================================= */
         .cliente-section {
             padding: 14px 20px;
             border-bottom: 1px solid #292929;
@@ -196,12 +235,14 @@
             font-size: 14px;
             outline: none;
             cursor: pointer;
+            transition: border-color .2s;
             background: #191919;
             color: #ffffff;
         }
 
         .cliente-select:focus {
             border-color: #00ff88;
+            box-shadow: 0 0 0 2px rgba(0,255,136,.10);
         }
 
         .desconto-badge {
@@ -217,10 +258,13 @@
             margin-top: 8px;
         }
 
+        /* =========================================================
+           ITENS DO CARRINHO
+        ========================================================= */
         .carrinho-itens {
             flex: 1;
-            overflow-y: auto;
             padding: 8px 0;
+            overflow: visible;
         }
 
         .carrinho-vazio {
@@ -228,7 +272,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100%;
+            min-height: 180px;
             color: #777777;
             font-size: 14px;
             gap: 8px;
@@ -244,6 +288,7 @@
             gap: 10px;
             padding: 10px 20px;
             border-bottom: 1px solid #222222;
+            transition: background .1s;
         }
 
         .item-carrinho:hover {
@@ -280,6 +325,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: background .1s;
+            font-weight: 600;
+            line-height: 1;
         }
 
         .qty-btn:hover {
@@ -293,6 +341,7 @@
             font-weight: 600;
             min-width: 20px;
             text-align: center;
+            color: #ffffff;
         }
 
         .item-subtotal {
@@ -309,7 +358,8 @@
             font-size: 18px;
             padding: 2px 4px;
             border-radius: 4px;
-            background: transparent;
+            transition: background .1s;
+            background: none;
             border: none;
         }
 
@@ -317,14 +367,18 @@
             background: #351313;
         }
 
+        /* =========================================================
+           RODAPÉ DO CARRINHO
+        ========================================================= */
         .carrinho-footer {
             border-top: 1px solid #292929;
             padding: 16px 20px;
             flex-shrink: 0;
+            background: #111111;
         }
 
         .totais {
-            margin-bottom: 10px;
+            margin-bottom: 14px;
         }
 
         .total-linha {
@@ -348,118 +402,12 @@
             border-top: 2px solid #333333;
         }
 
-        .pagamentos-section {
-            border-top: 1px solid #292929;
-            margin-top: 12px;
-            padding-top: 12px;
-        }
-
-        .pagamentos-titulo {
-            font-size: 12px;
-            font-weight: 700;
-            color: #00ff88;
-            text-transform: uppercase;
-            letter-spacing: .06em;
-            margin-bottom: 9px;
-        }
-
-        .pagamento-bloco {
-            display: grid;
-            grid-template-columns: 1fr 105px;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-
-        .pagamento-bloco select,
-        .pagamento-bloco input {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid #333333;
-            border-radius: 8px;
-            background: #191919;
-            color: #ffffff;
-            outline: none;
-            font-size: 13px;
-        }
-
-        .pagamento-bloco select:focus,
-        .pagamento-bloco input:focus {
-            border-color: #00ff88;
-            box-shadow: 0 0 0 2px rgba(0,255,136,.10);
-        }
-
-        .segundo-pagamento {
-            display: none;
-        }
-
-        .segundo-pagamento.ativo {
-            display: grid;
-        }
-
-        .btn-segundo-pagamento {
-            width: 100%;
-            padding: 8px;
-            border: 1px dashed #00ff88;
-            border-radius: 8px;
-            background: transparent;
-            color: #00ff88;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            margin-bottom: 8px;
-        }
-
-        .btn-segundo-pagamento:hover {
-            background: rgba(0,255,136,.08);
-        }
-
-        .btn-remover-segundo {
-            grid-column: 1 / -1;
-            border: none;
-            background: transparent;
-            color: #ff6b6b;
-            text-align: right;
-            font-size: 11px;
-            cursor: pointer;
-        }
-
-        .pagamento-resumo {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            margin-top: 8px;
-            padding: 9px 10px;
-            border-radius: 8px;
-            background: #0b0b0b;
-            border: 1px solid #292929;
-            font-size: 12px;
-        }
-
-        .pagamento-resumo div {
-            display: flex;
-            justify-content: space-between;
-            gap: 8px;
-        }
-
-        .pagamento-status {
-            grid-column: 1 / -1;
-            padding-top: 5px;
-            border-top: 1px solid #222222;
-            color: #ff6b6b;
-            font-weight: 700;
-        }
-
-        .pagamento-status.ok {
-            color: #00ff88;
-        }
-
         .obs-input {
             width: 100%;
             padding: 8px 12px;
             border: 1px solid #333333;
             border-radius: 8px;
             font-size: 13px;
-            margin-top: 12px;
             margin-bottom: 12px;
             outline: none;
             resize: none;
@@ -473,8 +421,12 @@
 
         .obs-input:focus {
             border-color: #00ff88;
+            box-shadow: 0 0 0 2px rgba(0,255,136,.10);
         }
 
+        /* =========================================================
+           BOTÃO FINALIZAR
+        ========================================================= */
         .btn-finalizar {
             width: 100%;
             padding: 14px;
@@ -485,6 +437,9 @@
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
+            transition: background .15s;
+            letter-spacing: .02em;
+            box-shadow: 0 4px 15px rgba(0,255,136,.15);
         }
 
         .btn-finalizar:hover {
@@ -495,8 +450,12 @@
             background: #2a2a2a;
             color: #777777;
             cursor: not-allowed;
+            box-shadow: none;
         }
 
+        /* =========================================================
+           ALERTAS
+        ========================================================= */
         .alerta {
             background: #351313;
             color: #ff6b6b;
@@ -507,14 +466,139 @@
             margin: 12px 20px;
         }
 
-        select option {
+        /* =========================================================
+           PAGAMENTOS
+        ========================================================= */
+        .pagamento-section {
+            background: #0f0f0f;
+            border: 1px solid #292929;
+            border-radius: 9px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+        }
+
+        .pagamento-titulo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+
+        .pagamento-grid {
+            display: grid;
+            grid-template-columns: 1fr 108px;
+            gap: 7px;
+            margin-bottom: 7px;
+        }
+
+        .pagamento-grid label {
+            font-size: 10px;
+            color: #888888;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .pagamento-grid select,
+        .pagamento-grid input {
+            width: 100%;
+            height: 34px;
+            padding: 6px 9px;
+            background: #191919;
+            color: #ffffff;
+            border: 1px solid #333333;
+            border-radius: 7px;
+            outline: none;
+            font-size: 12px;
+        }
+
+        .pagamento-grid select:focus,
+        .pagamento-grid input:focus {
+            border-color: #00ff88;
+            box-shadow: 0 0 0 2px rgba(0,255,136,.08);
+        }
+
+        .pagamento-segundo {
+            display: none;
+        }
+
+        .pagamento-toggle {
+            width: 100%;
+            height: 30px;
+            border: 1px dashed #3b3b3b;
+            border-radius: 7px;
+            background: transparent;
+            color: #00ff88;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .pagamento-toggle:hover {
+            border-color: #00ff88;
+            background: rgba(0,255,136,.05);
+        }
+
+        .pagamento-resumo {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .pagamento-resumo-box {
             background: #151515;
+            border: 1px solid #292929;
+            border-radius: 7px;
+            padding: 7px 6px;
+            text-align: center;
+        }
+
+        .pagamento-resumo-box span {
+            display: block;
+            font-size: 9px;
+            color: #777777;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+        }
+
+        .pagamento-resumo-box strong {
+            font-size: 12px;
             color: #ffffff;
         }
 
+        .pagamento-resumo-box.ok strong {
+            color: #00ff88;
+        }
+
+        .pagamento-resumo-box.pendente strong {
+            color: #ffcc66;
+        }
+
+        .pagamento-resumo-box.erro strong {
+            color: #ff6b6b;
+        }
+
+        /* =========================================================
+           BARRA DE ROLAGEM
+        ========================================================= */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        html,
+        body {
+            scrollbar-width: thin;
+        }
+
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 9px;
+            height: 9px;
         }
 
         ::-webkit-scrollbar-track {
@@ -529,6 +613,73 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #00ff88;
         }
+
+        /* =========================================================
+           RESPONSIVO
+        ========================================================= */
+        @media (max-width: 900px) {
+            .pdv-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .produtos-col {
+                border-right: none;
+            }
+
+            .carrinho-col {
+                min-height: auto;
+            }
+
+            .topbar {
+                height: auto;
+                min-height: 52px;
+                padding: 12px 16px;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .topbar-links {
+                width: 100%;
+            }
+
+            .topbar-links a {
+                margin-left: 0;
+                margin-right: 15px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .produtos-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                padding: 12px;
+                gap: 10px;
+            }
+
+            .produto-card {
+                padding: 10px;
+            }
+
+            .produto-card img {
+                height: 105px;
+            }
+
+            .pagamento-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .item-carrinho {
+                padding: 10px 12px;
+                flex-wrap: wrap;
+            }
+
+            .item-subtotal {
+                min-width: auto;
+            }
+
+            .carrinho-footer {
+                padding: 14px 12px;
+            }
+        }
     </style>
 
     <link rel="stylesheet" href="/static/css/navbar.css">
@@ -536,1587 +687,1512 @@
 
 <body>
 
-{% include "shared/navbar.html" %}
+    {% include "shared/navbar.html" %}
 
-<header class="topbar">
+    <!-- =========================================================
+         TOPO
+    ========================================================== -->
+    <header class="topbar">
+        <span class="topbar-title"></span>
 
-    <span class="topbar-title">
-        🏪 PDV — M&J Store
-    </span>
+        <nav class="topbar-links">
+            <a href="/pdv/historico">Histórico de vendas</a>
+            <a href="/clientes">Clientes</a>
+            <a href="/dashboard">Dashboard</a>
+        </nav>
+    </header>
 
-    <nav class="topbar-links">
+    <!-- =========================================================
+         ALERTAS
+    ========================================================== -->
+    {% set erro = request.query_params.get('erro') %}
 
-        <a href="/pdv/historico">
-            Histórico de vendas
-        </a>
+    {% if erro %}
+    <div class="alerta">
 
-        <a href="/clientes">
-            Clientes
-        </a>
+        {% if erro == 'vazio' %}
+            Carrinho vazio. Adicione produtos antes de finalizar.
 
-        <a href="/dashboard">
-            Dashboard
-        </a>
+        {% elif erro == 'estoque' %}
+            Estoque insuficiente para:
+            {{ request.query_params.get('produto') }}
 
-    </nav>
+        {% elif erro == 'quantidade' %}
+            Quantidade inválida.
 
-</header>
+        {% else %}
+            Ocorreu um erro. Tente novamente.
+        {% endif %}
 
-{% set erro = request.query_params.get('erro') %}
-
-{% if erro %}
-
-<div class="alerta">
-
-    {% if erro == 'vazio' %}
-
-        Carrinho vazio. Adicione produtos antes de finalizar.
-
-    {% elif erro == 'estoque' %}
-
-        Estoque insuficiente.
-
-    {% elif erro == 'quantidade' %}
-
-        Quantidade inválida.
-
-    {% elif erro == 'pagamento_total' %}
-
-        A soma dos pagamentos precisa ser igual ao total.
-
-    {% elif erro == 'pagamento_invalido' %}
-
-        Forma de pagamento inválida.
-
-    {% elif erro == 'pagamento_valor' %}
-
-        Informe um valor válido para o pagamento.
-
-    {% elif erro == 'pagamentos_iguais' %}
-
-        Escolha formas de pagamento diferentes.
-
-    {% elif erro == 'cliente_inexistente' %}
-
-        Cliente não encontrado.
-
-    {% elif erro == 'produto_inexistente' %}
-
-        Produto não encontrado.
-
-    {% else %}
-
-        Ocorreu um erro. Tente novamente.
-
+    </div>
     {% endif %}
 
-</div>
+    <!-- =========================================================
+         LAYOUT PRINCIPAL
+    ========================================================== -->
+    <div class="pdv-layout">
 
-{% endif %}
+        <!-- =====================================================
+             COLUNA ESQUERDA — PRODUTOS
+        ====================================================== -->
+        <section class="produtos-col">
 
-<div class="pdv-layout">
+            <div class="produtos-header">
 
-    <section class="produtos-col">
-
-        <div class="produtos-header">
-
-            <input
-                class="busca-input"
-                type="text"
-                id="busca-produto"
-                placeholder="🔍 Buscar produto..."
-                autocomplete="off"
-            >
-
-        </div>
-
-        <div
-            class="produtos-grid"
-            id="grade-produtos"
-        >
-
-            {% for p in produtos %}
-
-            <div
-                class="produto-card {% if p.estoque_atual == 0 %}sem-estoque{% endif %}"
-                data-id="{{ p.id }}"
-                data-nome="{{ p.nome }}"
-                data-preco="{{ p.preco }}"
-                data-estoque="{{ p.estoque_atual }}"
-                data-nome-lower="{{ p.nome.lower() }}"
-                onclick="adicionarAoCarrinho(this)"
-            >
-
-                <img
-                    src="{{ p.imagem_url }}"
-                    alt="{{ p.nome }}"
+                <input
+                    class="busca-input"
+                    type="text"
+                    id="busca-produto"
+                    placeholder="🔍 Buscar produto..."
+                    autocomplete="off"
                 >
-
-                <div class="produto-card-nome">
-                    {{ p.nome }}
-                </div>
-
-                <div class="produto-card-preco">
-                    R$ {{ "%.2f"|format(p.preco) }}
-                </div>
-
-                <div class="produto-card-estoque">
-                    Estoque: {{ p.estoque_atual }}
-                </div>
 
             </div>
 
-            {% endfor %}
-
-        </div>
-
-    </section>
-
-    <aside class="carrinho-col">
-
-        <div class="carrinho-header">
-            🛒 Carrinho
-        </div>
-
-        <div class="cliente-section">
-
-            <label>
-                Cliente
-            </label>
-
-            <select
-                class="cliente-select"
-                id="select-cliente"
-                onchange="atualizarCliente(this)"
+            <div
+                class="produtos-grid"
+                id="grade-produtos"
             >
 
-                <option
-                    value="0"
-                    data-associado="false"
-                    data-desconto="0"
+                {% for p in produtos %}
+
+                <div
+                    class="produto-card {% if p.estoque_atual == 0 %}sem-estoque{% endif %}"
+                    data-id="{{ p.id }}"
+                    data-nome="{{ p.nome }}"
+                    data-preco="{{ p.preco }}"
+                    data-estoque="{{ p.estoque_atual }}"
+                    data-nome-lower="{{ p.nome.lower() }}"
+                    onclick="adicionarAoCarrinho(this)"
                 >
-                    Sem identificação (sem desconto)
-                </option>
 
-                {% for c in clientes %}
+                    <img
+                        src="{{ p.imagem_url }}"
+                        alt="{{ p.nome }}"
+                    >
 
-                <option
-                    value="{{ c.id }}"
-                    data-associado="{{ 'true' if c.is_associado else 'false' }}"
-                    data-desconto="{{ c.desconto_percentual or 0 }}"
-                >
-                    {{ c.nome }}
+                    <div class="produto-card-nome">
+                        {{ p.nome }}
+                    </div>
 
-                    {% if c.matricula %}
-                        ({{ c.matricula }})
-                    {% endif %}
+                    <div class="produto-card-preco">
+                        R$ {{ "%.2f"|format(p.preco) }}
+                    </div>
 
-                    {% if c.is_associado %}
-                        — ASSOCIADO
-                    {% endif %}
+                    <div class="produto-card-estoque">
+                        Estoque: {{ p.estoque_atual }}
+                    </div>
 
-                </option>
+                </div>
 
                 {% endfor %}
 
-            </select>
-
-            <div
-                class="desconto-badge"
-                id="badge-desconto"
-                style="display:none"
-            >
-                ✓ Desconto de associado aplicado
             </div>
 
-        </div>
+        </section>
 
-        <div
-            class="carrinho-itens"
-            id="lista-carrinho"
-        >
 
-            <div
-                class="carrinho-vazio"
-                id="msg-vazio"
-            >
+        <!-- =====================================================
+             COLUNA DIREITA — CARRINHO
+        ====================================================== -->
+        <aside class="carrinho-col">
 
-                <span class="carrinho-vazio-icon">
-                    🛒
-                </span>
+            <div class="carrinho-header">
+                🛒 Carrinho
+            </div>
 
-                Clique nos produtos para adicionar
+            <!-- =================================================
+                 CLIENTE
+            ================================================== -->
+            <div class="cliente-section">
+
+                <label>
+                    Cliente
+                </label>
+
+                <select
+                    class="cliente-select"
+                    id="select-cliente"
+                    onchange="atualizarCliente(this)"
+                >
+
+                    <option
+                        value="0"
+                        data-associado="false"
+                        data-desconto="0"
+                    >
+                        Sem identificação (sem desconto)
+                    </option>
+
+                    {% for c in clientes %}
+
+                    <option
+                        value="{{ c.id }}"
+                        data-associado="{{ 'true' if c.is_associado else 'false' }}"
+                        data-desconto="{{ c.desconto_percentual or 0 }}"
+                    >
+
+                        {{ c.nome }}
+
+                        {% if c.matricula %}
+                            ({{ c.matricula }})
+                        {% endif %}
+
+                        {% if c.is_associado %}
+                            — ASSOCIADO
+                        {% endif %}
+
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+                <div
+                    class="desconto-badge"
+                    id="badge-desconto"
+                    style="display:none"
+                ></div>
 
             </div>
 
-        </div>
 
-        <div class="carrinho-footer">
-
+            <!-- =================================================
+                 LISTA DO CARRINHO
+            ================================================== -->
             <div
-                class="totais"
-                id="totais"
-                style="display:none"
+                class="carrinho-itens"
+                id="lista-carrinho"
             >
 
-                <div class="total-linha">
+                <div
+                    class="carrinho-vazio"
+                    id="msg-vazio"
+                >
 
-                    <span>
-                        Subtotal
+                    <span class="carrinho-vazio-icon">
+                        🛒
                     </span>
 
-                    <span id="val-subtotal">
-                        R$ 0,00
-                    </span>
+                    Clique nos produtos para adicionar
 
                 </div>
 
+            </div>
+
+
+            <!-- =================================================
+                 RODAPÉ DO CARRINHO
+            ================================================== -->
+            <div class="carrinho-footer">
+
+                <!-- =================================================
+                     TOTAIS
+                ================================================== -->
                 <div
-                    class="total-linha desconto"
-                    id="linha-desconto"
+                    class="totais"
+                    id="totais"
                     style="display:none"
                 >
 
-                    <span id="label-desconto">
-                        Desconto
-                    </span>
+                    <div class="total-linha">
 
-                    <span id="val-desconto">
-                        - R$ 0,00
-                    </span>
+                        <span>
+                            Subtotal
+                        </span>
 
-                </div>
+                        <span id="val-subtotal">
+                            R$ 0,00
+                        </span>
 
-                <div class="total-linha final">
+                    </div>
 
-                    <span>
-                        Total
-                    </span>
 
-                    <span id="val-total">
-                        R$ 0,00
-                    </span>
-
-                </div>
-
-            </div>
-
-            <div
-                class="pagamentos-section"
-                id="pagamentos-section"
-                style="display:none"
-            >
-
-                <div class="pagamentos-titulo">
-                    💳 Pagamento
-                </div>
-
-                <div class="pagamento-bloco">
-
-                    <select id="forma-pagamento-1">
-
-                        <option value="">
-                            Forma de pagamento
-                        </option>
-
-                        <option value="dinheiro">
-                            Dinheiro
-                        </option>
-
-                        <option value="pix">
-                            PIX
-                        </option>
-
-                        <option value="debito">
-                            Cartão de débito
-                        </option>
-
-                        <option value="credito">
-                            Cartão de crédito
-                        </option>
-
-                    </select>
-
-                    <input
-                        id="valor-pagamento-1"
-                        type="text"
-                        inputmode="decimal"
-                        placeholder="R$ 0,00"
-                        autocomplete="off"
+                    <div
+                        class="total-linha desconto"
+                        id="linha-desconto"
+                        style="display:none"
                     >
 
-                </div>
+                        <span id="label-desconto">
+                            Desconto (0%)
+                        </span>
 
-                <button
-                    type="button"
-                    class="btn-segundo-pagamento"
-                    id="btn-segundo-pagamento"
-                    onclick="alternarSegundoPagamento()"
-                >
-                    + Usar segundo pagamento
-                </button>
+                        <span id="val-desconto">
+                            — R$ 0,00
+                        </span>
 
-                <div
-                    class="pagamento-bloco segundo-pagamento"
-                    id="segundo-pagamento"
-                >
+                    </div>
 
-                    <select id="forma-pagamento-2">
 
-                        <option value="">
-                            Segunda forma
-                        </option>
-
-                        <option value="dinheiro">
-                            Dinheiro
-                        </option>
-
-                        <option value="pix">
-                            PIX
-                        </option>
-
-                        <option value="debito">
-                            Cartão de débito
-                        </option>
-
-                        <option value="credito">
-                            Cartão de crédito
-                        </option>
-
-                    </select>
-
-                    <input
-                        id="valor-pagamento-2"
-                        type="text"
-                        inputmode="decimal"
-                        placeholder="R$ 0,00"
-                        autocomplete="off"
-                    >
-
-                    <button
-                        type="button"
-                        class="btn-remover-segundo"
-                        onclick="removerSegundoPagamento()"
-                    >
-                        Remover segundo pagamento
-                    </button>
-
-                </div>
-
-                <div class="pagamento-resumo">
-
-                    <div>
+                    <div class="total-linha final">
 
                         <span>
                             Total
                         </span>
 
-                        <strong id="pagamento-total">
+                        <span id="val-total">
                             R$ 0,00
-                        </strong>
-
-                    </div>
-
-                    <div>
-
-                        <span>
-                            Pago
                         </span>
 
-                        <strong id="pagamento-pago">
-                            R$ 0,00
-                        </strong>
-
                     </div>
 
-                    <div>
+                </div>
 
-                        <span>
-                            Restante
-                        </span>
 
-                        <strong id="pagamento-restante">
-                            R$ 0,00
-                        </strong>
+                <!-- =================================================
+                     OBSERVAÇÃO
+                ================================================== -->
+                <textarea
+                    class="obs-input"
+                    id="obs-input"
+                    rows="2"
+                    placeholder="Observação (opcional)..."
+                ></textarea>
 
-                    </div>
 
-                    <div
-                        class="pagamento-status"
-                        id="pagamento-status"
+                <!-- =================================================
+                     FORMULÁRIO DE VENDA
+                ================================================== -->
+                <form
+                    id="form-venda"
+                    action="/pdv/finalizar"
+                    method="post"
+                >
+
+                    <input
+                        type="hidden"
+                        name="carrinho_json"
+                        id="input-carrinho"
                     >
-                        Informe o pagamento
+
+                    <input
+                        type="hidden"
+                        name="cliente_id"
+                        id="input-cliente-id"
+                        value="0"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="observacao"
+                        id="input-obs"
+                    >
+
+
+                    <!-- =================================================
+                         PAGAMENTOS
+                    ================================================== -->
+                    <div
+                        class="pagamento-section"
+                        id="pagamento-section"
+                        style="display:none"
+                    >
+
+                        <div class="pagamento-titulo">
+
+                            <span>
+                                💳 Pagamento
+                            </span>
+
+                            <span id="status-pagamento">
+                                Informe o valor
+                            </span>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             PRIMEIRO PAGAMENTO
+                        ================================================== -->
+                        <div class="pagamento-grid">
+
+                            <div>
+
+                                <label for="forma-pagamento-1">
+                                    1º pagamento
+                                </label>
+
+                                <select
+                                    id="forma-pagamento-1"
+                                    name="forma_pagamento_1"
+                                >
+
+                                    <option value="dinheiro">
+                                        Dinheiro
+                                    </option>
+
+                                    <option value="pix">
+                                        PIX
+                                    </option>
+
+                                    <option value="debito">
+                                        Débito
+                                    </option>
+
+                                    <option value="credito">
+                                        Crédito
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div>
+
+                                <label for="valor-pagamento-1">
+                                    Valor
+                                </label>
+
+                                <input
+                                    id="valor-pagamento-1"
+                                    name="valor_pagamento_1"
+                                    type="number"
+                                    min="0.01"
+                                    step="0.01"
+                                    value="0.00"
+                                    inputmode="decimal"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             SEGUNDO PAGAMENTO
+                        ================================================== -->
+                        <div
+                            class="pagamento-segundo"
+                            id="pagamento-segundo"
+                        >
+
+                            <div class="pagamento-grid">
+
+                                <div>
+
+                                    <label for="forma-pagamento-2">
+                                        2º pagamento
+                                    </label>
+
+                                    <select
+                                        id="forma-pagamento-2"
+                                        name="forma_pagamento_2"
+                                    >
+
+                                        <option value="">
+                                            Selecione
+                                        </option>
+
+                                        <option value="dinheiro">
+                                            Dinheiro
+                                        </option>
+
+                                        <option value="pix">
+                                            PIX
+                                        </option>
+
+                                        <option value="debito">
+                                            Débito
+                                        </option>
+
+                                        <option value="credito">
+                                            Crédito
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                                <div>
+
+                                    <label for="valor-pagamento-2">
+                                        Valor
+                                    </label>
+
+                                    <input
+                                        id="valor-pagamento-2"
+                                        name="valor_pagamento_2"
+                                        type="number"
+                                        min="0"
+                                        step="0.01"
+                                        value="0.00"
+                                        inputmode="decimal"
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             BOTÃO SEGUNDO PAGAMENTO
+                        ================================================== -->
+                        <button
+                            class="pagamento-toggle"
+                            id="btn-segundo-pagamento"
+                            type="button"
+                            onclick="alternarSegundoPagamento()"
+                        >
+                            + Usar segundo pagamento
+                        </button>
+
+
+                        <!-- =================================================
+                             RESUMO PAGAMENTO
+                        ================================================== -->
+                        <div class="pagamento-resumo">
+
+                            <div class="pagamento-resumo-box">
+
+                                <span>
+                                    Total
+                                </span>
+
+                                <strong id="pagamento-total">
+                                    R$ 0,00
+                                </strong>
+
+                            </div>
+
+
+                            <div class="pagamento-resumo-box">
+
+                                <span>
+                                    Pago
+                                </span>
+
+                                <strong id="pagamento-pago">
+                                    R$ 0,00
+                                </strong>
+
+                            </div>
+
+
+                            <div
+                                class="pagamento-resumo-box pendente"
+                                id="pagamento-restante-box"
+                            >
+
+                                <span id="pagamento-restante-label">
+                                    Falta
+                                </span>
+
+                                <strong id="pagamento-restante">
+                                    R$ 0,00
+                                </strong>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
-                </div>
+
+                    <!-- =================================================
+                         BOTÃO FINALIZAR
+                    ================================================== -->
+                    <button
+                        class="btn-finalizar"
+                        id="btn-finalizar"
+                        type="button"
+                        disabled
+                        onclick="finalizarVenda()"
+                    >
+                        Finalizar venda
+                    </button>
+
+                </form>
 
             </div>
 
-            <textarea
-                class="obs-input"
-                id="obs-input"
-                rows="2"
-                placeholder="Observação (opcional)..."
-            ></textarea>
-
-            <form
-                id="form-venda"
-                action="/pdv/finalizar"
-                method="post"
-            >
-
-                <input
-                    type="hidden"
-                    name="carrinho_json"
-                    id="input-carrinho"
-                >
-
-                <input
-                    type="hidden"
-                    name="cliente_id"
-                    id="input-cliente-id"
-                    value="0"
-                >
-
-                <input
-                    type="hidden"
-                    name="observacao"
-                    id="input-obs"
-                >
+        </aside>
 
-                <input
-                    type="hidden"
-                    name="forma_pagamento_1"
-                    id="input-forma-pagamento-1"
-                >
+    </div>
 
-                <input
-                    type="hidden"
-                    name="valor_pagamento_1"
-                    id="input-valor-pagamento-1"
-                    value="0"
-                >
 
-                <input
-                    type="hidden"
-                    name="forma_pagamento_2"
-                    id="input-forma-pagamento-2"
-                >
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
+    <script>
 
-                <input
-                    type="hidden"
-                    name="valor_pagamento_2"
-                    id="input-valor-pagamento-2"
-                    value="0"
-                >
+        // ========================================================
+        // ESTADO DO CARRINHO
+        // ========================================================
 
-                <button
-                    class="btn-finalizar"
-                    id="btn-finalizar"
-                    type="button"
-                    disabled
-                    onclick="finalizarVenda()"
-                >
-                    Finalizar venda
-                </button>
+        let carrinho = [];
 
-            </form>
+        let clienteAtual = {
+            id: 0,
+            associado: false,
+            desconto: 0
+        };
 
-        </div>
+        let segundoPagamentoAtivo = false;
 
-    </aside>
 
-</div>
+        // ========================================================
+        // ADICIONAR PRODUTO AO CARRINHO
+        // ========================================================
 
-<script>
+        function adicionarAoCarrinho(card) {
 
-let carrinho = [];
+            const id = parseInt(card.dataset.id);
 
-let clienteAtual = {
-    id: 0,
-    associado: false,
-    desconto: 0
-};
+            const nome = card.dataset.nome;
 
+            const preco = parseFloat(card.dataset.preco);
 
-/* ============================================================
-   INICIALIZAÇÃO
-============================================================ */
+            const estoque = parseInt(card.dataset.estoque);
 
-document.addEventListener('DOMContentLoaded', function () {
 
-    document
-        .getElementById('forma-pagamento-1')
-        .addEventListener('change', atualizarPagamentos);
-
-    document
-        .getElementById('valor-pagamento-1')
-        .addEventListener('input', atualizarPagamentos);
-
-    document
-        .getElementById('forma-pagamento-2')
-        .addEventListener('change', atualizarPagamentos);
-
-    document
-        .getElementById('valor-pagamento-2')
-        .addEventListener('input', atualizarPagamentos);
-
-});
-
-
-/* ============================================================
-   ADICIONAR PRODUTO
-============================================================ */
-
-function adicionarAoCarrinho(card) {
-
-    const id = parseInt(card.dataset.id);
-
-    const nome = card.dataset.nome;
-
-    const preco = parseFloat(card.dataset.preco);
-
-    const estoque = parseInt(card.dataset.estoque);
-
-    const existente = carrinho.find(
-        item => item.produto_id === id
-    );
-
-    if (existente) {
-
-        if (existente.quantidade < existente.estoque_max) {
-
-            existente.quantidade++;
-
-        } else {
-
-            alert('Estoque máximo atingido.');
-
-            return;
-        }
-
-    } else {
-
-        carrinho.push({
-
-            produto_id: id,
-            nome: nome,
-            preco: preco,
-            quantidade: 1,
-            estoque_max: estoque
-
-        });
-
-    }
-
-    renderizarCarrinho();
-}
-
-
-/* ============================================================
-   ALTERAR QUANTIDADE
-============================================================ */
-
-function alterarQtd(produtoId, delta) {
-
-    const item = carrinho.find(
-        i => i.produto_id === produtoId
-    );
-
-    if (!item) {
-        return;
-    }
-
-    item.quantidade += delta;
-
-    if (item.quantidade <= 0) {
-
-        removerItem(produtoId);
-
-        return;
-    }
-
-    if (item.quantidade > item.estoque_max) {
-
-        item.quantidade = item.estoque_max;
-
-    }
-
-    renderizarCarrinho();
-}
-
-
-/* ============================================================
-   REMOVER ITEM
-============================================================ */
-
-function removerItem(produtoId) {
-
-    carrinho = carrinho.filter(
-        i => i.produto_id !== produtoId
-    );
-
-    renderizarCarrinho();
-}
-
-
-/* ============================================================
-   CLIENTE
-============================================================ */
-
-function atualizarCliente(select) {
-
-    const option =
-        select.options[select.selectedIndex];
-
-    clienteAtual.id =
-        parseInt(option.value);
-
-    clienteAtual.associado =
-        option.dataset.associado === 'true';
-
-    clienteAtual.desconto =
-        parseFloat(
-            option.dataset.desconto || '0'
-        ) || 0;
-
-    const badge =
-        document.getElementById('badge-desconto');
-
-    if (
-        clienteAtual.associado &&
-        clienteAtual.desconto > 0
-    ) {
-
-        badge.textContent =
-            `✓ ${clienteAtual.desconto}% de desconto aplicado`;
-
-        badge.style.display =
-            'inline-flex';
-
-    } else {
-
-        badge.style.display =
-            'none';
-
-    }
-
-    renderizarTotais();
-}
-
-
-/* ============================================================
-   RENDERIZAR CARRINHO
-============================================================ */
-
-function renderizarCarrinho() {
-
-    const lista =
-        document.getElementById('lista-carrinho');
-
-    const vazio =
-        document.getElementById('msg-vazio');
-
-    const totais =
-        document.getElementById('totais');
-
-    const pagamentos =
-        document.getElementById('pagamentos-section');
-
-    if (carrinho.length === 0) {
-
-        lista.innerHTML = '';
-
-        lista.appendChild(vazio);
-
-        vazio.style.display = 'flex';
-
-        totais.style.display = 'none';
-
-        pagamentos.style.display = 'none';
-
-        document.getElementById(
-            'btn-finalizar'
-        ).disabled = true;
-
-        atualizarPagamentos();
-
-        return;
-    }
-
-    vazio.style.display = 'none';
-
-    totais.style.display = 'block';
-
-    pagamentos.style.display = 'block';
-
-    lista.innerHTML = '';
-
-    carrinho.forEach(item => {
-
-        const subtotal =
-            item.preco * item.quantidade;
-
-        const div =
-            document.createElement('div');
-
-        div.className =
-            'item-carrinho';
-
-        div.innerHTML = `
-
-            <div style="flex:1">
-
-                <div class="item-nome">
-                    ${item.nome}
-                </div>
-
-                <div class="item-preco-unit">
-                    R$ ${formatarNumero(item.preco)} / un.
-                </div>
-
-            </div>
-
-            <div class="item-qty-ctrl">
-
-                <button
-                    class="qty-btn"
-                    type="button"
-                    onclick="alterarQtd(${item.produto_id}, -1)"
-                >
-                    −
-                </button>
-
-                <span class="qty-value">
-                    ${item.quantidade}
-                </span>
-
-                <button
-                    class="qty-btn"
-                    type="button"
-                    onclick="alterarQtd(${item.produto_id}, 1)"
-                >
-                    +
-                </button>
-
-            </div>
-
-            <div class="item-subtotal">
-                R$ ${formatarNumero(subtotal)}
-            </div>
-
-            <button
-                class="item-remover"
-                type="button"
-                onclick="removerItem(${item.produto_id})"
-            >
-                ×
-            </button>
-        `;
-
-        lista.appendChild(div);
-
-    });
-
-    renderizarTotais();
-}
-
-
-/* ============================================================
-   FORMATAR NÚMERO
-============================================================ */
-
-function formatarNumero(valor) {
-
-    return Number(valor || 0)
-        .toFixed(2)
-        .replace('.', ',');
-}
-
-
-/* ============================================================
-   CONVERTER VALOR DIGITADO
-============================================================ */
-
-function converterValor(valor) {
-
-    if (
-        valor === null ||
-        valor === undefined
-    ) {
-        return 0;
-    }
-
-    let texto =
-        String(valor).trim();
-
-    if (!texto) {
-        return 0;
-    }
-
-    texto = texto
-        .replace(/R\$/gi, '')
-        .replace(/\s/g, '');
-
-    /*
-        Aceita:
-
-        10
-        10,00
-        10.00
-        1.000,00
-        1000,00
-        1000.00
-        1.000
-    */
-
-    if (
-        texto.includes(',') &&
-        texto.includes('.')
-    ) {
-
-        texto =
-            texto
-                .replace(/\./g, '')
-                .replace(',', '.');
-
-    } else if (
-        texto.includes(',')
-    ) {
-
-        texto =
-            texto.replace(',', '.');
-
-    } else if (
-        texto.includes('.')
-    ) {
-
-        const partes =
-            texto.split('.');
-
-        if (
-            partes.length === 2 &&
-            partes[1].length === 3
-        ) {
-
-            texto =
-                partes[0] +
-                partes[1];
-
-        }
-
-    }
-
-    const numero =
-        Number(texto);
-
-    if (
-        !Number.isFinite(numero) ||
-        numero < 0
-    ) {
-
-        return 0;
-
-    }
-
-    return numero;
-}
-
-
-/* ============================================================
-   CALCULAR TOTAL
-============================================================ */
-
-function calcularTotalAtual() {
-
-    let subtotalCentavos = 0;
-
-    carrinho.forEach(item => {
-
-        const precoCentavos =
-            Math.round(
-                Number(item.preco) * 100
+            const existente = carrinho.find(
+                i => i.produto_id === id
             );
 
-        subtotalCentavos +=
-            precoCentavos *
-            item.quantidade;
 
-    });
+            if (existente) {
 
+                if (
+                    existente.quantidade <
+                    existente.estoque_max
+                ) {
 
-    let descontoCentavos = 0;
+                    existente.quantidade++;
 
+                } else {
 
-    if (
-        clienteAtual.associado &&
-        clienteAtual.desconto > 0
-    ) {
-
-        descontoCentavos =
-            Math.round(
-                subtotalCentavos *
-                (
-                    clienteAtual.desconto /
-                    100
-                )
-            );
-
-    }
-
-
-    const totalCentavos =
-        Math.max(
-            subtotalCentavos -
-            descontoCentavos,
-            0
-        );
-
-
-    return totalCentavos / 100;
-}
-
-
-/* ============================================================
-   TOTAIS
-============================================================ */
-
-function renderizarTotais() {
-
-    const subtotal =
-        carrinho.reduce(
-            (total, item) => {
-
-                return total +
-                    (
-                        Number(item.preco) *
-                        item.quantidade
+                    alert(
+                        `Estoque máximo atingido: ${existente.estoque_max} unidade(s).`
                     );
 
-            },
-            0
-        );
-
-
-    let descontoValor = 0;
-
-
-    if (
-        clienteAtual.associado &&
-        clienteAtual.desconto > 0
-    ) {
-
-        descontoValor =
-            Math.round(
-                subtotal *
-                (
-                    clienteAtual.desconto /
-                    100
-                ) *
-                100
-            ) / 100;
-
-    }
-
-
-    const total =
-        Math.max(
-            subtotal -
-            descontoValor,
-            0
-        );
-
-
-    document.getElementById(
-        'val-subtotal'
-    ).textContent =
-        'R$ ' +
-        formatarNumero(subtotal);
-
-
-    document.getElementById(
-        'val-total'
-    ).textContent =
-        'R$ ' +
-        formatarNumero(total);
-
-
-    const linhaDesconto =
-        document.getElementById(
-            'linha-desconto'
-        );
-
-
-    const labelDesconto =
-        document.getElementById(
-            'label-desconto'
-        );
-
-
-    const valorDesconto =
-        document.getElementById(
-            'val-desconto'
-        );
-
-
-    if (descontoValor > 0) {
-
-        linhaDesconto.style.display =
-            'flex';
-
-        labelDesconto.textContent =
-            `Desconto (${clienteAtual.desconto}%)`;
-
-        valorDesconto.textContent =
-            '- R$ ' +
-            formatarNumero(
-                descontoValor
-            );
-
-    } else {
-
-        linhaDesconto.style.display =
-            'none';
-
-    }
-
-
-    atualizarPagamentos();
-}
-
-
-/* ============================================================
-   SEGUNDO PAGAMENTO
-============================================================ */
-
-function alternarSegundoPagamento() {
-
-    const segundo =
-        document.getElementById(
-            'segundo-pagamento'
-        );
-
-    const botao =
-        document.getElementById(
-            'btn-segundo-pagamento'
-        );
-
-    segundo.classList.add('ativo');
-
-    botao.style.display =
-        'none';
-
-    atualizarPagamentos();
-}
-
-
-/* ============================================================
-   REMOVER SEGUNDO PAGAMENTO
-============================================================ */
-
-function removerSegundoPagamento() {
-
-    document.getElementById(
-        'forma-pagamento-2'
-    ).value = '';
-
-    document.getElementById(
-        'valor-pagamento-2'
-    ).value = '';
-
-    document.getElementById(
-        'segundo-pagamento'
-    ).classList.remove('ativo');
-
-    document.getElementById(
-        'btn-segundo-pagamento'
-    ).style.display = 'block';
-
-    atualizarPagamentos();
-}
-
-
-/* ============================================================
-   ATUALIZAR PAGAMENTOS
-============================================================ */
-
-function atualizarPagamentos() {
-
-    const total =
-        carrinho.length > 0
-            ? calcularTotalAtual()
-            : 0;
-
-
-    const forma1 =
-        document.getElementById(
-            'forma-pagamento-1'
-        ).value;
-
-
-    const forma2 =
-        document.getElementById(
-            'forma-pagamento-2'
-        ).value;
-
-
-    const valor1 =
-        converterValor(
-            document.getElementById(
-                'valor-pagamento-1'
-            ).value
-        );
-
-
-    const valor2 =
-        converterValor(
-            document.getElementById(
-                'valor-pagamento-2'
-            ).value
-        );
-
-
-    /*
-       TUDO EM CENTAVOS
-    */
-
-    const totalCentavos =
-        Math.round(total * 100);
-
-    const valor1Centavos =
-        Math.round(valor1 * 100);
-
-    const valor2Centavos =
-        Math.round(valor2 * 100);
-
-    const pagoCentavos =
-        valor1Centavos +
-        valor2Centavos;
-
-    const restanteCentavos =
-        totalCentavos -
-        pagoCentavos;
-
-
-    document.getElementById(
-        'pagamento-total'
-    ).textContent =
-        'R$ ' +
-        formatarNumero(
-            totalCentavos / 100
-        );
-
-
-    document.getElementById(
-        'pagamento-pago'
-    ).textContent =
-        'R$ ' +
-        formatarNumero(
-            pagoCentavos / 100
-        );
-
-
-    document.getElementById(
-        'pagamento-restante'
-    ).textContent =
-        'R$ ' +
-        formatarNumero(
-            Math.max(
-                restanteCentavos,
-                0
-            ) / 100
-        );
-
-
-    const status =
-        document.getElementById(
-            'pagamento-status'
-        );
-
-
-    const botao =
-        document.getElementById(
-            'btn-finalizar'
-        );
-
-
-    let valido = false;
-
-    let mensagem =
-        'Informe o pagamento';
-
-
-    if (
-        carrinho.length === 0
-    ) {
-
-        mensagem =
-            'Adicione produtos ao carrinho';
-
-    }
-
-    else if (
-        !forma1
-    ) {
-
-        mensagem =
-            'Escolha o primeiro pagamento';
-
-    }
-
-    else if (
-        valor1Centavos <= 0
-    ) {
-
-        mensagem =
-            'Informe o valor do primeiro pagamento';
-
-    }
-
-    else if (
-        forma2 &&
-        valor2Centavos <= 0
-    ) {
-
-        mensagem =
-            'Informe o valor do segundo pagamento';
-
-    }
-
-    else if (
-        forma2 &&
-        forma1 === forma2
-    ) {
-
-        mensagem =
-            'Escolha formas de pagamento diferentes';
-
-    }
-
-    else if (
-        pagoCentavos === totalCentavos
-    ) {
-
-        valido = true;
-
-        mensagem =
-            'Pagamento completo ✓';
-
-    }
-
-    else if (
-        pagoCentavos < totalCentavos
-    ) {
-
-        const falta =
-            totalCentavos -
-            pagoCentavos;
-
-        mensagem =
-            `Falta R$ ${formatarNumero(
-                falta / 100
-            )}`;
-
-    }
-
-    else {
-
-        const excesso =
-            pagoCentavos -
-            totalCentavos;
-
-        mensagem =
-            `Pagamento acima do total em R$ ${formatarNumero(
-                excesso / 100
-            )}`;
-
-    }
-
-
-    status.textContent =
-        mensagem;
-
-
-    status.classList.toggle(
-        'ok',
-        valido
-    );
-
-
-    botao.disabled =
-        !valido;
-
-
-    /* CAMPOS HIDDEN */
-
-    document.getElementById(
-        'input-forma-pagamento-1'
-    ).value =
-        forma1;
-
-
-    document.getElementById(
-        'input-valor-pagamento-1'
-    ).value =
-        (valor1Centavos / 100)
-        .toFixed(2);
-
-
-    document.getElementById(
-        'input-forma-pagamento-2'
-    ).value =
-        forma2;
-
-
-    document.getElementById(
-        'input-valor-pagamento-2'
-    ).value =
-        (valor2Centavos / 100)
-        .toFixed(2);
-}
-
-
-/* ============================================================
-   FINALIZAR VENDA
-============================================================ */
-
-function finalizarVenda() {
-
-    if (
-        carrinho.length === 0
-    ) {
-
-        alert(
-            'O carrinho está vazio.'
-        );
-
-        return;
-    }
-
-
-    atualizarPagamentos();
-
-
-    const total =
-        calcularTotalAtual();
-
-
-    const valor1 =
-        converterValor(
-            document.getElementById(
-                'valor-pagamento-1'
-            ).value
-        );
-
-
-    const valor2 =
-        converterValor(
-            document.getElementById(
-                'valor-pagamento-2'
-            ).value
-        );
-
-
-    /*
-       COMPARAÇÃO EM CENTAVOS
-    */
-
-    const totalCentavos =
-        Math.round(
-            total * 100
-        );
-
-
-    const valor1Centavos =
-        Math.round(
-            valor1 * 100
-        );
-
-
-    const valor2Centavos =
-        Math.round(
-            valor2 * 100
-        );
-
-
-    const pagoCentavos =
-        valor1Centavos +
-        valor2Centavos;
-
-
-    if (
-        pagoCentavos !==
-        totalCentavos
-    ) {
-
-        alert(
-            `Pagamento incorreto.\n\n` +
-            `Total: R$ ${formatarNumero(
-                totalCentavos / 100
-            )}\n` +
-            `Pago: R$ ${formatarNumero(
-                pagoCentavos / 100
-            )}`
-        );
-
-        return;
-    }
-
-
-    const forma1 =
-        document.getElementById(
-            'forma-pagamento-1'
-        ).value;
-
-
-    const forma2 =
-        document.getElementById(
-            'forma-pagamento-2'
-        ).value;
-
-
-    if (!forma1) {
-
-        alert(
-            'Escolha a primeira forma de pagamento.'
-        );
-
-        return;
-    }
-
-
-    if (
-        forma2 &&
-        forma1 === forma2
-    ) {
-
-        alert(
-            'As duas formas de pagamento precisam ser diferentes.'
-        );
-
-        return;
-    }
-
-
-    /* CARRINHO */
-
-    document.getElementById(
-        'input-carrinho'
-    ).value =
-        JSON.stringify(
-            carrinho.map(item => ({
-
-                id:
-                    item.produto_id,
-
-                nome:
-                    item.nome,
-
-                preco:
-                    item.preco,
-
-                quantidade:
-                    item.quantidade
-
-            }))
-        );
-
-
-    /* CLIENTE */
-
-    document.getElementById(
-        'input-cliente-id'
-    ).value =
-        clienteAtual.id;
-
-
-    /* OBSERVAÇÃO */
-
-    document.getElementById(
-        'input-obs'
-    ).value =
-        document.getElementById(
-            'obs-input'
-        ).value;
-
-
-    /* PAGAMENTO 1 */
-
-    document.getElementById(
-        'input-forma-pagamento-1'
-    ).value =
-        forma1;
-
-
-    document.getElementById(
-        'input-valor-pagamento-1'
-    ).value =
-        (
-            valor1Centavos / 100
-        ).toFixed(2);
-
-
-    /* PAGAMENTO 2 */
-
-    document.getElementById(
-        'input-forma-pagamento-2'
-    ).value =
-        forma2;
-
-
-    document.getElementById(
-        'input-valor-pagamento-2'
-    ).value =
-        (
-            valor2Centavos / 100
-        ).toFixed(2);
-
-
-    /* ENVIAR */
-
-    document.getElementById(
-        'form-venda'
-    ).submit();
-}
-
-
-/* ============================================================
-   BUSCAR PRODUTO
-============================================================ */
-
-document
-    .getElementById('busca-produto')
-    .addEventListener(
-        'input',
-        function () {
-
-            const termo =
-                this.value
-                    .toLowerCase()
-                    .trim();
-
-
-            document
-                .querySelectorAll(
-                    '.produto-card'
-                )
-                .forEach(card => {
-
-                    const nome =
-                        card.dataset.nomeLower ||
-                        '';
-
-                    card.style.display =
-                        nome.includes(termo)
-                            ? ''
-                            : 'none';
-
+                    return;
+                }
+
+            } else {
+
+                carrinho.push({
+                    produto_id: id,
+                    nome: nome,
+                    preco: preco,
+                    quantidade: 1,
+                    estoque_max: estoque
                 });
 
-        }
-    );
+            }
 
-</script>
+
+            renderizarCarrinho();
+
+        }
+
+
+        // ========================================================
+        // ALTERAR QUANTIDADE
+        // ========================================================
+
+        function alterarQtd(produtoId, delta) {
+
+            const item = carrinho.find(
+                i => i.produto_id === produtoId
+            );
+
+
+            if (!item) {
+                return;
+            }
+
+
+            item.quantidade += delta;
+
+
+            if (item.quantidade <= 0) {
+
+                removerItem(produtoId);
+
+                return;
+            }
+
+
+            if (
+                item.quantidade >
+                item.estoque_max
+            ) {
+
+                item.quantidade =
+                    item.estoque_max;
+
+            }
+
+
+            renderizarCarrinho();
+
+        }
+
+
+        // ========================================================
+        // REMOVER ITEM
+        // ========================================================
+
+        function removerItem(produtoId) {
+
+            carrinho = carrinho.filter(
+                i => i.produto_id !== produtoId
+            );
+
+            renderizarCarrinho();
+
+        }
+
+
+        // ========================================================
+        // ATUALIZAR CLIENTE
+        // ========================================================
+
+        function atualizarCliente(select) {
+
+            const opt =
+                select.options[
+                    select.selectedIndex
+                ];
+
+
+            clienteAtual.id =
+                parseInt(
+                    opt.value || '0'
+                );
+
+
+            clienteAtual.associado =
+                opt.dataset.associado === 'true';
+
+
+            clienteAtual.desconto =
+                parseFloat(
+                    opt.dataset.desconto || '0'
+                );
+
+
+            const badge =
+                document.getElementById(
+                    'badge-desconto'
+                );
+
+
+            if (
+                clienteAtual.associado &&
+                clienteAtual.desconto > 0
+            ) {
+
+                badge.textContent =
+                    `✓ ${clienteAtual.desconto}% de desconto aplicado`;
+
+                badge.style.display =
+                    'inline-flex';
+
+            } else {
+
+                badge.style.display =
+                    'none';
+
+            }
+
+
+            renderizarTotais();
+
+        }
+
+
+        // ========================================================
+        // RENDERIZAR CARRINHO
+        // ========================================================
+
+        function renderizarCarrinho() {
+
+            const lista =
+                document.getElementById(
+                    'lista-carrinho'
+                );
+
+
+            const vazio =
+                document.getElementById(
+                    'msg-vazio'
+                );
+
+
+            const totais =
+                document.getElementById(
+                    'totais'
+                );
+
+
+            const pagamentoSection =
+                document.getElementById(
+                    'pagamento-section'
+                );
+
+
+            if (carrinho.length === 0) {
+
+                lista.innerHTML = '';
+
+                lista.appendChild(vazio);
+
+                vazio.style.display =
+                    'flex';
+
+                totais.style.display =
+                    'none';
+
+                pagamentoSection.style.display =
+                    'none';
+
+                document.getElementById(
+                    'btn-finalizar'
+                ).disabled = true;
+
+                return;
+            }
+
+
+            vazio.style.display =
+                'none';
+
+            totais.style.display =
+                'block';
+
+            pagamentoSection.style.display =
+                'block';
+
+
+            lista.innerHTML = '';
+
+
+            carrinho.forEach(item => {
+
+                const subtotal =
+                    item.preco *
+                    item.quantidade;
+
+
+                const div =
+                    document.createElement(
+                        'div'
+                    );
+
+
+                div.className =
+                    'item-carrinho';
+
+
+                div.innerHTML = `
+
+                    <div style="flex:1">
+
+                        <div class="item-nome">
+                            ${item.nome}
+                        </div>
+
+                        <div class="item-preco-unit">
+                            R$ ${item.preco
+                                .toFixed(2)
+                                .replace('.', ',')}
+                            / un.
+                        </div>
+
+                    </div>
+
+
+                    <div class="item-qty-ctrl">
+
+                        <button
+                            type="button"
+                            class="qty-btn"
+                            onclick="alterarQtd(${item.produto_id}, -1)"
+                        >
+                            −
+                        </button>
+
+
+                        <span class="qty-value">
+                            ${item.quantidade}
+                        </span>
+
+
+                        <button
+                            type="button"
+                            class="qty-btn"
+                            onclick="alterarQtd(${item.produto_id}, +1)"
+                        >
+                            +
+                        </button>
+
+                    </div>
+
+
+                    <div class="item-subtotal">
+
+                        R$ ${subtotal
+                            .toFixed(2)
+                            .replace('.', ',')}
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="item-remover"
+                        onclick="removerItem(${item.produto_id})"
+                        title="Remover"
+                    >
+                        ×
+                    </button>
+
+                `;
+
+
+                lista.appendChild(div);
+
+            });
+
+
+            renderizarTotais();
+
+        }
+
+
+        // ========================================================
+        // CALCULAR TOTAIS
+        // ========================================================
+
+        function obterTotais() {
+
+            const subtotal =
+                carrinho.reduce(
+                    (acc, i) =>
+                        acc +
+                        i.preco *
+                        i.quantidade,
+                    0
+                );
+
+
+            const descontoPct =
+                clienteAtual.desconto ||
+                0;
+
+
+            const descontoValor =
+                subtotal *
+                (descontoPct / 100);
+
+
+            const total =
+                Math.max(
+                    0,
+                    subtotal -
+                    descontoValor
+                );
+
+
+            return {
+                subtotal,
+                descontoPct,
+                descontoValor,
+                total
+            };
+
+        }
+
+
+        // ========================================================
+        // RENDERIZAR TOTAIS
+        // ========================================================
+
+        function renderizarTotais() {
+
+            const {
+                subtotal,
+                descontoPct,
+                descontoValor,
+                total
+            } =
+                obterTotais();
+
+
+            const fmt =
+                v =>
+                    'R$ ' +
+                    v
+                        .toFixed(2)
+                        .replace('.', ',');
+
+
+            document.getElementById(
+                'val-subtotal'
+            ).textContent =
+                fmt(subtotal);
+
+
+            document.getElementById(
+                'val-total'
+            ).textContent =
+                fmt(total);
+
+
+            const linhaDesc =
+                document.getElementById(
+                    'linha-desconto'
+                );
+
+
+            const labelDesc =
+                document.getElementById(
+                    'label-desconto'
+                );
+
+
+            const valDesc =
+                document.getElementById(
+                    'val-desconto'
+                );
+
+
+            if (
+                descontoValor > 0
+            ) {
+
+                linhaDesc.style.display =
+                    'flex';
+
+                labelDesc.textContent =
+                    `Desconto (${descontoPct}%)`;
+
+                valDesc.textContent =
+                    `− ${fmt(descontoValor)}`;
+
+            } else {
+
+                linhaDesc.style.display =
+                    'none';
+
+            }
+
+
+            const pagamentoSection =
+                document.getElementById(
+                    'pagamento-section'
+                );
+
+
+            if (carrinho.length > 0) {
+
+                pagamentoSection.style.display =
+                    'block';
+
+
+                const campo1 =
+                    document.getElementById(
+                        'valor-pagamento-1'
+                    );
+
+
+                if (
+                    !segundoPagamentoAtivo &&
+                    document.activeElement !== campo1
+                ) {
+
+                    campo1.value =
+                        total.toFixed(2);
+
+                }
+
+            }
+
+
+            atualizarResumoPagamentos();
+
+        }
+
+
+        // ========================================================
+        // SEGUNDO PAGAMENTO
+        // ========================================================
+
+        function alternarSegundoPagamento() {
+
+            segundoPagamentoAtivo =
+                !segundoPagamentoAtivo;
+
+
+            const bloco =
+                document.getElementById(
+                    'pagamento-segundo'
+                );
+
+
+            const botao =
+                document.getElementById(
+                    'btn-segundo-pagamento'
+                );
+
+
+            const forma2 =
+                document.getElementById(
+                    'forma-pagamento-2'
+                );
+
+
+            const valor2 =
+                document.getElementById(
+                    'valor-pagamento-2'
+                );
+
+
+            if (segundoPagamentoAtivo) {
+
+                bloco.style.display =
+                    'block';
+
+                botao.textContent =
+                    '− Remover segundo pagamento';
+
+                forma2.value = '';
+
+                valor2.value =
+                    '0.00';
+
+
+                document.getElementById(
+                    'valor-pagamento-1'
+                ).select();
+
+            } else {
+
+                bloco.style.display =
+                    'none';
+
+                botao.textContent =
+                    '+ Usar segundo pagamento';
+
+                forma2.value = '';
+
+                valor2.value =
+                    '0.00';
+
+
+                const total =
+                    obterTotais().total;
+
+
+                document.getElementById(
+                    'valor-pagamento-1'
+                ).value =
+                    total.toFixed(2);
+
+            }
+
+
+            atualizarResumoPagamentos();
+
+        }
+
+
+        // ========================================================
+        // RESUMO DOS PAGAMENTOS
+        // ========================================================
+
+        function atualizarResumoPagamentos() {
+
+            const total =
+                obterTotais().total;
+
+
+            const valor1 =
+                parseFloat(
+                    document.getElementById(
+                        'valor-pagamento-1'
+                    ).value
+                ) || 0;
+
+
+            const valor2 =
+                segundoPagamentoAtivo
+                    ? (
+                        parseFloat(
+                            document.getElementById(
+                                'valor-pagamento-2'
+                            ).value
+                        ) || 0
+                    )
+                    : 0;
+
+
+            const pago =
+                valor1 + valor2;
+
+
+            const diferenca =
+                total - pago;
+
+
+            const fmt =
+                v =>
+                    'R$ ' +
+                    Math.abs(v)
+                        .toFixed(2)
+                        .replace('.', ',');
+
+
+            const restanteBox =
+                document.getElementById(
+                    'pagamento-restante-box'
+                );
+
+
+            const restanteLabel =
+                document.getElementById(
+                    'pagamento-restante-label'
+                );
+
+
+            const restante =
+                document.getElementById(
+                    'pagamento-restante'
+                );
+
+
+            const status =
+                document.getElementById(
+                    'status-pagamento'
+                );
+
+
+            const btnFinal =
+                document.getElementById(
+                    'btn-finalizar'
+                );
+
+
+            document.getElementById(
+                'pagamento-total'
+            ).textContent =
+                fmt(total);
+
+
+            document.getElementById(
+                'pagamento-pago'
+            ).textContent =
+                fmt(pago);
+
+
+            restanteBox.classList.remove(
+                'ok',
+                'pendente',
+                'erro'
+            );
+
+
+            if (
+                Math.abs(diferenca) <= 0.01
+            ) {
+
+                restanteLabel.textContent =
+                    'Situação';
+
+                restante.textContent =
+                    'OK';
+
+                restanteBox.classList.add(
+                    'ok'
+                );
+
+                status.textContent =
+                    'Pagamento completo';
+
+            } else if (
+                diferenca > 0
+            ) {
+
+                restanteLabel.textContent =
+                    'Falta';
+
+                restante.textContent =
+                    fmt(diferenca);
+
+                restanteBox.classList.add(
+                    'pendente'
+                );
+
+                status.textContent =
+                    'Informe o restante';
+
+            } else {
+
+                restanteLabel.textContent =
+                    'Excedente';
+
+                restante.textContent =
+                    fmt(diferenca);
+
+                restanteBox.classList.add(
+                    'erro'
+                );
+
+                status.textContent =
+                    'Valor acima do total';
+
+            }
+
+
+            btnFinal.disabled =
+                carrinho.length === 0 ||
+                Math.abs(diferenca) >
+                0.01;
+
+        }
+
+
+        // ========================================================
+        // FINALIZAR VENDA
+        // ========================================================
+
+        function finalizarVenda() {
+
+            if (
+                carrinho.length === 0
+            ) {
+                return;
+            }
+
+
+            const total =
+                obterTotais().total;
+
+
+            const valor1 =
+                parseFloat(
+                    document.getElementById(
+                        'valor-pagamento-1'
+                    ).value
+                ) || 0;
+
+
+            const valor2 =
+                segundoPagamentoAtivo
+                    ? (
+                        parseFloat(
+                            document.getElementById(
+                                'valor-pagamento-2'
+                            ).value
+                        ) || 0
+                    )
+                    : 0;
+
+
+            const totalPago =
+                valor1 + valor2;
+
+
+            if (
+                Math.abs(
+                    totalPago - total
+                ) > 0.01
+            ) {
+
+                alert(
+                    'O valor dos pagamentos precisa ser exatamente igual ao total da venda.'
+                );
+
+                atualizarResumoPagamentos();
+
+                return;
+
+            }
+
+
+            if (
+                segundoPagamentoAtivo
+            ) {
+
+                const forma2 =
+                    document.getElementById(
+                        'forma-pagamento-2'
+                    ).value;
+
+
+                if (
+                    !forma2 ||
+                    valor2 <= 0
+                ) {
+
+                    alert(
+                        'Informe corretamente o segundo pagamento.'
+                    );
+
+                    return;
+                }
+
+
+                if (
+                    document.getElementById(
+                        'forma-pagamento-1'
+                    ).value === forma2
+                ) {
+
+                    alert(
+                        'Escolha formas de pagamento diferentes.'
+                    );
+
+                    return;
+                }
+
+            }
+
+
+            document.getElementById(
+                'input-carrinho'
+            ).value =
+
+                JSON.stringify(
+
+                    carrinho.map(
+                        i => ({
+
+                            id:
+                                i.produto_id,
+
+                            nome:
+                                i.nome,
+
+                            preco:
+                                i.preco,
+
+                            quantidade:
+                                i.quantidade
+
+                        })
+                    )
+
+                );
+
+
+            document.getElementById(
+                'input-cliente-id'
+            ).value =
+                clienteAtual.id;
+
+
+            document.getElementById(
+                'input-obs'
+            ).value =
+
+                document.getElementById(
+                    'obs-input'
+                ).value;
+
+
+            document.getElementById(
+                'form-venda'
+            ).submit();
+
+        }
+
+
+        // ========================================================
+        // BUSCA DE PRODUTOS
+        // ========================================================
+
+        document
+            .getElementById(
+                'busca-produto'
+            )
+            .addEventListener(
+                'input',
+                function () {
+
+                    const termo =
+                        this.value
+                            .toLowerCase()
+                            .trim();
+
+
+                    document
+                        .querySelectorAll(
+                            '.produto-card'
+                        )
+                        .forEach(
+                            card => {
+
+                                const nome =
+                                    card.dataset
+                                        .nomeLower ||
+                                    '';
+
+
+                                card.style.display =
+                                    nome.includes(
+                                        termo
+                                    )
+                                        ? ''
+                                        : 'none';
+
+                            }
+                        );
+
+                }
+            );
+
+
+        // ========================================================
+        // EVENTOS DOS PAGAMENTOS
+        // ========================================================
+
+        document
+            .getElementById(
+                'valor-pagamento-1'
+            )
+            .addEventListener(
+                'input',
+                atualizarResumoPagamentos
+            );
+
+
+        document
+            .getElementById(
+                'valor-pagamento-2'
+            )
+            .addEventListener(
+                'input',
+                atualizarResumoPagamentos
+            );
+
+
+        document
+            .getElementById(
+                'forma-pagamento-1'
+            )
+            .addEventListener(
+                'change',
+                atualizarResumoPagamentos
+            );
+
+
+        document
+            .getElementById(
+                'forma-pagamento-2'
+            )
+            .addEventListener(
+                'change',
+                atualizarResumoPagamentos
+            );
+
+    </script>
 
 </body>
 </html>
