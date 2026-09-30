@@ -237,13 +237,44 @@ def favicon():
 
 
 # ============================================================
-# PÁGINA DE ERRO 403
+# ERRO 401 — NÃO AUTENTICADO
+# ============================================================
+
+@app.exception_handler(401)
+async def erro_401(
+    request: Request,
+    exc
+):
+    return templates.TemplateResponse(
+        request,
+        "errors/erro.html",
+        {
+            "request": request,
+            "status_code": 401,
+
+            "titulo": "Autenticação necessária",
+
+            "mensagem": (
+                "Você precisa estar autenticado "
+                "para acessar esta área."
+            ),
+
+            "detalhe": (
+                "Faça login para continuar."
+            ),
+        },
+        status_code=401
+    )
+
+
+# ============================================================
+# ERRO 403 — ACESSO NÃO PERMITIDO
 # ============================================================
 
 @app.exception_handler(403)
 async def erro_403(
     request: Request,
-    exc: HTTPException
+    exc
 ):
 
     return templates.TemplateResponse(
@@ -252,30 +283,50 @@ async def erro_403(
         {
             "request": request,
             "status_code": 403,
+
             "titulo": "Acesso não permitido",
+<<<<<<< HEAD
+=======
+
+>>>>>>> 217503c5f279e3e173ddc372e5d9a3eadf5e2f3d
             "mensagem": (
                 "Você não possui permissão "
                 "para acessar esta área."
             ),
+<<<<<<< HEAD
             "detalhe": (
                 "Entre com uma conta de administrador "
                 "para continuar."
             )
+=======
+
+            "detalhe": (
+                "Entre com uma conta de administrador "
+                "para continuar."
+            ),
+>>>>>>> 217503c5f279e3e173ddc372e5d9a3eadf5e2f3d
         },
         status_code=403
     )
 
 
 # ============================================================
-# ERRO 404
+# ERRO 404 — ROTA NÃO ENCONTRADA
 # ============================================================
 
 @app.exception_handler(404)
 async def erro_404(
     request: Request,
-    exc: HTTPException
+    exc
 ):
+    return templates.TemplateResponse(
+        request,
+        "errors/erro.html",
+        {
+            "request": request,
+            "status_code": 404,
 
+<<<<<<< HEAD
     return HTMLResponse(
 
         content="""
@@ -465,9 +516,22 @@ async def erro_404(
         </html>
         """,
 
+=======
+            "titulo": "Rota não encontrada",
+
+            "mensagem": (
+                "A página que você tentou acessar "
+                "não existe."
+            ),
+
+            "detalhe": (
+                "Verifique o endereço ou volte "
+                "para a página inicial."
+            ),
+        },
+>>>>>>> 217503c5f279e3e173ddc372e5d9a3eadf5e2f3d
         status_code=404
     )
-
 
 # ============================================================
 # ERROS HTTP GENÉRICOS

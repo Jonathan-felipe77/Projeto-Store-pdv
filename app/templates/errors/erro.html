@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Erro — M&J STORE</title>
+    <title>{{ status_code }} — M&J STORE</title>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
@@ -18,18 +18,19 @@
 
         :root {
             --preto: #050505;
-            --card: #0d0d0d;
+            --preto-card: #0d0d0d;
             --branco: #ffffff;
             --cinza: #a1a1aa;
-            --cinza-escuro: #242424;
+            --cinza-escuro: #222222;
             --verde: #c8ff1a;
             --verde-hover: #d9ff4d;
-            --vermelho: #ff4d4d;
         }
 
         body {
             min-height: 100vh;
+
             font-family: 'Montserrat', sans-serif;
+
             background:
                 radial-gradient(
                     circle at top right,
@@ -49,40 +50,57 @@
             align-items: center;
             justify-content: center;
 
-            padding: 25px;
+            padding: 30px;
         }
 
-        .error-page {
-            width: min(600px, 100%);
+        .error-container {
+            width: min(560px, 100%);
             text-align: center;
         }
+
+        /* =====================================================
+           LOGO
+        ===================================================== */
 
         .logo {
             font-size: 22px;
             font-weight: 800;
             letter-spacing: 1px;
-            margin-bottom: 35px;
+
+            margin-bottom: 32px;
         }
 
-        .logo span {
+        .logo .store {
             color: var(--verde);
         }
 
+        /* =====================================================
+           CARD
+        ===================================================== */
+
         .error-card {
-            background: linear-gradient(
-                145deg,
-                #101010,
-                #090909
-            );
+            position: relative;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #101010,
+                    #090909
+                );
 
             border: 1px solid #222;
+
             border-radius: 18px;
 
             padding: 55px 40px;
 
-            position: relative;
             overflow: hidden;
+
+            box-shadow:
+                0 25px 70px rgba(0, 0, 0, 0.35);
         }
+
+        /* Linha verde no topo */
 
         .error-card::before {
             content: "";
@@ -98,51 +116,83 @@
             background: var(--verde);
         }
 
-        .error-number {
-            font-size: 95px;
-            line-height: 1;
-            font-weight: 800;
+        /* =====================================================
+           CÓDIGO DO ERRO
+        ===================================================== */
 
+        .error-code {
             color: var(--verde);
 
-            letter-spacing: -6px;
+            font-size: 82px;
+            font-weight: 800;
 
-            margin-bottom: 20px;
+            line-height: 1;
+
+            letter-spacing: -5px;
+
+            margin-bottom: 22px;
         }
+
+        /* =====================================================
+           TÍTULO
+        ===================================================== */
 
         .error-title {
             font-size: 26px;
+
             font-weight: 800;
 
-            margin-bottom: 14px;
+            margin-bottom: 15px;
         }
+
+        /* =====================================================
+           MENSAGEM
+        ===================================================== */
 
         .error-message {
             color: var(--cinza);
+
             font-size: 14px;
+
             line-height: 1.7;
 
-            max-width: 450px;
+            max-width: 430px;
+
+            margin: 0 auto 14px;
+        }
+
+        /* =====================================================
+           DETALHE
+        ===================================================== */
+
+        .error-detail {
+            color: #626262;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+
+            max-width: 420px;
+
             margin: 0 auto 30px;
         }
 
-        .error-detail {
-            color: #666;
-            font-size: 11px;
-
-            margin-bottom: 30px;
-        }
+        /* =====================================================
+           BOTÃO
+        ===================================================== */
 
         .btn-home {
             display: inline-flex;
+
             align-items: center;
             justify-content: center;
 
-            min-width: 210px;
+            min-width: 215px;
 
-            padding: 14px 22px;
+            padding: 14px 24px;
 
             background: var(--verde);
+
             color: #050505;
 
             border-radius: 10px;
@@ -150,6 +200,7 @@
             text-decoration: none;
 
             font-size: 12px;
+
             font-weight: 800;
 
             transition: 0.2s;
@@ -165,59 +216,98 @@
                 rgba(200, 255, 26, 0.15);
         }
 
-        .footer {
-            margin-top: 25px;
+        /* =====================================================
+           RODAPÉ
+        ===================================================== */
 
-            color: #555;
+        .footer {
+            margin-top: 24px;
+
+            color: #4f4f4f;
 
             font-size: 10px;
+
             letter-spacing: 1px;
         }
 
+        /* =====================================================
+           RESPONSIVO
+        ===================================================== */
+
         @media (max-width: 600px) {
+
+            body {
+                padding: 20px;
+            }
 
             .error-card {
                 padding: 45px 25px;
             }
 
-            .error-number {
-                font-size: 75px;
+            .error-code {
+                font-size: 68px;
             }
 
             .error-title {
                 font-size: 21px;
             }
+
+            .error-message {
+                font-size: 13px;
+            }
         }
     </style>
+
 </head>
 
 <body>
 
-    <main class="error-page">
+    <main class="error-container">
+
+        <!-- LOGO -->
 
         <div class="logo">
-            M&J <span>STORE</span>
+            M&J <span class="store">STORE</span>
         </div>
+
+
+        <!-- CARD DE ERRO -->
 
         <section class="error-card">
 
-            <div class="error-number">
+            <!-- CÓDIGO -->
+
+            <div class="error-code">
                 {{ status_code }}
             </div>
+
+
+            <!-- TÍTULO -->
 
             <h1 class="error-title">
                 {{ titulo }}
             </h1>
 
+
+            <!-- MENSAGEM -->
+
             <p class="error-message">
                 {{ mensagem }}
             </p>
 
+
+            <!-- DETALHE -->
+
             {% if detalhe %}
+
                 <div class="error-detail">
                     {{ detalhe }}
                 </div>
+
             {% endif %}
+
+
+            <!-- BOTÃO -->
 
             <a
                 href="/"
@@ -227,6 +317,9 @@
             </a>
 
         </section>
+
+
+        <!-- RODAPÉ -->
 
         <div class="footer">
             © 2026 M&J STORE — SISTEMA INTERNO
