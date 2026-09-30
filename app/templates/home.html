@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | M&J Store</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 
     <style>
         * {
@@ -158,7 +161,7 @@
             letter-spacing: 1.5px;
             margin-top: 4px;
         }
-        
+
         .role-badge.admin-role {
             background: #ffffff;
             color: #000000;
@@ -231,59 +234,68 @@
 
 
 
-<main class="container">
+    <main class="container">
 
-    <span class="tag-bem-vindo">
-        Painel de Controle Corporativo
-    </span>
+        <span class="tag-bem-vindo">
+            Painel de Controle Corporativo
+        </span>
 
-    <h1 class="titulo-usuario">
-        Olá, {{ usuario.nome }}
-    </h1>
+        <h1 class="titulo-usuario">
+            Olá, {{ usuario.nome }}
+        </h1>
 
-    <div class="dashboard-grid">
-        
-        <div class="profile-card">
-            <div class="info-grupo">
-                <span class="info-label">Usuário Autenticado</span>
-                <span class="info-valor">{{ usuario.email }}</span>
-            </div>
+        <div class="dashboard-grid">
 
-            <div class="info-grupo">
-                <span class="info-label">Nível de Permissão</span>
-                <span class="role-badge {% if usuario.role == 'admin' %}admin-role{% endif %}">
-                    {% if usuario.role == 'admin' %}
+            <div class="profile-card">
+                <div class="info-grupo">
+                    <span class="info-label">Usuário Autenticado</span>
+                    <span class="info-valor">{{ usuario.email }}</span>
+                </div>
+
+                <div class="info-grupo">
+                    <span class="info-label">Nível de Permissão</span>
+                    <span class="role-badge {% if usuario.role == 'admin' %}admin-role{% endif %}">
+                        {% if usuario.role == 'admin' %}
                         Administrador
-                    {% else %}
+                        {% else %}
                         Operador
-                    {% endif %}
-                </span>
+                        {% endif %}
+                    </span>
+                </div>
             </div>
-        </div>
 
-        <div class="panel-menu">
-            <a href="/produtos" class="btn-action">
-                Gerenciar Produtos
-            </a>
+            <div class="panel-menu">
+                <a href="/produtos" class="btn-action">
+                    Gerenciar Produtos
+                </a>
 
-            <a href="/categorias" class="btn-action-secondary" style="background-color: rgba(210, 255, 31, 0.05); border-color: #d2ff1f; color: #d2ff1f;">
-                Gerenciar Categorias & Estoque
-            </a>
-            
-            {% if usuario.role == 'admin' %}
+                {% if usuario and usuario.get('role') == 'admin' %}
+
+                <a href="/categorias" class="btn-action-secondary">
+                    GERENCIAR CATEGORIAS
+                </a>
+
+                <a href="/estoque" class="btn-action-secondary">
+                    CONSULTAR ESTOQUE
+                </a>
+
+                {% endif %}
+
+                {% if usuario.role == 'admin' %}
                 <a href="/usuarios" class="btn-action-secondary">
                     Controle de Usuários
                 </a>
-            {% endif %}
+                {% endif %}
+            </div>
+
         </div>
 
-    </div>
+    </main>
 
-</main>
-
-<footer>
-    © 2026 M&J Store — Sistema Interno
-</footer>
+    <footer>
+        © 2026 M&J Store — Sistema Interno
+    </footer>
 
 </body>
+
 </html>

@@ -175,150 +175,98 @@ def favicon():
 
 
 # ============================================================
-# ERRO 404
+# ERRO 401 — NÃO AUTENTICADO
+# ============================================================
+
+@app.exception_handler(401)
+async def erro_401(
+    request: Request,
+    exc
+):
+    return templates.TemplateResponse(
+        request,
+        "errors/erro.html",
+        {
+            "request": request,
+            "status_code": 401,
+
+            "titulo": "Autenticação necessária",
+
+            "mensagem": (
+                "Você precisa estar autenticado "
+                "para acessar esta área."
+            ),
+
+            "detalhe": (
+                "Faça login para continuar."
+            ),
+        },
+        status_code=401
+    )
+
+
+# ============================================================
+# ERRO 403 — ACESSO NÃO PERMITIDO
+# ============================================================
+
+@app.exception_handler(403)
+async def erro_403(
+    request: Request,
+    exc
+):
+    return templates.TemplateResponse(
+        request,
+        "errors/erro.html",
+        {
+            "request": request,
+            "status_code": 403,
+
+            "titulo": "Acesso não permitido",
+
+            "mensagem": (
+                "Você não possui permissão "
+                "para acessar esta área."
+            ),
+
+            "detalhe": (
+                "Entre com uma conta de administrador "
+                "para continuar."
+            ),
+        },
+        status_code=403
+    )
+
+
+# ============================================================
+# ERRO 404 — ROTA NÃO ENCONTRADA
 # ============================================================
 
 @app.exception_handler(404)
 async def erro_404(
     request: Request,
-    exc: HTTPException
+    exc
 ):
+    return templates.TemplateResponse(
+        request,
+        "errors/erro.html",
+        {
+            "request": request,
+            "status_code": 404,
 
-    return HTMLResponse(
-        content="""
-        <!DOCTYPE html>
-        <html lang="pt-br">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport"
-                  content="width=device-width, initial-scale=1.0">
+            "titulo": "Rota não encontrada",
 
-            <title>Página não encontrada</title>
+            "mensagem": (
+                "A página que você tentou acessar "
+                "não existe."
+            ),
 
-            <style>
-
-                * {
-                    box-sizing: border-box;
-                }
-
-                body {
-                    margin: 0;
-                    min-height: 100vh;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-
-                    font-family:
-                        Arial,
-                        Helvetica,
-                        sans-serif;
-
-                    background:
-                        linear-gradient(
-                            135deg,
-                            #020617,
-                            #0f172a
-                        );
-
-                    color: white;
-                }
-
-                .erro {
-                    width: 90%;
-                    max-width: 550px;
-                    text-align: center;
-
-                    background: #111827;
-
-                    border: 1px solid #1f2937;
-
-                    border-radius: 20px;
-
-                    padding: 50px 30px;
-
-                    box-shadow:
-                        0 20px 50px
-                        rgba(0,0,0,.5);
-                }
-
-                .numero {
-                    font-size: 100px;
-                    font-weight: 900;
-                    line-height: 1;
-
-                    color: #00ff88;
-
-                    margin-bottom: 15px;
-                }
-
-                h1 {
-                    margin: 0 0 12px;
-                    font-size: 30px;
-                }
-
-                p {
-                    color: #94a3b8;
-                    font-size: 16px;
-                    line-height: 1.6;
-                    margin-bottom: 30px;
-                }
-
-                a {
-                    display: inline-block;
-
-                    padding: 12px 22px;
-
-                    background: #00ff88;
-                    color: #020617;
-
-                    border-radius: 10px;
-
-                    text-decoration: none;
-
-                    font-weight: 800;
-
-                    transition: .2s;
-                }
-
-                a:hover {
-                    transform: translateY(-2px);
-                    box-shadow:
-                        0 8px 20px
-                        rgba(0,255,136,.25);
-                }
-
-            </style>
-        </head>
-
-        <body>
-
-            <div class="erro">
-
-                <div class="numero">
-                    404
-                </div>
-
-                <h1>
-                    Página não encontrada
-                </h1>
-
-                <p>
-                    A página que você tentou acessar
-                    não existe ou foi removida.
-                </p>
-
-                <a href="/">
-                    Voltar para o início
-                </a>
-
-            </div>
-
-        </body>
-        </html>
-        """,
+            "detalhe": (
+                "Verifique o endereço ou volte "
+                "para a página inicial."
+            ),
+        },
         status_code=404
     )
-
 
 # ============================================================
 # ERROS HTTP GENÉRICOS
