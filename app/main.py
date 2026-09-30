@@ -21,6 +21,27 @@ from fastapi.exception_handlers import (
 
 from app.auth import get_usuario_opcional
 
+# ============================================================
+# DATABASE
+# ============================================================
+
+from app.database import Base, engine
+
+# ============================================================
+# MODELOS
+# ============================================================
+
+# IMPORTANTE:
+# O Pagamento precisa ser importado antes do create_all()
+# para o SQLAlchemy criar a tabela pagamentos.
+
+from app.models.venda import Venda, ItemVenda
+from app.models.pagamento import Pagamento
+
+# ============================================================
+# CONTROLLERS
+# ============================================================
+
 from app.controllers import auth_controller
 from app.controllers import usuario_controller
 from app.controllers import categoria_controller
@@ -29,6 +50,19 @@ from app.controllers import movimentacao_controller
 from app.controllers import clientes_controller
 from app.controllers import pdv_controller
 
+
+# ============================================================
+# CRIAR TABELAS
+# ============================================================
+
+Base.metadata.create_all(
+    bind=engine
+)
+
+
+# ============================================================
+# APLICAÇÃO
+# ============================================================
 
 app = FastAPI(
     title="M&J Store - Sistema de Ponto de Venda e Estoque"
@@ -46,13 +80,19 @@ elif os.path.exists("static"):
     PASTA_ESTATICOS = "static"
 
 else:
-    os.makedirs("app/static", exist_ok=True)
+    os.makedirs(
+        "app/static",
+        exist_ok=True
+    )
+
     PASTA_ESTATICOS = "app/static"
 
 
 app.mount(
     "/static",
-    StaticFiles(directory=PASTA_ESTATICOS),
+    StaticFiles(
+        directory=PASTA_ESTATICOS
+    ),
     name="static"
 )
 
@@ -70,13 +110,33 @@ templates = Jinja2Templates(
 # ROTAS
 # ============================================================
 
-app.include_router(auth_controller.router)
-app.include_router(usuario_controller.router)
-app.include_router(categoria_controller.router)
-app.include_router(produto_controller.router)
-app.include_router(movimentacao_controller.router)
-app.include_router(clientes_controller.router)
-app.include_router(pdv_controller.router)
+app.include_router(
+    auth_controller.router
+)
+
+app.include_router(
+    usuario_controller.router
+)
+
+app.include_router(
+    categoria_controller.router
+)
+
+app.include_router(
+    produto_controller.router
+)
+
+app.include_router(
+    movimentacao_controller.router
+)
+
+app.include_router(
+    clientes_controller.router
+)
+
+app.include_router(
+    pdv_controller.router
+)
 
 
 # ============================================================
@@ -90,6 +150,7 @@ def tela_inicial(
 ):
 
     if usuario is None:
+
         return templates.TemplateResponse(
             request=request,
             name="index.html",
@@ -117,6 +178,7 @@ def redireciona_painel(
 ):
 
     if not usuario:
+
         return RedirectResponse(
             url="/auth/login",
             status_code=303
@@ -183,6 +245,7 @@ async def erro_403(
     request: Request,
     exc: HTTPException
 ):
+
     return templates.TemplateResponse(
         request,
         "errors/erro.html",
@@ -190,34 +253,17 @@ async def erro_403(
             "request": request,
             "status_code": 403,
             "titulo": "Acesso não permitido",
-            "mensagem": "Você não possui permissão para acessar esta área.",
-            "detalhe": "Entre com uma conta de administrador para continuar."
+            "mensagem": (
+                "Você não possui permissão "
+                "para acessar esta área."
+            ),
+            "detalhe": (
+                "Entre com uma conta de administrador "
+                "para continuar."
+            )
         },
         status_code=403
     )
-
-
-# # ============================================================
-# # PÁGINA DE ERRO 404
-# # ============================================================
-
-# @app.exception_handler(404)
-# async def erro_404(
-#     request: Request,
-#     exc: HTTPException
-# ):
-#     return templates.TemplateResponse(
-#         request,
-#         "errors/erro.html",
-#         {
-#             "request": request,
-#             "status_code": 404,
-#             "titulo": "Rota não encontrada",
-#             "mensagem": "A página que você tentou acessar não existe.",
-#             "detalhe": "Verifique o endereço ou volte para a página inicial."
-#         },
-#         status_code=404
-#     )
 
 
 # ============================================================
@@ -231,15 +277,25 @@ async def erro_404(
 ):
 
     return HTMLResponse(
+
         content="""
         <!DOCTYPE html>
-        <html lang="pt-br">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport"
-                  content="width=device-width, initial-scale=1.0">
 
-            <title>Página não encontrada</title>
+        <html lang="pt-br">
+
+        <head>
+
+            <meta charset="UTF-8">
+
+            <meta
+                name="viewport"
+                content="width=device-width,
+                         initial-scale=1.0"
+            >
+
+            <title>
+                Página não encontrada
+            </title>
 
             <style>
 
@@ -248,10 +304,15 @@ async def erro_404(
                 }
 
                 body {
+
                     margin: 0;
+
                     min-height: 100vh;
+
                     display: flex;
+
                     align-items: center;
+
                     justify-content: center;
 
                     font-family:
@@ -267,16 +328,22 @@ async def erro_404(
                         );
 
                     color: white;
+
                 }
 
                 .erro {
+
                     width: 90%;
+
                     max-width: 550px;
+
                     text-align: center;
 
                     background: #111827;
 
-                    border: 1px solid #1f2937;
+                    border:
+                        1px solid
+                        #1f2937;
 
                     border-radius: 20px;
 
@@ -285,55 +352,89 @@ async def erro_404(
                     box-shadow:
                         0 20px 50px
                         rgba(0,0,0,.5);
+
                 }
 
                 .numero {
+
                     font-size: 100px;
+
                     font-weight: 900;
+
                     line-height: 1;
 
                     color: #00ff88;
 
                     margin-bottom: 15px;
+
                 }
 
                 h1 {
-                    margin: 0 0 12px;
+
+                    margin:
+                        0 0 12px;
+
                     font-size: 30px;
+
                 }
 
                 p {
+
                     color: #94a3b8;
+
                     font-size: 16px;
+
                     line-height: 1.6;
+
                     margin-bottom: 30px;
+
                 }
 
                 a {
+
                     display: inline-block;
 
-                    padding: 12px 22px;
+                    padding:
+                        12px 22px;
 
-                    background: #00ff88;
-                    color: #020617;
+                    background:
+                        #00ff88;
 
-                    border-radius: 10px;
+                    color:
+                        #020617;
 
-                    text-decoration: none;
+                    border-radius:
+                        10px;
 
-                    font-weight: 800;
+                    text-decoration:
+                        none;
 
-                    transition: .2s;
+                    font-weight:
+                        800;
+
+                    transition:
+                        .2s;
+
                 }
 
                 a:hover {
-                    transform: translateY(-2px);
+
+                    transform:
+                        translateY(-2px);
+
                     box-shadow:
                         0 8px 20px
-                        rgba(0,255,136,.25);
+                        rgba(
+                            0,
+                            255,
+                            136,
+                            .25
+                        );
+
                 }
 
             </style>
+
         </head>
 
         <body>
@@ -360,8 +461,10 @@ async def erro_404(
             </div>
 
         </body>
+
         </html>
         """,
+
         status_code=404
     )
 
@@ -370,13 +473,16 @@ async def erro_404(
 # ERROS HTTP GENÉRICOS
 # ============================================================
 
-@app.exception_handler(HTTPException)
+@app.exception_handler(
+    HTTPException
+)
 async def tratar_http_exception(
     request: Request,
     exc: HTTPException
 ):
 
     if exc.status_code == 404:
+
         return await erro_404(
             request,
             exc
