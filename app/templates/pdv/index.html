@@ -1,1800 +1,814 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-
+<html lang="pt-br">
 <head>
-
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDV — M&J Store</title>
 
-    <link
-        rel="stylesheet"
-        href="/static/css/navbar.css"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
-        rel="stylesheet"
-    >
-
     <style>
-
-        /* =========================================================
-           RESET
-        ========================================================= */
-
-        *,
-        *::before,
-        *::after {
-
+        *, *::before, *::after {
             box-sizing: border-box;
-
             margin: 0;
-
             padding: 0;
-
         }
-
 
         /* =========================================================
-           BODY
+           CORPO DA PÁGINA
+           Permite rolar o site para cima e para baixo
         ========================================================= */
-
         body {
-
-            font-family: 'Montserrat', sans-serif;
-
-            background: #050505;
-
+            font-family: 'Segoe UI', sans-serif;
+            background: #0b0b0b;
             color: #ffffff;
-
             min-height: 100vh;
-
-            overflow: hidden;
-
+            display: block;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
-
 
         /* =========================================================
            TOPO
         ========================================================= */
-
         .topbar {
-
-            height: 62px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            padding: 0 28px;
-
             background: #050505;
-
-            border-bottom: 1px solid #1e1e1e;
-
+            color: #ffffff;
+            padding: 0 24px;
+            min-height: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            border-bottom: 1px solid #222222;
         }
-
 
         .topbar-title {
-
-            font-size: 18px;
-
-            font-weight: 900;
-
-            letter-spacing: -.02em;
-
-            color: #d2ff1f;
-
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: .02em;
+            color: #00ff88;
         }
-
-
-        .topbar-links {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 24px;
-
-        }
-
 
         .topbar-links a {
-
-            color: #777;
-
+            color: #b5b5b5;
+            font-size: 13px;
+            margin-left: 20px;
             text-decoration: none;
-
-            font-size: 11px;
-
-            font-weight: 700;
-
-            text-transform: uppercase;
-
-            letter-spacing: .04em;
-
-            transition: .2s;
-
+            transition: color .2s;
         }
-
 
         .topbar-links a:hover {
-
-            color: #d2ff1f;
-
+            color: #00ff88;
         }
 
-
         /* =========================================================
-           LAYOUT
+           LAYOUT PRINCIPAL
         ========================================================= */
-
         .pdv-layout {
-
-            height: calc(100vh - 62px);
-
             display: grid;
-
-            grid-template-columns:
-                minmax(0, 1fr)
-                390px;
-
+            grid-template-columns: minmax(0, 1fr) 380px;
+            width: 100%;
+            min-height: calc(100vh - 52px);
+            overflow: visible;
+            align-items: start;
         }
 
-
         /* =========================================================
-           COLUNA PRODUTOS
+           COLUNA DE PRODUTOS
         ========================================================= */
-
         .produtos-col {
-
-            min-width: 0;
-
             display: flex;
-
             flex-direction: column;
-
-            background: #050505;
-
+            border-right: 1px solid #292929;
+            overflow: visible;
+            min-width: 0;
         }
-
-
-        /* =========================================================
-           HEADER PRODUTOS
-        ========================================================= */
 
         .produtos-header {
-
-            padding: 22px 28px;
-
-            border-bottom: 1px solid #1d1d1d;
-
-            background: #070707;
-
+            padding: 16px 20px;
+            border-bottom: 1px solid #292929;
+            background: #111111;
+            flex-shrink: 0;
         }
-
-
-        .titulo-produtos {
-
-            margin-bottom: 14px;
-
-        }
-
-
-        .titulo-produtos h1 {
-
-            font-size: 24px;
-
-            font-weight: 900;
-
-            letter-spacing: -.04em;
-
-        }
-
-
-        .titulo-produtos p {
-
-            margin-top: 5px;
-
-            color: #666;
-
-            font-size: 11px;
-
-            font-weight: 600;
-
-        }
-
-
-        .busca-wrapper {
-
-            position: relative;
-
-        }
-
-
-        .busca-icon {
-
-            position: absolute;
-
-            left: 15px;
-
-            top: 50%;
-
-            transform: translateY(-50%);
-
-            color: #666;
-
-            font-size: 15px;
-
-            pointer-events: none;
-
-        }
-
 
         .busca-input {
-
             width: 100%;
-
-            height: 45px;
-
-            padding: 0 15px 0 42px;
-
-            border: 1px solid #282828;
-
-            border-radius: 10px;
-
-            background: #111;
-
-            color: #fff;
-
+            padding: 10px 14px;
+            border: 1px solid #333333;
+            border-radius: 8px;
+            font-size: 14px;
             outline: none;
-
-            font-family: inherit;
-
-            font-size: 12px;
-
-            font-weight: 600;
-
-            transition: .2s;
-
+            transition: border-color .2s;
+            background: #191919;
+            color: #ffffff;
         }
-
 
         .busca-input::placeholder {
-
-            color: #555;
-
+            color: #777777;
         }
-
 
         .busca-input:focus {
-
-            border-color: #d2ff1f;
-
-            box-shadow:
-                0 0 0 3px rgba(210,255,31,.06);
-
+            border-color: #00ff88;
+            box-shadow: 0 0 0 2px rgba(0,255,136,.10);
         }
 
-
         /* =========================================================
-           GRID
+           GRADE DE PRODUTOS
+           Agora a grade cresce junto com a página
         ========================================================= */
-
         .produtos-grid {
-
-            flex: 1;
-
-            min-height: 0;
-
-            overflow-y: auto;
-
-            padding: 24px 28px;
-
             display: grid;
-
-            grid-template-columns:
-                repeat(
-                    auto-fill,
-                    minmax(220px, 1fr)
-                );
-
-            align-content: start;
-
-            gap: 22px;
-
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 14px;
+            padding: 16px 20px;
+            overflow: visible;
+            width: 100%;
         }
-
 
         /* =========================================================
-           CARD
+           CARD DO PRODUTO
         ========================================================= */
-
         .produto-card {
-
-            position: relative;
-
-            min-width: 0;
-
-            overflow: hidden;
-
-            background: #0c0c0c;
-
-            border: 1px solid #242424;
-
-            border-radius: 24px;
-
+            background: #151515;
+            border: 1px solid #2b2b2b;
+            border-radius: 10px;
+            padding: 14px;
             cursor: pointer;
-
-            transition:
-                transform .2s ease,
-                border-color .2s ease,
-                box-shadow .2s ease;
-
+            transition: border-color .15s, transform .1s, box-shadow .15s;
+            user-select: none;
         }
-
 
         .produto-card:hover {
-
-            transform: translateY(-5px);
-
-            border-color: #d2ff1f;
-
-            box-shadow:
-                0 18px 40px rgba(0,0,0,.45);
-
+            border-color: #00ff88;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 18px rgba(0,255,136,.12);
         }
-
 
         .produto-card:active {
-
-            transform: translateY(-1px);
-
+            transform: translateY(0);
         }
-
 
         /* =========================================================
-           IMAGEM
+           IMAGEM DAS CAMISAS
+           Aumentada de 80px para 120px
         ========================================================= */
-
-        .produto-imagem {
-
-            position: relative;
-
+        .produto-card img {
             width: 100%;
-
-            height: 235px;
-
-            overflow: hidden;
-
-            background:
-                linear-gradient(
-                    to bottom,
-                    #f4f4f4 0%,
-                    #eeeeee 55%,
-                    #9b9b9b 100%
-                );
-
-        }
-
-
-        .produto-imagem img {
-
-            width: 100%;
-
-            height: 100%;
-
-            display: block;
-
+            height: 120px;
             object-fit: contain;
-
-            transition: transform .35s ease;
-
+            border-radius: 6px;
+            margin-bottom: 10px;
+            background: #0d0d0d;
+            display: block;
         }
-
-
-        .produto-card:hover
-        .produto-imagem img {
-
-            transform: scale(1.04);
-
-        }
-
-
-        /* =========================================================
-           BADGE
-        ========================================================= */
-
-        .status-badge {
-
-            position: absolute;
-
-            top: 14px;
-
-            left: 14px;
-
-            z-index: 2;
-
-            padding: 7px 12px;
-
-            border-radius: 999px;
-
-            font-size: 9px;
-
-            font-weight: 900;
-
-            text-transform: uppercase;
-
-            letter-spacing: .02em;
-
-            background: #252525;
-
-        }
-
-
-        .status-disponivel {
-
-            color: #d2ff1f;
-
-        }
-
-
-        .status-ultimas {
-
-            color: #050505;
-
-            background: #ffb52e;
-
-        }
-
-
-        .status-sem {
-
-            color: #fff;
-
-            background: #d92b2b;
-
-        }
-
-
-        /* =========================================================
-           NUMERO DO PRODUTO
-        ========================================================= */
-
-        .produto-numero {
-
-            position: absolute;
-
-            bottom: 13px;
-
-            left: 15px;
-
-            z-index: 2;
-
-            color: rgba(255,255,255,.45);
-
-            font-size: 9px;
-
-            font-weight: 800;
-
-        }
-
-
-        /* =========================================================
-           CONTEÚDO DO CARD
-        ========================================================= */
-
-        .produto-conteudo {
-
-            padding: 22px 20px 20px;
-
-        }
-
 
         .produto-card-nome {
-
-            min-height: 40px;
-
-            margin-bottom: 14px;
-
-            color: #fff;
-
-            font-size: 15px;
-
-            font-weight: 800;
-
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
             line-height: 1.3;
-
-            letter-spacing: -.02em;
-
+            margin-bottom: 6px;
         }
-
-
-        /* =========================================================
-           PREÇO
-        ========================================================= */
-
-        .preco-label {
-
-            margin-bottom: 4px;
-
-            color: #4f4f4f;
-
-            font-size: 8px;
-
-            font-weight: 700;
-
-            text-transform: uppercase;
-
-            letter-spacing: .12em;
-
-        }
-
 
         .produto-card-preco {
-
-            color: #d2ff1f;
-
-            font-size: 24px;
-
-            font-weight: 900;
-
-            letter-spacing: -.05em;
-
+            font-size: 15px;
+            font-weight: 700;
+            color: #00ff88;
         }
 
-
-        /* =========================================================
-           CARD SEM ESTOQUE
-        ========================================================= */
+        .produto-card-estoque {
+            font-size: 11px;
+            color: #888888;
+            margin-top: 3px;
+        }
 
         .produto-card.sem-estoque {
-
-            opacity: .45;
-
+            opacity: .4;
             cursor: not-allowed;
-
+            pointer-events: none;
         }
-
-
-        .produto-card.sem-estoque:hover {
-
-            transform: none;
-
-            border-color: #242424;
-
-            box-shadow: none;
-
-        }
-
 
         /* =========================================================
-           PAGINAÇÃO
+           COLUNA DO CARRINHO
         ========================================================= */
-
-        .paginacao {
-
-            height: 66px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            gap: 6px;
-
-            flex-shrink: 0;
-
-            background: #070707;
-
-            border-top: 1px solid #1d1d1d;
-
-        }
-
-
-        #numeros-paginas {
-
-            display: flex;
-
-            gap: 5px;
-
-        }
-
-
-        .pagina-btn {
-
-            min-width: 34px;
-
-            height: 34px;
-
-            padding: 0 9px;
-
-            border: 1px solid #292929;
-
-            border-radius: 8px;
-
-            background: #111;
-
-            color: #aaa;
-
-            font-family: inherit;
-
-            font-size: 10px;
-
-            font-weight: 800;
-
-            cursor: pointer;
-
-            transition: .2s;
-
-        }
-
-
-        .pagina-btn:hover:not(:disabled),
-
-        .pagina-btn.ativa {
-
-            background: #d2ff1f;
-
-            border-color: #d2ff1f;
-
-            color: #050505;
-
-        }
-
-
-        .pagina-btn:disabled {
-
-            opacity: .25;
-
-            cursor: not-allowed;
-
-        }
-
-
-        /* =========================================================
-           CARRINHO
-        ========================================================= */
-
         .carrinho-col {
-
             display: flex;
-
             flex-direction: column;
-
-            min-width: 0;
-
-            background: #0b0b0b;
-
-            border-left: 1px solid #242424;
-
+            background: #111111;
+            overflow: visible;
+            min-height: calc(100vh - 52px);
         }
-
 
         .carrinho-header {
-
-            height: 72px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: space-between;
-
-            padding: 0 22px;
-
+            padding: 16px 20px;
+            border-bottom: 1px solid #292929;
+            font-weight: 700;
+            font-size: 15px;
             flex-shrink: 0;
-
-            border-bottom: 1px solid #242424;
-
+            color: #ffffff;
         }
-
-
-        .carrinho-titulo {
-
-            font-size: 16px;
-
-            font-weight: 900;
-
-        }
-
-
-        .carrinho-contador {
-
-            min-width: 27px;
-
-            height: 27px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            border-radius: 50%;
-
-            background: #d2ff1f;
-
-            color: #050505;
-
-            font-size: 10px;
-
-            font-weight: 900;
-
-        }
-
 
         /* =========================================================
            CLIENTE
         ========================================================= */
-
         .cliente-section {
-
-            padding: 16px 20px;
-
-            border-bottom: 1px solid #242424;
-
+            padding: 14px 20px;
+            border-bottom: 1px solid #292929;
             flex-shrink: 0;
-
         }
-
 
         .cliente-section label {
-
-            display: block;
-
-            margin-bottom: 7px;
-
-            color: #666;
-
-            font-size: 8px;
-
-            font-weight: 800;
-
+            font-size: 12px;
+            font-weight: 600;
+            color: #a3a3a3;
             text-transform: uppercase;
-
-            letter-spacing: .12em;
-
+            letter-spacing: .06em;
+            display: block;
+            margin-bottom: 6px;
         }
-
 
         .cliente-select {
-
             width: 100%;
-
-            height: 42px;
-
-            padding: 0 12px;
-
-            border: 1px solid #292929;
-
-            border-radius: 9px;
-
+            padding: 9px 12px;
+            border: 1px solid #333333;
+            border-radius: 8px;
+            font-size: 14px;
             outline: none;
-
-            background: #141414;
-
-            color: #fff;
-
-            font-family: inherit;
-
-            font-size: 11px;
-
-            font-weight: 600;
-
+            cursor: pointer;
+            transition: border-color .2s;
+            background: #191919;
+            color: #ffffff;
         }
-
 
         .cliente-select:focus {
-
-            border-color: #d2ff1f;
-
+            border-color: #00ff88;
+            box-shadow: 0 0 0 2px rgba(0,255,136,.10);
         }
-
 
         .desconto-badge {
-
             display: inline-flex;
-
             align-items: center;
-
             gap: 5px;
-
-            margin-top: 8px;
-
-            padding: 5px 9px;
-
+            background: #0d2e20;
+            color: #00ff88;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
             border-radius: 999px;
-
-            background: rgba(210,255,31,.08);
-
-            color: #d2ff1f;
-
-            font-size: 9px;
-
-            font-weight: 800;
-
+            margin-top: 8px;
         }
-
 
         /* =========================================================
-           ITENS CARRINHO
+           ITENS DO CARRINHO
         ========================================================= */
-
         .carrinho-itens {
-
             flex: 1;
-
-            min-height: 0;
-
-            overflow-y: auto;
-
+            padding: 8px 0;
+            overflow: visible;
         }
-
 
         .carrinho-vazio {
-
-            height: 100%;
-
-            min-height: 250px;
-
             display: flex;
-
             flex-direction: column;
-
             align-items: center;
-
             justify-content: center;
-
-            gap: 10px;
-
-            padding: 30px;
-
-            color: #555;
-
-            text-align: center;
-
-            font-size: 10px;
-
-            font-weight: 600;
-
+            min-height: 180px;
+            color: #777777;
+            font-size: 14px;
+            gap: 8px;
         }
-
 
         .carrinho-vazio-icon {
-
-            width: 58px;
-
-            height: 58px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            border: 1px solid #292929;
-
-            border-radius: 50%;
-
-            font-size: 22px;
-
-            opacity: .6;
-
+            font-size: 36px;
         }
-
 
         .item-carrinho {
-
-            display: grid;
-
-            grid-template-columns:
-                minmax(0,1fr)
-                auto;
-
+            display: flex;
+            align-items: center;
             gap: 10px;
-
-            padding: 15px 20px;
-
-            border-bottom: 1px solid #1d1d1d;
-
+            padding: 10px 20px;
+            border-bottom: 1px solid #222222;
+            transition: background .1s;
         }
 
-
-        .item-info {
-
-            min-width: 0;
-
+        .item-carrinho:hover {
+            background: #181818;
         }
-
 
         .item-nome {
-
-            overflow: hidden;
-
-            color: #fff;
-
-            font-size: 11px;
-
-            font-weight: 800;
-
-            white-space: nowrap;
-
-            text-overflow: ellipsis;
-
+            flex: 1;
+            font-size: 13px;
+            font-weight: 500;
+            color: #ffffff;
         }
-
 
         .item-preco-unit {
-
-            margin-top: 5px;
-
-            color: #666;
-
-            font-size: 9px;
-
+            font-size: 11px;
+            color: #888888;
         }
-
-
-        .item-direita {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 10px;
-
-        }
-
 
         .item-qty-ctrl {
-
             display: flex;
-
             align-items: center;
-
-            gap: 4px;
-
+            gap: 6px;
         }
-
 
         .qty-btn {
-
-            width: 25px;
-
-            height: 25px;
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            border: 1px solid #303030;
-
+            width: 26px;
+            height: 26px;
+            border: 1px solid #333333;
             border-radius: 6px;
-
-            background: #151515;
-
-            color: #fff;
-
+            background: #191919;
+            color: #ffffff;
+            font-size: 16px;
             cursor: pointer;
-
-            font-size: 15px;
-
-            font-weight: 800;
-
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .1s;
+            font-weight: 600;
+            line-height: 1;
         }
 
-
-        .qty-btn:hover:not(:disabled) {
-
-            background: #d2ff1f;
-
-            border-color: #d2ff1f;
-
+        .qty-btn:hover {
+            background: #00ff88;
             color: #050505;
-
+            border-color: #00ff88;
         }
-
-
-        .qty-btn:disabled {
-
-            opacity: .25;
-
-            cursor: not-allowed;
-
-        }
-
 
         .qty-value {
-
+            font-size: 14px;
+            font-weight: 600;
             min-width: 20px;
-
-            color: #fff;
-
-            font-size: 10px;
-
-            font-weight: 800;
-
             text-align: center;
-
+            color: #ffffff;
         }
-
 
         .item-subtotal {
-
-            min-width: 65px;
-
-            color: #d2ff1f;
-
-            font-size: 11px;
-
-            font-weight: 900;
-
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffffff;
+            min-width: 64px;
             text-align: right;
-
         }
 
+        .item-remover {
+            color: #ff4d4d;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: background .1s;
+            background: none;
+            border: none;
+        }
+
+        .item-remover:hover {
+            background: #351313;
+        }
 
         /* =========================================================
-           FOOTER CARRINHO
+           RODAPÉ DO CARRINHO
         ========================================================= */
-
         .carrinho-footer {
-
-            flex-shrink: 0;
-
-            padding: 18px 20px 20px;
-
             border-top: 1px solid #292929;
-
-            background: #0b0b0b;
-
+            padding: 16px 20px;
+            flex-shrink: 0;
+            background: #111111;
         }
-
 
         .totais {
-
-            margin-bottom: 15px;
-
+            margin-bottom: 14px;
         }
-
 
         .total-linha {
-
             display: flex;
-
-            align-items: center;
-
             justify-content: space-between;
-
-            margin-bottom: 7px;
-
-            color: #777;
-
-            font-size: 10px;
-
-            font-weight: 600;
-
+            font-size: 13px;
+            color: #a3a3a3;
+            margin-bottom: 6px;
         }
-
 
         .total-linha.desconto {
-
-            color: #d2ff1f;
-
+            color: #00ff88;
         }
-
 
         .total-linha.final {
-
-            margin-top: 12px;
-
-            padding-top: 12px;
-
-            border-top: 1px solid #292929;
-
-            color: #fff;
-
             font-size: 18px;
-
-            font-weight: 900;
-
+            font-weight: 800;
+            color: #ffffff;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 2px solid #333333;
         }
-
-
-        #val-total {
-
-            color: #d2ff1f;
-
-        }
-
 
         .obs-input {
-
             width: 100%;
-
-            min-height: 60px;
-
-            padding: 10px 12px;
-
-            margin-bottom: 10px;
-
-            resize: none;
-
+            padding: 8px 12px;
+            border: 1px solid #333333;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 12px;
             outline: none;
-
-            border: 1px solid #292929;
-
-            border-radius: 9px;
-
-            background: #141414;
-
-            color: #fff;
-
-            font-family: inherit;
-
-            font-size: 10px;
-
+            resize: none;
+            background: #191919;
+            color: #ffffff;
         }
-
 
         .obs-input::placeholder {
-
-            color: #555;
-
+            color: #777777;
         }
-
 
         .obs-input:focus {
-
-            border-color: #d2ff1f;
-
+            border-color: #00ff88;
+            box-shadow: 0 0 0 2px rgba(0,255,136,.10);
         }
-
 
         /* =========================================================
-           FINALIZAR
+           BOTÃO FINALIZAR
         ========================================================= */
-
         .btn-finalizar {
-
             width: 100%;
-
-            height: 50px;
-
-            border: none;
-
-            border-radius: 10px;
-
-            background: #d2ff1f;
-
+            padding: 14px;
+            background: #00ff88;
             color: #050505;
-
-            font-family: inherit;
-
-            font-size: 12px;
-
-            font-weight: 900;
-
-            text-transform: uppercase;
-
-            letter-spacing: .04em;
-
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 700;
             cursor: pointer;
-
-            transition: .2s;
-
+            transition: background .15s;
+            letter-spacing: .02em;
+            box-shadow: 0 4px 15px rgba(0,255,136,.15);
         }
 
-
-        .btn-finalizar:hover:not(:disabled) {
-
-            transform: translateY(-2px);
-
-            box-shadow:
-                0 10px 30px rgba(210,255,31,.12);
-
+        .btn-finalizar:hover {
+            background: #00cc6a;
         }
-
 
         .btn-finalizar:disabled {
-
-            background: #252525;
-
-            color: #555;
-
+            background: #2a2a2a;
+            color: #777777;
             cursor: not-allowed;
-
+            box-shadow: none;
         }
 
-
         /* =========================================================
-           ALERTA
+           ALERTAS
         ========================================================= */
-
         .alerta {
-
-            position: fixed;
-
-            top: 76px;
-
-            left: 50%;
-
-            transform: translateX(-50%);
-
-            z-index: 100;
-
-            max-width: 500px;
-
-            padding: 12px 18px;
-
-            border: 1px solid #542020;
-
-            border-radius: 10px;
-
-            background: #210e0e;
-
-            color: #ff7777;
-
-            font-size: 10px;
-
-            font-weight: 700;
-
-            box-shadow:
-                0 15px 40px rgba(0,0,0,.5);
-
+            background: #351313;
+            color: #ff6b6b;
+            border: 1px solid #5a2020;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin: 12px 20px;
         }
 
+        /* =========================================================
+           PAGAMENTOS
+        ========================================================= */
+        .pagamento-section {
+            background: #0f0f0f;
+            border: 1px solid #292929;
+            border-radius: 9px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+        }
+
+        .pagamento-titulo {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+
+        .pagamento-grid {
+            display: grid;
+            grid-template-columns: 1fr 108px;
+            gap: 7px;
+            margin-bottom: 7px;
+        }
+
+        .pagamento-grid label {
+            font-size: 10px;
+            color: #888888;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .pagamento-grid select,
+        .pagamento-grid input {
+            width: 100%;
+            height: 34px;
+            padding: 6px 9px;
+            background: #191919;
+            color: #ffffff;
+            border: 1px solid #333333;
+            border-radius: 7px;
+            outline: none;
+            font-size: 12px;
+        }
+
+        .pagamento-grid select:focus,
+        .pagamento-grid input:focus {
+            border-color: #00ff88;
+            box-shadow: 0 0 0 2px rgba(0,255,136,.08);
+        }
+
+        .pagamento-segundo {
+            display: none;
+        }
+
+        .pagamento-toggle {
+            width: 100%;
+            height: 30px;
+            border: 1px dashed #3b3b3b;
+            border-radius: 7px;
+            background: transparent;
+            color: #00ff88;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .pagamento-toggle:hover {
+            border-color: #00ff88;
+            background: rgba(0,255,136,.05);
+        }
+
+        .pagamento-resumo {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .pagamento-resumo-box {
+            background: #151515;
+            border: 1px solid #292929;
+            border-radius: 7px;
+            padding: 7px 6px;
+            text-align: center;
+        }
+
+        .pagamento-resumo-box span {
+            display: block;
+            font-size: 9px;
+            color: #777777;
+            margin-bottom: 3px;
+            text-transform: uppercase;
+        }
+
+        .pagamento-resumo-box strong {
+            font-size: 12px;
+            color: #ffffff;
+        }
+
+        .pagamento-resumo-box.ok strong {
+            color: #00ff88;
+        }
+
+        .pagamento-resumo-box.pendente strong {
+            color: #ffcc66;
+        }
+
+        .pagamento-resumo-box.erro strong {
+            color: #ff6b6b;
+        }
 
         /* =========================================================
-           SCROLLBAR
+           BARRA DE ROLAGEM
         ========================================================= */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        html,
+        body {
+            scrollbar-width: thin;
+        }
 
         ::-webkit-scrollbar {
-
-            width: 6px;
-
-            height: 6px;
-
+            width: 9px;
+            height: 9px;
         }
-
 
         ::-webkit-scrollbar-track {
-
-            background: #080808;
-
+            background: #0b0b0b;
         }
-
 
         ::-webkit-scrollbar-thumb {
-
-            background: #292929;
-
-            border-radius: 20px;
-
+            background: #333333;
+            border-radius: 10px;
         }
-
 
         ::-webkit-scrollbar-thumb:hover {
-
-            background: #d2ff1f;
-
+            background: #00ff88;
         }
-
 
         /* =========================================================
            RESPONSIVO
         ========================================================= */
-
-        @media (max-width: 1200px) {
-
+        @media (max-width: 900px) {
             .pdv-layout {
-
-                grid-template-columns:
-                    minmax(0,1fr)
-                    350px;
-
-            }
-
-
-            .produtos-grid {
-
-                grid-template-columns:
-                    repeat(
-                        auto-fill,
-                        minmax(190px,1fr)
-                    );
-
-            }
-
-        }
-
-
-        @media (max-width: 850px) {
-
-            body {
-
-                overflow: auto;
-
-            }
-
-
-            .topbar {
-
-                height: auto;
-
-                min-height: 62px;
-
-                padding: 12px 16px;
-
-                flex-direction: column;
-
-                align-items: flex-start;
-
-                gap: 10px;
-
-            }
-
-
-            .topbar-links {
-
-                width: 100%;
-
-                overflow-x: auto;
-
-                gap: 16px;
-
-            }
-
-
-            .pdv-layout {
-
-                height: auto;
-
                 grid-template-columns: 1fr;
-
             }
-
 
             .produtos-col {
-
-                min-height: 650px;
-
+                border-right: none;
             }
-
 
             .carrinho-col {
-
-                min-height: 600px;
-
-                border-left: none;
-
-                border-top: 1px solid #242424;
-
+                min-height: auto;
             }
 
-        }
+            .topbar {
+                height: auto;
+                min-height: 52px;
+                padding: 12px 16px;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
 
+            .topbar-links {
+                width: 100%;
+            }
+
+            .topbar-links a {
+                margin-left: 0;
+                margin-right: 15px;
+            }
+        }
 
         @media (max-width: 500px) {
-
-            .produtos-header {
-
-                padding: 18px 14px;
-
-            }
-
-
             .produtos-grid {
-
-                padding: 14px;
-
-                gap: 12px;
-
-                grid-template-columns:
-                    repeat(2,minmax(0,1fr));
-
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                padding: 12px;
+                gap: 10px;
             }
 
-
-            .produto-imagem {
-
-                height: 145px;
-
+            .produto-card {
+                padding: 10px;
             }
 
-
-            .produto-conteudo {
-
-                padding: 14px;
-
+            .produto-card img {
+                height: 105px;
             }
 
-
-            .produto-card-nome {
-
-                font-size: 11px;
-
+            .pagamento-grid {
+                grid-template-columns: 1fr;
             }
 
-
-            .produto-card-preco {
-
-                font-size: 17px;
-
+            .item-carrinho {
+                padding: 10px 12px;
+                flex-wrap: wrap;
             }
 
-
-            .produto-numero {
-
-                font-size: 7px;
-
+            .item-subtotal {
+                min-width: auto;
             }
 
-
-            .status-badge {
-
-                top: 8px;
-
-                left: 8px;
-
-                padding: 5px 7px;
-
-                font-size: 7px;
-
+            .carrinho-footer {
+                padding: 14px 12px;
             }
-
         }
-
     </style>
 
+    <link rel="stylesheet" href="/static/css/navbar.css">
 </head>
-
 
 <body>
 
-
     {% include "shared/navbar.html" %}
-
 
     <!-- =========================================================
          TOPO
     ========================================================== -->
-
     <header class="topbar">
-
-        <span class="topbar-title">
-            M&J STORE — PDV
-        </span>
-
+        <span class="topbar-title"></span>
 
         <nav class="topbar-links">
-
-            <a href="/pdv/historico">
-                Histórico de vendas
-            </a>
-
-            <a href="/clientes">
-                Clientes
-            </a>
-
-            <a href="/dashboard">
-                Dashboard
-            </a>
-
+            <a href="/pdv/historico">Histórico de vendas</a>
+            <a href="/clientes">Clientes</a>
+            <a href="/dashboard">Dashboard</a>
         </nav>
-
     </header>
-
 
     <!-- =========================================================
          ALERTAS
     ========================================================== -->
-
     {% set erro = request.query_params.get('erro') %}
 
-
     {% if erro %}
-
     <div class="alerta">
 
         {% if erro == 'vazio' %}
-
             Carrinho vazio. Adicione produtos antes de finalizar.
 
         {% elif erro == 'estoque' %}
-
-            Estoque insuficiente.
+            Estoque insuficiente para:
+            {{ request.query_params.get('produto') }}
 
         {% elif erro == 'quantidade' %}
-
             Quantidade inválida.
 
-        {% elif erro == 'cliente_inexistente' %}
-
-            Cliente não encontrado ou está inativo.
-
-        {% elif erro == 'json' %}
-
-            Não foi possível processar o carrinho.
-
-        {% elif erro == 'item_invalido' %}
-
-            Um dos produtos do carrinho é inválido.
-
-        {% elif erro == 'produto_inexistente' %}
-
-            Um dos produtos não existe ou está inativo.
-
-        {% elif erro == 'salvar' %}
-
-            Não foi possível salvar a venda.
-
         {% else %}
-
             Ocorreu um erro. Tente novamente.
-
         {% endif %}
 
     </div>
-
     {% endif %}
 
-
     <!-- =========================================================
-         LAYOUT
+         LAYOUT PRINCIPAL
     ========================================================== -->
-
     <div class="pdv-layout">
 
-
         <!-- =====================================================
-             PRODUTOS
+             COLUNA ESQUERDA — PRODUTOS
         ====================================================== -->
-
         <section class="produtos-col">
-
 
             <div class="produtos-header">
 
-
-                <div class="titulo-produtos">
-
-                    <h1>
-                        Produtos
-                    </h1>
-
-                    <p>
-                        Selecione um produto para adicionar ao carrinho
-                    </p>
-
-                </div>
-
-
-                <div class="busca-wrapper">
-
-                    <span class="busca-icon">
-                        🔍
-                    </span>
-
-
-                    <input
-                        class="busca-input"
-                        type="text"
-                        id="busca-produto"
-                        placeholder="Buscar produto..."
-                        autocomplete="off"
-                    >
-
-                </div>
-
+                <input
+                    class="busca-input"
+                    type="text"
+                    id="busca-produto"
+                    placeholder="🔍 Buscar produto..."
+                    autocomplete="off"
+                >
 
             </div>
-
-
-            <!-- =================================================
-                 GRID
-            ================================================== -->
 
             <div
                 class="produtos-grid"
                 id="grade-produtos"
             >
 
-
                 {% for p in produtos %}
 
-
-                {% set estoque = p.estoque_atual or 0 %}
-
-
                 <div
-                    class="produto-card {% if estoque <= 0 %}sem-estoque{% endif %}"
+                    class="produto-card {% if p.estoque_atual == 0 %}sem-estoque{% endif %}"
                     data-id="{{ p.id }}"
                     data-nome="{{ p.nome }}"
                     data-preco="{{ p.preco }}"
-                    data-estoque="{{ estoque }}"
+                    data-estoque="{{ p.estoque_atual }}"
                     data-nome-lower="{{ p.nome.lower() }}"
                     onclick="adicionarAoCarrinho(this)"
                 >
 
+                    <img
+                        src="{{ p.imagem_url }}"
+                        alt="{{ p.nome }}"
+                    >
 
-                    <!-- IMAGEM -->
-
-                    <div class="produto-imagem">
-
-
-                        {% if estoque <= 0 %}
-
-                        <div class="status-badge status-sem">
-                            SEM ESTOQUE
-                        </div>
-
-
-                        {% elif estoque <= 5 %}
-
-                        <div class="status-badge status-ultimas">
-                            ÚLTIMAS UNIDADES
-                        </div>
-
-
-                        {% else %}
-
-                        <div class="status-badge status-disponivel">
-                            DISPONÍVEL
-                        </div>
-
-                        {% endif %}
-
-
-                        <img
-                            src="{{ p.imagem_url }}"
-                            alt="{{ p.nome }}"
-                            onerror="this.style.display='none'"
-                        >
-
-
-                        <span class="produto-numero">
-                            #{{ p.id }}
-                        </span>
-
-
+                    <div class="produto-card-nome">
+                        {{ p.nome }}
                     </div>
 
-
-                    <!-- CONTEÚDO -->
-
-                    <div class="produto-conteudo">
-
-
-                        <div class="produto-card-nome">
-                            {{ p.nome }}
-                        </div>
-
-
-                        <div>
-
-                            <div class="preco-label">
-                                Preço
-                            </div>
-
-
-                            <div class="produto-card-preco">
-
-                                R$
-                                {{ "%.2f"|format(p.preco)|replace('.', ',') }}
-
-                            </div>
-
-                        </div>
-
-
+                    <div class="produto-card-preco">
+                        R$ {{ "%.2f"|format(p.preco) }}
                     </div>
 
+                    <div class="produto-card-estoque">
+                        Estoque: {{ p.estoque_atual }}
+                    </div>
 
                 </div>
 
-
                 {% endfor %}
 
-
             </div>
-
-
-            <!-- =================================================
-                 PAGINAÇÃO
-            ================================================== -->
-
-            <div
-                class="paginacao"
-                id="paginacao"
-            >
-
-                <button
-                    type="button"
-                    class="pagina-btn"
-                    id="btn-anterior"
-                    onclick="paginaAnterior()"
-                >
-                    ←
-                </button>
-
-
-                <div id="numeros-paginas"></div>
-
-
-                <button
-                    type="button"
-                    class="pagina-btn"
-                    id="btn-proximo"
-                    onclick="paginaProxima()"
-                >
-                    →
-                </button>
-
-            </div>
-
 
         </section>
 
 
         <!-- =====================================================
-             CARRINHO
+             COLUNA DIREITA — CARRINHO
         ====================================================== -->
-
         <aside class="carrinho-col">
 
-
             <div class="carrinho-header">
-
-                <span class="carrinho-titulo">
-                    Carrinho
-                </span>
-
-
-                <span
-                    class="carrinho-contador"
-                    id="contador-carrinho"
-                >
-                    0
-                </span>
-
+                🛒 Carrinho
             </div>
-
 
             <!-- =================================================
                  CLIENTE
             ================================================== -->
-
             <div class="cliente-section">
 
-
-                <label for="select-cliente">
+                <label>
                     Cliente
                 </label>
-
 
                 <select
                     class="cliente-select"
@@ -1802,23 +816,20 @@
                     onchange="atualizarCliente(this)"
                 >
 
-
                     <option
                         value="0"
-                        data-desconto="0"
                         data-associado="false"
+                        data-desconto="0"
                     >
-                        Sem identificação
+                        Sem identificação (sem desconto)
                     </option>
-
 
                     {% for c in clientes %}
 
-
                     <option
                         value="{{ c.id }}"
-                        data-desconto="{{ c.desconto_percentual or 0 }}"
                         data-associado="{{ 'true' if c.is_associado else 'false' }}"
+                        data-desconto="{{ c.desconto_percentual or 0 }}"
                     >
 
                         {{ c.nome }}
@@ -1827,52 +838,32 @@
                             ({{ c.matricula }})
                         {% endif %}
 
-                        {% if c.desconto_percentual and c.desconto_percentual > 0 %}
-
-                            — {{ c.desconto_percentual }}% OFF
-
-                        {% elif c.is_associado %}
-
+                        {% if c.is_associado %}
                             — ASSOCIADO
-
                         {% endif %}
 
                     </option>
 
-
                     {% endfor %}
 
-
                 </select>
-
 
                 <div
                     class="desconto-badge"
                     id="badge-desconto"
                     style="display:none"
-                >
-
-                    ✓
-
-                    <span id="texto-desconto">
-                        Desconto aplicado
-                    </span>
-
-                </div>
-
+                ></div>
 
             </div>
 
 
             <!-- =================================================
-                 ITENS
+                 LISTA DO CARRINHO
             ================================================== -->
-
             <div
                 class="carrinho-itens"
                 id="lista-carrinho"
             >
-
 
                 <div
                     class="carrinho-vazio"
@@ -1887,23 +878,22 @@
 
                 </div>
 
-
             </div>
 
 
             <!-- =================================================
-                 RODAPÉ
+                 RODAPÉ DO CARRINHO
             ================================================== -->
-
             <div class="carrinho-footer">
 
-
+                <!-- =================================================
+                     TOTAIS
+                ================================================== -->
                 <div
                     class="totais"
                     id="totais"
                     style="display:none"
                 >
-
 
                     <div class="total-linha">
 
@@ -1929,7 +919,7 @@
                         </span>
 
                         <span id="val-desconto">
-                            − R$ 0,00
+                            — R$ 0,00
                         </span>
 
                     </div>
@@ -1947,10 +937,12 @@
 
                     </div>
 
-
                 </div>
 
 
+                <!-- =================================================
+                     OBSERVAÇÃO
+                ================================================== -->
                 <textarea
                     class="obs-input"
                     id="obs-input"
@@ -1959,19 +951,20 @@
                 ></textarea>
 
 
+                <!-- =================================================
+                     FORMULÁRIO DE VENDA
+                ================================================== -->
                 <form
                     id="form-venda"
                     action="/pdv/finalizar"
                     method="post"
                 >
 
-
                     <input
                         type="hidden"
                         name="carrinho_json"
                         id="input-carrinho"
                     >
-
 
                     <input
                         type="hidden"
@@ -1980,7 +973,6 @@
                         value="0"
                     >
 
-
                     <input
                         type="hidden"
                         name="observacao"
@@ -1988,6 +980,222 @@
                     >
 
 
+                    <!-- =================================================
+                         PAGAMENTOS
+                    ================================================== -->
+                    <div
+                        class="pagamento-section"
+                        id="pagamento-section"
+                        style="display:none"
+                    >
+
+                        <div class="pagamento-titulo">
+
+                            <span>
+                                💳 Pagamento
+                            </span>
+
+                            <span id="status-pagamento">
+                                Informe o valor
+                            </span>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             PRIMEIRO PAGAMENTO
+                        ================================================== -->
+                        <div class="pagamento-grid">
+
+                            <div>
+
+                                <label for="forma-pagamento-1">
+                                    1º pagamento
+                                </label>
+
+                                <select
+                                    id="forma-pagamento-1"
+                                    name="forma_pagamento_1"
+                                >
+
+                                    <option value="dinheiro">
+                                        Dinheiro
+                                    </option>
+
+                                    <option value="pix">
+                                        PIX
+                                    </option>
+
+                                    <option value="debito">
+                                        Débito
+                                    </option>
+
+                                    <option value="credito">
+                                        Crédito
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div>
+
+                                <label for="valor-pagamento-1">
+                                    Valor
+                                </label>
+
+                                <input
+                                    id="valor-pagamento-1"
+                                    name="valor_pagamento_1"
+                                    type="number"
+                                    min="0.01"
+                                    step="0.01"
+                                    value="0.00"
+                                    inputmode="decimal"
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             SEGUNDO PAGAMENTO
+                        ================================================== -->
+                        <div
+                            class="pagamento-segundo"
+                            id="pagamento-segundo"
+                        >
+
+                            <div class="pagamento-grid">
+
+                                <div>
+
+                                    <label for="forma-pagamento-2">
+                                        2º pagamento
+                                    </label>
+
+                                    <select
+                                        id="forma-pagamento-2"
+                                        name="forma_pagamento_2"
+                                    >
+
+                                        <option value="">
+                                            Selecione
+                                        </option>
+
+                                        <option value="dinheiro">
+                                            Dinheiro
+                                        </option>
+
+                                        <option value="pix">
+                                            PIX
+                                        </option>
+
+                                        <option value="debito">
+                                            Débito
+                                        </option>
+
+                                        <option value="credito">
+                                            Crédito
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+
+                                <div>
+
+                                    <label for="valor-pagamento-2">
+                                        Valor
+                                    </label>
+
+                                    <input
+                                        id="valor-pagamento-2"
+                                        name="valor_pagamento_2"
+                                        type="number"
+                                        min="0"
+                                        step="0.01"
+                                        value="0.00"
+                                        inputmode="decimal"
+                                    >
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             BOTÃO SEGUNDO PAGAMENTO
+                        ================================================== -->
+                        <button
+                            class="pagamento-toggle"
+                            id="btn-segundo-pagamento"
+                            type="button"
+                            onclick="alternarSegundoPagamento()"
+                        >
+                            + Usar segundo pagamento
+                        </button>
+
+
+                        <!-- =================================================
+                             RESUMO PAGAMENTO
+                        ================================================== -->
+                        <div class="pagamento-resumo">
+
+                            <div class="pagamento-resumo-box">
+
+                                <span>
+                                    Total
+                                </span>
+
+                                <strong id="pagamento-total">
+                                    R$ 0,00
+                                </strong>
+
+                            </div>
+
+
+                            <div class="pagamento-resumo-box">
+
+                                <span>
+                                    Pago
+                                </span>
+
+                                <strong id="pagamento-pago">
+                                    R$ 0,00
+                                </strong>
+
+                            </div>
+
+
+                            <div
+                                class="pagamento-resumo-box pendente"
+                                id="pagamento-restante-box"
+                            >
+
+                                <span id="pagamento-restante-label">
+                                    Falta
+                                </span>
+
+                                <strong id="pagamento-restante">
+                                    R$ 0,00
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         BOTÃO FINALIZAR
+                    ================================================== -->
                     <button
                         class="btn-finalizar"
                         id="btn-finalizar"
@@ -1998,423 +1206,81 @@
                         Finalizar venda
                     </button>
 
-
                 </form>
-
 
             </div>
 
-
         </aside>
-
 
     </div>
 
 
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
     <script>
 
-        /* ============================================================
-           CONFIGURAÇÕES
-        ============================================================ */
-
-        const ITENS_POR_PAGINA = 12;
-
-        let paginaAtual = 1;
+        // ========================================================
+        // ESTADO DO CARRINHO
+        // ========================================================
 
         let carrinho = [];
 
-
-        /* ============================================================
-           CLIENTE
-        ============================================================ */
-
         let clienteAtual = {
-
             id: 0,
-
-            desconto: 0,
-
-            associado: false
-
+            associado: false,
+            desconto: 0
         };
 
+        let segundoPagamentoAtivo = false;
 
-        /* ============================================================
-           MOEDA
-        ============================================================ */
 
-        function formatarMoeda(valor) {
-
-            return 'R$ ' +
-                Number(valor)
-                    .toFixed(2)
-                    .replace('.', ',');
-
-        }
-
-
-        /* ============================================================
-           CONTADOR CARRINHO
-        ============================================================ */
-
-        function atualizarContadorCarrinho() {
-
-            const contador =
-                document.getElementById(
-                    'contador-carrinho'
-                );
-
-
-            const total = carrinho.reduce(
-
-                (soma, item) =>
-
-                    soma + item.quantidade,
-
-                0
-
-            );
-
-
-            contador.textContent = total;
-
-        }
-
-
-        /* ============================================================
-           PRODUTOS VISÍVEIS
-        ============================================================ */
-
-        function obterProdutosVisiveis() {
-
-            const input =
-                document.getElementById(
-                    'busca-produto'
-                );
-
-
-            const termo =
-                input
-                    ? input.value
-                        .toLowerCase()
-                        .trim()
-                    : '';
-
-
-            return Array.from(
-
-                document.querySelectorAll(
-                    '.produto-card'
-                )
-
-            ).filter(card => {
-
-
-                const nome =
-                    card.dataset.nomeLower || '';
-
-
-                return nome.includes(termo);
-
-            });
-
-        }
-
-
-        /* ============================================================
-           PAGINAÇÃO
-        ============================================================ */
-
-        function renderizarPaginacao() {
-
-            const produtos =
-                obterProdutosVisiveis();
-
-
-            const totalPaginas =
-                Math.max(
-
-                    1,
-
-                    Math.ceil(
-
-                        produtos.length /
-                        ITENS_POR_PAGINA
-
-                    )
-
-                );
-
-
-            if (paginaAtual > totalPaginas) {
-
-                paginaAtual =
-                    totalPaginas;
-
-            }
-
-
-            const inicio =
-                (paginaAtual - 1) *
-                ITENS_POR_PAGINA;
-
-
-            const fim =
-                inicio +
-                ITENS_POR_PAGINA;
-
-
-            document
-                .querySelectorAll(
-                    '.produto-card'
-                )
-                .forEach(card => {
-
-                    card.style.display =
-                        'none';
-
-                });
-
-
-            produtos
-                .slice(inicio, fim)
-                .forEach(card => {
-
-                    card.style.display =
-                        '';
-
-                });
-
-
-            const container =
-                document.getElementById(
-                    'numeros-paginas'
-                );
-
-
-            container.innerHTML = '';
-
-
-            for (
-                let i = 1;
-                i <= totalPaginas;
-                i++
-            ) {
-
-
-                const botao =
-                    document.createElement(
-                        'button'
-                    );
-
-
-                botao.type =
-                    'button';
-
-
-                botao.className =
-                    'pagina-btn' +
-                    (
-                        i === paginaAtual
-                            ? ' ativa'
-                            : ''
-                    );
-
-
-                botao.textContent =
-                    i;
-
-
-                botao.onclick =
-                    function () {
-
-                        paginaAtual = i;
-
-                        renderizarPaginacao();
-
-                    };
-
-
-                container.appendChild(
-                    botao
-                );
-
-            }
-
-
-            document.getElementById(
-                'btn-anterior'
-            ).disabled =
-                paginaAtual === 1;
-
-
-            document.getElementById(
-                'btn-proximo'
-            ).disabled =
-                paginaAtual === totalPaginas;
-
-
-            document.getElementById(
-                'paginacao'
-            ).style.display =
-                produtos.length === 0
-                    ? 'none'
-                    : 'flex';
-
-        }
-
-
-        function paginaAnterior() {
-
-            if (paginaAtual <= 1) {
-
-                return;
-
-            }
-
-
-            paginaAtual--;
-
-            renderizarPaginacao();
-
-        }
-
-
-        function paginaProxima() {
-
-            const produtos =
-                obterProdutosVisiveis();
-
-
-            const totalPaginas =
-                Math.ceil(
-
-                    produtos.length /
-                    ITENS_POR_PAGINA
-
-                );
-
-
-            if (
-                paginaAtual >=
-                totalPaginas
-            ) {
-
-                return;
-
-            }
-
-
-            paginaAtual++;
-
-            renderizarPaginacao();
-
-        }
-
-
-        /* ============================================================
-           ADICIONAR AO CARRINHO
-        ============================================================ */
+        // ========================================================
+        // ADICIONAR PRODUTO AO CARRINHO
+        // ========================================================
 
         function adicionarAoCarrinho(card) {
 
+            const id = parseInt(card.dataset.id);
 
-            const id =
-                Number(card.dataset.id);
+            const nome = card.dataset.nome;
 
+            const preco = parseFloat(card.dataset.preco);
 
-            const nome =
-                card.dataset.nome;
-
-
-            const preco =
-                Number(card.dataset.preco);
+            const estoque = parseInt(card.dataset.estoque);
 
 
-            const estoque =
-                Number(card.dataset.estoque);
-
-
-            if (
-                !Number.isFinite(id) ||
-                !Number.isFinite(preco)
-            ) {
-
-                alert(
-                    'Erro ao identificar o produto.'
-                );
-
-                return;
-
-            }
-
-
-            if (
-                !Number.isFinite(estoque) ||
-                estoque <= 0
-            ) {
-
-                alert(
-                    'Produto sem estoque.'
-                );
-
-                return;
-
-            }
-
-
-            const existente =
-                carrinho.find(
-
-                    item =>
-                        item.produto_id === id
-
-                );
+            const existente = carrinho.find(
+                i => i.produto_id === id
+            );
 
 
             if (existente) {
 
-
                 if (
-                    existente.quantidade >=
+                    existente.quantidade <
                     existente.estoque_max
                 ) {
 
+                    existente.quantidade++;
+
+                } else {
+
                     alert(
-
-                        `Você pode comprar no máximo ${existente.estoque_max} unidade(s) deste produto.`
-
+                        `Estoque máximo atingido: ${existente.estoque_max} unidade(s).`
                     );
 
                     return;
-
                 }
 
-
-                existente.quantidade++;
-
-            }
-
-            else {
-
+            } else {
 
                 carrinho.push({
-
-                    produto_id:
-                        id,
-
-                    nome:
-                        nome,
-
-                    preco:
-                        preco,
-
-                    quantidade:
-                        1,
-
-                    estoque_max:
-                        estoque
-
+                    produto_id: id,
+                    nome: nome,
+                    preco: preco,
+                    quantidade: 1,
+                    estoque_max: estoque
                 });
 
             }
@@ -2425,138 +1291,90 @@
         }
 
 
-        /* ============================================================
-           ALTERAR QUANTIDADE
-        ============================================================ */
+        // ========================================================
+        // ALTERAR QUANTIDADE
+        // ========================================================
 
-        function alterarQtd(
-            produtoId,
-            delta
-        ) {
+        function alterarQtd(produtoId, delta) {
 
-
-            const item =
-                carrinho.find(
-
-                    i =>
-                        i.produto_id ===
-                        produtoId
-
-                );
+            const item = carrinho.find(
+                i => i.produto_id === produtoId
+            );
 
 
             if (!item) {
-
                 return;
-
             }
 
 
-            const novaQuantidade =
-                item.quantidade +
-                delta;
+            item.quantidade += delta;
 
 
-            if (novaQuantidade <= 0) {
+            if (item.quantidade <= 0) {
 
                 removerItem(produtoId);
 
                 return;
-
             }
 
 
             if (
-                novaQuantidade >
+                item.quantidade >
                 item.estoque_max
             ) {
 
-                alert(
-
-                    `Estoque disponível: ${item.estoque_max} unidade(s).`
-
-                );
-
-                return;
+                item.quantidade =
+                    item.estoque_max;
 
             }
 
 
-            item.quantidade =
-                novaQuantidade;
-
-
             renderizarCarrinho();
 
         }
 
 
-        /* ============================================================
-           REMOVER ITEM
-        ============================================================ */
+        // ========================================================
+        // REMOVER ITEM
+        // ========================================================
 
         function removerItem(produtoId) {
 
-
-            carrinho =
-                carrinho.filter(
-
-                    item =>
-                        item.produto_id !==
-                        produtoId
-
-                );
-
+            carrinho = carrinho.filter(
+                i => i.produto_id !== produtoId
+            );
 
             renderizarCarrinho();
 
         }
 
 
-        /* ============================================================
-           CLIENTE
-        ============================================================ */
+        // ========================================================
+        // ATUALIZAR CLIENTE
+        // ========================================================
 
         function atualizarCliente(select) {
 
-
-            const option =
+            const opt =
                 select.options[
                     select.selectedIndex
                 ];
 
 
             clienteAtual.id =
-                Number(option.value) || 0;
-
-
-            clienteAtual.desconto =
-                Number(
-                    option.dataset.desconto
-                ) || 0;
+                parseInt(
+                    opt.value || '0'
+                );
 
 
             clienteAtual.associado =
-                option.dataset.associado ===
-                'true';
+                opt.dataset.associado === 'true';
 
 
-            if (
-                clienteAtual.desconto < 0
-            ) {
-
-                clienteAtual.desconto = 0;
-
-            }
-
-
-            if (
-                clienteAtual.desconto > 100
-            ) {
-
-                clienteAtual.desconto = 100;
-
-            }
+            clienteAtual.desconto =
+                parseFloat(
+                    opt.dataset.desconto || '0'
+                );
 
 
             const badge =
@@ -2565,26 +1383,18 @@
                 );
 
 
-            const texto =
-                document.getElementById(
-                    'texto-desconto'
-                );
-
-
             if (
+                clienteAtual.associado &&
                 clienteAtual.desconto > 0
             ) {
+
+                badge.textContent =
+                    `✓ ${clienteAtual.desconto}% de desconto aplicado`;
 
                 badge.style.display =
                     'inline-flex';
 
-
-                texto.textContent =
-                    `${clienteAtual.desconto}% de desconto aplicado`;
-
-            }
-
-            else {
+            } else {
 
                 badge.style.display =
                     'none';
@@ -2597,16 +1407,21 @@
         }
 
 
-        /* ============================================================
-           RENDERIZAR CARRINHO
-        ============================================================ */
+        // ========================================================
+        // RENDERIZAR CARRINHO
+        // ========================================================
 
         function renderizarCarrinho() {
-
 
             const lista =
                 document.getElementById(
                     'lista-carrinho'
+                );
+
+
+            const vazio =
+                document.getElementById(
+                    'msg-vazio'
                 );
 
 
@@ -2616,64 +1431,49 @@
                 );
 
 
-            const btnFinal =
+            const pagamentoSection =
                 document.getElementById(
-                    'btn-finalizar'
+                    'pagamento-section'
                 );
 
 
-            atualizarContadorCarrinho();
+            if (carrinho.length === 0) {
 
+                lista.innerHTML = '';
 
-            if (
-                carrinho.length === 0
-            ) {
+                lista.appendChild(vazio);
 
-
-                lista.innerHTML = `
-
-                    <div class="carrinho-vazio">
-
-                        <span class="carrinho-vazio-icon">
-                            🛒
-                        </span>
-
-                        Clique nos produtos para adicionar
-
-                    </div>
-
-                `;
-
+                vazio.style.display =
+                    'flex';
 
                 totais.style.display =
                     'none';
 
+                pagamentoSection.style.display =
+                    'none';
 
-                btnFinal.disabled =
-                    true;
-
-
-                renderizarTotais();
+                document.getElementById(
+                    'btn-finalizar'
+                ).disabled = true;
 
                 return;
-
             }
 
+
+            vazio.style.display =
+                'none';
 
             totais.style.display =
                 'block';
 
+            pagamentoSection.style.display =
+                'block';
 
-            btnFinal.disabled =
-                false;
 
-
-            lista.innerHTML =
-                '';
+            lista.innerHTML = '';
 
 
             carrinho.forEach(item => {
-
 
                 const subtotal =
                     item.preco *
@@ -2690,87 +1490,73 @@
                     'item-carrinho';
 
 
-                const limiteAtingido =
-                    item.quantidade >=
-                    item.estoque_max;
-
-
                 div.innerHTML = `
 
-                    <div class="item-info">
+                    <div style="flex:1">
 
                         <div class="item-nome">
-
                             ${item.nome}
-
                         </div>
 
                         <div class="item-preco-unit">
-
-                            ${formatarMoeda(item.preco)}
+                            R$ ${item.preco
+                                .toFixed(2)
+                                .replace('.', ',')}
                             / un.
-
                         </div>
 
                     </div>
 
 
-                    <div class="item-direita">
+                    <div class="item-qty-ctrl">
 
-                        <div class="item-qty-ctrl">
-
-                            <button
-                                type="button"
-                                class="qty-btn"
-                                onclick="alterarQtd(
-                                    ${item.produto_id},
-                                    -1
-                                )"
-                            >
-                                −
-                            </button>
+                        <button
+                            type="button"
+                            class="qty-btn"
+                            onclick="alterarQtd(${item.produto_id}, -1)"
+                        >
+                            −
+                        </button>
 
 
-                            <span class="qty-value">
-
-                                ${item.quantidade}
-
-                            </span>
+                        <span class="qty-value">
+                            ${item.quantidade}
+                        </span>
 
 
-                            <button
-                                type="button"
-                                class="qty-btn"
-                                onclick="alterarQtd(
-                                    ${item.produto_id},
-                                    1
-                                )"
-                                ${
-                                    limiteAtingido
-                                        ? 'disabled'
-                                        : ''
-                                }
-                            >
-                                +
-                            </button>
-
-                        </div>
-
-
-                        <div class="item-subtotal">
-
-                            ${formatarMoeda(subtotal)}
-
-                        </div>
+                        <button
+                            type="button"
+                            class="qty-btn"
+                            onclick="alterarQtd(${item.produto_id}, +1)"
+                        >
+                            +
+                        </button>
 
                     </div>
+
+
+                    <div class="item-subtotal">
+
+                        R$ ${subtotal
+                            .toFixed(2)
+                            .replace('.', ',')}
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="item-remover"
+                        onclick="removerItem(${item.produto_id})"
+                        title="Remover"
+                    >
+                        ×
+                    </button>
 
                 `;
 
 
-                lista.appendChild(
-                    div
-                );
+                lista.appendChild(div);
 
             });
 
@@ -2780,189 +1566,519 @@
         }
 
 
-        /* ============================================================
-           TOTAIS
-        ============================================================ */
+        // ========================================================
+        // CALCULAR TOTAIS
+        // ========================================================
 
-        function renderizarTotais() {
-
+        function obterTotais() {
 
             const subtotal =
                 carrinho.reduce(
-
-                    (
-                        total,
-                        item
-                    ) => {
-
-                        return total +
-                            (
-                                item.preco *
-                                item.quantidade
-                            );
-
-                    },
-
+                    (acc, i) =>
+                        acc +
+                        i.preco *
+                        i.quantidade,
                     0
-
                 );
 
 
-            const descontoPercentual =
-                Number(
-                    clienteAtual.desconto
-                ) || 0;
+            const descontoPct =
+                clienteAtual.desconto ||
+                0;
 
 
             const descontoValor =
                 subtotal *
-                (
-                    descontoPercentual /
-                    100
-                );
+                (descontoPct / 100);
 
 
             const total =
-                subtotal -
-                descontoValor;
+                Math.max(
+                    0,
+                    subtotal -
+                    descontoValor
+                );
+
+
+            return {
+                subtotal,
+                descontoPct,
+                descontoValor,
+                total
+            };
+
+        }
+
+
+        // ========================================================
+        // RENDERIZAR TOTAIS
+        // ========================================================
+
+        function renderizarTotais() {
+
+            const {
+                subtotal,
+                descontoPct,
+                descontoValor,
+                total
+            } =
+                obterTotais();
+
+
+            const fmt =
+                v =>
+                    'R$ ' +
+                    v
+                        .toFixed(2)
+                        .replace('.', ',');
 
 
             document.getElementById(
                 'val-subtotal'
             ).textContent =
-                formatarMoeda(
-                    subtotal
-                );
+                fmt(subtotal);
 
 
             document.getElementById(
                 'val-total'
             ).textContent =
-                formatarMoeda(
-                    total
-                );
+                fmt(total);
 
 
-            const linhaDesconto =
+            const linhaDesc =
                 document.getElementById(
                     'linha-desconto'
                 );
 
 
-            const labelDesconto =
+            const labelDesc =
                 document.getElementById(
                     'label-desconto'
                 );
 
 
-            const valorDesconto =
+            const valDesc =
                 document.getElementById(
                     'val-desconto'
                 );
 
 
             if (
-                descontoPercentual > 0 &&
                 descontoValor > 0
             ) {
 
-
-                linhaDesconto.style.display =
+                linhaDesc.style.display =
                     'flex';
 
+                labelDesc.textContent =
+                    `Desconto (${descontoPct}%)`;
 
-                labelDesconto.textContent =
-                    `Desconto (${descontoPercentual}%)`;
+                valDesc.textContent =
+                    `− ${fmt(descontoValor)}`;
 
+            } else {
 
-                valorDesconto.textContent =
-                    `− ${formatarMoeda(
-                        descontoValor
-                    )}`;
-
-            }
-
-            else {
-
-                linhaDesconto.style.display =
+                linhaDesc.style.display =
                     'none';
 
             }
 
-        }
 
-
-        /* ============================================================
-           FINALIZAR VENDA
-        ============================================================ */
-
-        function finalizarVenda() {
-
-
-            if (
-                carrinho.length === 0
-            ) {
-
-                alert(
-                    'Adicione pelo menos um produto ao carrinho.'
+            const pagamentoSection =
+                document.getElementById(
+                    'pagamento-section'
                 );
 
-                return;
 
-            }
+            if (carrinho.length > 0) {
+
+                pagamentoSection.style.display =
+                    'block';
 
 
-            for (
-                const item of carrinho
-            ) {
+                const campo1 =
+                    document.getElementById(
+                        'valor-pagamento-1'
+                    );
 
 
                 if (
-                    item.quantidade <= 0 ||
-                    item.quantidade >
-                    item.estoque_max
+                    !segundoPagamentoAtivo &&
+                    document.activeElement !== campo1
                 ) {
 
-                    alert(
-
-                        `Quantidade inválida para ${item.nome}.`
-
-                    );
-
-                    return;
+                    campo1.value =
+                        total.toFixed(2);
 
                 }
 
             }
 
 
-            const dadosCarrinho =
-                carrinho.map(
+            atualizarResumoPagamentos();
 
-                    item => ({
+        }
 
-                        produto_id:
-                            item.produto_id,
 
-                        nome:
-                            item.nome,
+        // ========================================================
+        // SEGUNDO PAGAMENTO
+        // ========================================================
 
-                        preco:
-                            item.preco,
+        function alternarSegundoPagamento() {
 
-                        quantidade:
-                            item.quantidade
+            segundoPagamentoAtivo =
+                !segundoPagamentoAtivo;
 
-                    })
 
+            const bloco =
+                document.getElementById(
+                    'pagamento-segundo'
                 );
+
+
+            const botao =
+                document.getElementById(
+                    'btn-segundo-pagamento'
+                );
+
+
+            const forma2 =
+                document.getElementById(
+                    'forma-pagamento-2'
+                );
+
+
+            const valor2 =
+                document.getElementById(
+                    'valor-pagamento-2'
+                );
+
+
+            if (segundoPagamentoAtivo) {
+
+                bloco.style.display =
+                    'block';
+
+                botao.textContent =
+                    '− Remover segundo pagamento';
+
+                forma2.value = '';
+
+                valor2.value =
+                    '0.00';
+
+
+                document.getElementById(
+                    'valor-pagamento-1'
+                ).select();
+
+            } else {
+
+                bloco.style.display =
+                    'none';
+
+                botao.textContent =
+                    '+ Usar segundo pagamento';
+
+                forma2.value = '';
+
+                valor2.value =
+                    '0.00';
+
+
+                const total =
+                    obterTotais().total;
+
+
+                document.getElementById(
+                    'valor-pagamento-1'
+                ).value =
+                    total.toFixed(2);
+
+            }
+
+
+            atualizarResumoPagamentos();
+
+        }
+
+
+        // ========================================================
+        // RESUMO DOS PAGAMENTOS
+        // ========================================================
+
+        function atualizarResumoPagamentos() {
+
+            const total =
+                obterTotais().total;
+
+
+            const valor1 =
+                parseFloat(
+                    document.getElementById(
+                        'valor-pagamento-1'
+                    ).value
+                ) || 0;
+
+
+            const valor2 =
+                segundoPagamentoAtivo
+                    ? (
+                        parseFloat(
+                            document.getElementById(
+                                'valor-pagamento-2'
+                            ).value
+                        ) || 0
+                    )
+                    : 0;
+
+
+            const pago =
+                valor1 + valor2;
+
+
+            const diferenca =
+                total - pago;
+
+
+            const fmt =
+                v =>
+                    'R$ ' +
+                    Math.abs(v)
+                        .toFixed(2)
+                        .replace('.', ',');
+
+
+            const restanteBox =
+                document.getElementById(
+                    'pagamento-restante-box'
+                );
+
+
+            const restanteLabel =
+                document.getElementById(
+                    'pagamento-restante-label'
+                );
+
+
+            const restante =
+                document.getElementById(
+                    'pagamento-restante'
+                );
+
+
+            const status =
+                document.getElementById(
+                    'status-pagamento'
+                );
+
+
+            const btnFinal =
+                document.getElementById(
+                    'btn-finalizar'
+                );
+
+
+            document.getElementById(
+                'pagamento-total'
+            ).textContent =
+                fmt(total);
+
+
+            document.getElementById(
+                'pagamento-pago'
+            ).textContent =
+                fmt(pago);
+
+
+            restanteBox.classList.remove(
+                'ok',
+                'pendente',
+                'erro'
+            );
+
+
+            if (
+                Math.abs(diferenca) <= 0.01
+            ) {
+
+                restanteLabel.textContent =
+                    'Situação';
+
+                restante.textContent =
+                    'OK';
+
+                restanteBox.classList.add(
+                    'ok'
+                );
+
+                status.textContent =
+                    'Pagamento completo';
+
+            } else if (
+                diferenca > 0
+            ) {
+
+                restanteLabel.textContent =
+                    'Falta';
+
+                restante.textContent =
+                    fmt(diferenca);
+
+                restanteBox.classList.add(
+                    'pendente'
+                );
+
+                status.textContent =
+                    'Informe o restante';
+
+            } else {
+
+                restanteLabel.textContent =
+                    'Excedente';
+
+                restante.textContent =
+                    fmt(diferenca);
+
+                restanteBox.classList.add(
+                    'erro'
+                );
+
+                status.textContent =
+                    'Valor acima do total';
+
+            }
+
+
+            btnFinal.disabled =
+                carrinho.length === 0 ||
+                Math.abs(diferenca) >
+                0.01;
+
+        }
+
+
+        // ========================================================
+        // FINALIZAR VENDA
+        // ========================================================
+
+        function finalizarVenda() {
+
+            if (
+                carrinho.length === 0
+            ) {
+                return;
+            }
+
+
+            const total =
+                obterTotais().total;
+
+
+            const valor1 =
+                parseFloat(
+                    document.getElementById(
+                        'valor-pagamento-1'
+                    ).value
+                ) || 0;
+
+
+            const valor2 =
+                segundoPagamentoAtivo
+                    ? (
+                        parseFloat(
+                            document.getElementById(
+                                'valor-pagamento-2'
+                            ).value
+                        ) || 0
+                    )
+                    : 0;
+
+
+            const totalPago =
+                valor1 + valor2;
+
+
+            if (
+                Math.abs(
+                    totalPago - total
+                ) > 0.01
+            ) {
+
+                alert(
+                    'O valor dos pagamentos precisa ser exatamente igual ao total da venda.'
+                );
+
+                atualizarResumoPagamentos();
+
+                return;
+
+            }
+
+
+            if (
+                segundoPagamentoAtivo
+            ) {
+
+                const forma2 =
+                    document.getElementById(
+                        'forma-pagamento-2'
+                    ).value;
+
+
+                if (
+                    !forma2 ||
+                    valor2 <= 0
+                ) {
+
+                    alert(
+                        'Informe corretamente o segundo pagamento.'
+                    );
+
+                    return;
+                }
+
+
+                if (
+                    document.getElementById(
+                        'forma-pagamento-1'
+                    ).value === forma2
+                ) {
+
+                    alert(
+                        'Escolha formas de pagamento diferentes.'
+                    );
+
+                    return;
+                }
+
+            }
 
 
             document.getElementById(
                 'input-carrinho'
             ).value =
+
                 JSON.stringify(
-                    dadosCarrinho
+
+                    carrinho.map(
+                        i => ({
+
+                            id:
+                                i.produto_id,
+
+                            nome:
+                                i.nome,
+
+                            preco:
+                                i.preco,
+
+                            quantidade:
+                                i.quantidade
+
+                        })
+                    )
+
                 );
 
 
@@ -2975,6 +2091,7 @@
             document.getElementById(
                 'input-obs'
             ).value =
+
                 document.getElementById(
                     'obs-input'
                 ).value;
@@ -2987,67 +2104,95 @@
         }
 
 
-        /* ============================================================
-           BUSCA
-        ============================================================ */
+        // ========================================================
+        // BUSCA DE PRODUTOS
+        // ========================================================
 
-        const campoBusca =
-            document.getElementById(
+        document
+            .getElementById(
                 'busca-produto'
-            );
-
-
-        if (campoBusca) {
-
-            campoBusca.addEventListener(
+            )
+            .addEventListener(
                 'input',
                 function () {
 
-                    paginaAtual = 1;
+                    const termo =
+                        this.value
+                            .toLowerCase()
+                            .trim();
 
-                    renderizarPaginacao();
+
+                    document
+                        .querySelectorAll(
+                            '.produto-card'
+                        )
+                        .forEach(
+                            card => {
+
+                                const nome =
+                                    card.dataset
+                                        .nomeLower ||
+                                    '';
+
+
+                                card.style.display =
+                                    nome.includes(
+                                        termo
+                                    )
+                                        ? ''
+                                        : 'none';
+
+                            }
+                        );
 
                 }
             );
 
-        }
+
+        // ========================================================
+        // EVENTOS DOS PAGAMENTOS
+        // ========================================================
+
+        document
+            .getElementById(
+                'valor-pagamento-1'
+            )
+            .addEventListener(
+                'input',
+                atualizarResumoPagamentos
+            );
 
 
-        /* ============================================================
-           INICIALIZAÇÃO
-        ============================================================ */
-
-        document.addEventListener(
-            'DOMContentLoaded',
-            function () {
-
-
-                renderizarPaginacao();
+        document
+            .getElementById(
+                'valor-pagamento-2'
+            )
+            .addEventListener(
+                'input',
+                atualizarResumoPagamentos
+            );
 
 
-                renderizarCarrinho();
+        document
+            .getElementById(
+                'forma-pagamento-1'
+            )
+            .addEventListener(
+                'change',
+                atualizarResumoPagamentos
+            );
 
 
-                const selectCliente =
-                    document.getElementById(
-                        'select-cliente'
-                    );
-
-
-                if (selectCliente) {
-
-                    atualizarCliente(
-                        selectCliente
-                    );
-
-                }
-
-            }
-        );
+        document
+            .getElementById(
+                'forma-pagamento-2'
+            )
+            .addEventListener(
+                'change',
+                atualizarResumoPagamentos
+            );
 
     </script>
 
-
 </body>
-
 </html>

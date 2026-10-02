@@ -1,27 +1,16 @@
 
 import json
 
-from fastapi import (
-    APIRouter,
-    Depends,
-    Request,
-    Form
-)
-
+from fastapi import APIRouter, Depends, Request, Form
 from fastapi.responses import RedirectResponse
-
 from fastapi.templating import Jinja2Templates
-
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-
 from app.models.venda import Venda, ItemVenda
-
+from app.models.pagamento import Pagamento
 from app.models.produto import Produto
-
 from app.models.cliente import Cliente
-
 from app.auth import get_usuario_logado
 
 
@@ -35,357 +24,297 @@ templates = Jinja2Templates(
 )
 
 
-# ============================================================
+FORMAS_PAGAMENTO_VALIDAS = {
+    "dinheiro",
+    "pix",
+    "debito",
+    "credito"
+}
+
+
+def redirecionar_erro(codigo):
+    return RedirectResponse(
+        url=f"/pdv/?erro={codigo}",
+        status_code=303
+    )
+
+
+# ==========================================================
 # TELA DO PDV
-# ============================================================
+# ==========================================================
 
 @router.get("/")
-def tela_pdv(
-
+def pdv(
     request: Request,
-
     db: Session = Depends(get_db),
-
-    usuario=Depends(
-        get_usuario_logado
-    )
+    usuario=Depends(get_usuario_logado)
 ):
-
     produtos = (
-
         db.query(Produto)
-
         .filter(
-
             Produto.ativo == True,
-
             Produto.estoque_atual > 0
         )
-
-        .order_by(
-            Produto.nome
-        )
-
+        .order_by(Produto.nome.asc())
         .all()
     )
-
 
     clientes = (
-
         db.query(Cliente)
-
-        .filter(
-            Cliente.ativo == True
-        )
-
-        .order_by(
-            Cliente.nome
-        )
-
+        .order_by(Cliente.nome.asc())
         .all()
     )
 
-
     return templates.TemplateResponse(
-
-        request=request,
-
-        name="pdv/index.html",
-
-        context={
-
-            "request":
-                request,
-
-            "usuario":
-                usuario,
-
-            "produtos":
-                produtos,
-
-            "clientes":
-                clientes
+        request,
+        "pdv/index.html",
+        {
+            "request": request,
+            "produtos": produtos,
+            "clientes": clientes,
+            "usuario": usuario
         }
     )
 
 
-# ============================================================
+# ==========================================================
 # FINALIZAR VENDA
-# ============================================================
+# ==========================================================
 
 @router.post("/finalizar")
 def finalizar_venda(
-
     request: Request,
-
-    carrinho_json: str =
-        Form(...),
-
-    cliente_id: int =
-        Form(0),
-
-    observacao: str =
-        Form(""),
-
-    db: Session =
-        Depends(get_db),
-
-    usuario=Depends(
-        get_usuario_logado
-    )
+    carrinho_json: str = Form(...),
+    cliente_id: int = Form(0),
+    observacao: str = Form(""),
+    forma_pagamento_1: str = Form(""),
+    valor_pagamento_1: float = Form(0.0),
+    forma_pagamento_2: str = Form(""),
+    valor_pagamento_2: float = Form(0.0),
+    db: Session = Depends(get_db),
+    usuario=Depends(get_usuario_logado)
 ):
-
-    # ========================================================
-    # CARRINHO
-    # ========================================================
+    # ======================================================
+    # LER CARRINHO
+    # ======================================================
 
     try:
+        carrinho = json.loads(carrinho_json)
+    except Exception:
+        return redirecionar_erro("json")
 
-        itens = json.loads(
-            carrinho_json
-        )
+    if not isinstance(carrinho, list) or len(carrinho) == 0:
+        return redirecionar_erro("vazio")
 
-    except (
-        json.JSONDecodeError,
-        ValueError,
-        TypeError
-    ):
-
-        return RedirectResponse(
-
-            url="/pdv?erro=json",
-
-            status_code=303
-        )
-
-
-    if not itens:
-
-        return RedirectResponse(
-
-            url="/pdv?erro=vazio",
-
-            status_code=303
-        )
-
-
-    # ========================================================
-    # CLIENTE
-    # ========================================================
+    # ======================================================
+    # CLIENTE E DESCONTO DO ASSOCIADO
+    # ======================================================
 
     cliente = None
-
     desconto_percentual = 0.0
 
-
-    if cliente_id:
+    if cliente_id and cliente_id != 0:
 
         cliente = (
-
             db.query(Cliente)
-
             .filter(
-
-                Cliente.id ==
-                    cliente_id,
-
-                Cliente.ativo ==
-                    True
+                Cliente.id == cliente_id
             )
-
             .first()
         )
 
-
         if not cliente:
-
-            return RedirectResponse(
-
-                url="/pdv?erro=cliente_inexistente",
-
-                status_code=303
+            return redirecionar_erro(
+                "cliente_inexistente"
             )
-
-
-        # ====================================================
-        # DESCONTO INDIVIDUAL DO CLIENTE
-        # ====================================================
 
         desconto_percentual = float(
+            cliente.desconto_percentual or 0
+        )
 
-            getattr(
-                cliente,
-                "desconto_percentual",
-                0.0
+        if desconto_percentual < 0:
+            desconto_percentual = 0
+
+        if desconto_percentual > 100:
+            desconto_percentual = 100
+
+    # ======================================================
+    # FORMAS DE PAGAMENTO
+    # ======================================================
+
+    forma_pagamento_1 = (
+        forma_pagamento_1 or ""
+    ).strip().lower()
+
+    forma_pagamento_2 = (
+        forma_pagamento_2 or ""
+    ).strip().lower()
+
+    # ======================================================
+    # VALORES DE PAGAMENTO
+    # ======================================================
+
+    try:
+        valor_pagamento_1 = float(
+            valor_pagamento_1 or 0
+        )
+
+        valor_pagamento_2 = float(
+            valor_pagamento_2 or 0
+        )
+
+    except Exception:
+        return redirecionar_erro(
+            "pagamento_valor"
+        )
+
+    # ======================================================
+    # PRIMEIRO PAGAMENTO
+    # ======================================================
+
+    if (
+        forma_pagamento_1
+        not in FORMAS_PAGAMENTO_VALIDAS
+    ):
+        return redirecionar_erro(
+            "pagamento_invalido"
+        )
+
+    if valor_pagamento_1 <= 0:
+        return redirecionar_erro(
+            "pagamento_valor"
+        )
+
+    # ======================================================
+    # SEGUNDO PAGAMENTO
+    # ======================================================
+
+    if forma_pagamento_2:
+
+        if (
+            forma_pagamento_2
+            not in FORMAS_PAGAMENTO_VALIDAS
+        ):
+            return redirecionar_erro(
+                "pagamento_invalido"
             )
-            or 0.0
-        )
 
-
-        # Segurança
-        desconto_percentual = max(
-            0.0,
-            min(
-                100.0,
-                desconto_percentual
+        if valor_pagamento_2 <= 0:
+            return redirecionar_erro(
+                "pagamento_valor"
             )
-        )
 
+        if (
+            forma_pagamento_1
+            == forma_pagamento_2
+        ):
+            return redirecionar_erro(
+                "pagamentos_iguais"
+            )
 
-        desconto_percentual = round(
-            desconto_percentual,
-            2
-        )
+    else:
+        valor_pagamento_2 = 0.0
 
-
-    # ========================================================
-    # PRODUTOS
-    # ========================================================
+    # ======================================================
+    # VALIDAR PRODUTOS
+    # ======================================================
 
     total_bruto = 0.0
-
     itens_validados = []
 
-
-    for item in itens:
+    for item in carrinho:
 
         try:
-
             produto_id = int(
-                item["produto_id"]
+                item.get("id")
             )
 
             quantidade = int(
-                item["quantidade"]
+                item.get("quantidade")
             )
 
-        except (
-            KeyError,
-            TypeError,
-            ValueError
-        ):
-
-            return RedirectResponse(
-
-                url="/pdv?erro=item_invalido",
-
-                status_code=303
+        except Exception:
+            db.rollback()
+            return redirecionar_erro(
+                "item_invalido"
             )
-
 
         if quantidade <= 0:
-
-            return RedirectResponse(
-
-                url="/pdv?erro=quantidade",
-
-                status_code=303
+            db.rollback()
+            return redirecionar_erro(
+                "quantidade"
             )
-
 
         produto = (
-
             db.query(Produto)
-
             .filter(
-
-                Produto.id ==
-                    produto_id,
-
-                Produto.ativo ==
-                    True
+                Produto.id == produto_id
             )
-
-            .with_for_update()
-
             .first()
         )
 
-
         if not produto:
-
-            return RedirectResponse(
-
-                url="/pdv?erro=produto_inexistente",
-
-                status_code=303
+            db.rollback()
+            return redirecionar_erro(
+                "produto_inexistente"
             )
 
-
-        if produto.estoque_atual < quantidade:
-
-            return RedirectResponse(
-
-                url="/pdv?erro=estoque",
-
-                status_code=303
+        if not produto.ativo:
+            db.rollback()
+            return redirecionar_erro(
+                "produto_inexistente"
             )
 
+        if quantidade > produto.estoque_atual:
+            db.rollback()
+            return redirecionar_erro(
+                "estoque"
+            )
 
         preco = float(
-            produto.preco
+            produto.preco or 0
         )
-
 
         subtotal = (
-
-            preco *
-            quantidade
+            preco * quantidade
         )
-
 
         total_bruto += subtotal
 
-
-        itens_validados.append({
-
-            "produto":
-                produto,
-
-            "quantidade":
-                quantidade,
-
-            "preco":
-                preco,
-
-            "produto_nome":
-                produto.nome
-        })
-
-
-    # ========================================================
-    # DESCONTO
-    # ========================================================
-
-    desconto_valor = (
-
-        total_bruto *
-
-        (
-            desconto_percentual
-            / 100
+        itens_validados.append(
+            {
+                "produto": produto,
+                "quantidade": quantidade,
+                "preco": preco,
+                "subtotal": subtotal
+            }
         )
+
+    # ======================================================
+    # CALCULAR DESCONTO
+    # ======================================================
+
+    valor_desconto = (
+        total_bruto
+        * desconto_percentual
+        / 100
     )
-
-
-    # ========================================================
-    # TOTAL FINAL
-    # ========================================================
 
     total_liquido = (
-
-        total_bruto -
-        desconto_valor
+        total_bruto
+        - valor_desconto
     )
 
+    if total_liquido < 0:
+        total_liquido = 0.0
 
     total_bruto = round(
         total_bruto,
         2
     )
 
-    desconto_valor = round(
-        desconto_valor,
+    valor_desconto = round(
+        valor_desconto,
         2
     )
 
@@ -394,220 +323,220 @@ def finalizar_venda(
         2
     )
 
+    # ======================================================
+    # VALIDAR TOTAL PAGO
+    # ======================================================
 
-    # ========================================================
-    # VENDA
-    # ========================================================
-
-    venda = Venda(
-
-        cliente_id=(
-            cliente_id
-            if cliente_id
-            else None
-        ),
-
-        usuario_id=
-            usuario.get("id"),
-
-        desconto_percentual=
-            desconto_percentual,
-
-        total_bruto=
-            total_bruto,
-
-        total_liquido=
-            total_liquido,
-
-        observacao=(
-            observacao.strip()
-            if observacao
-            else None
-        )
+    total_pago = (
+        valor_pagamento_1
+        + valor_pagamento_2
     )
 
+    total_pago = round(
+        total_pago,
+        2
+    )
 
-    db.add(venda)
-
-    db.flush()
-
-
-    # ========================================================
-    # ITENS
-    # ========================================================
-
-    for item in itens_validados:
-
-        produto = item["produto"]
-
-        quantidade = item["quantidade"]
-
-
-        db.add(
-
-            ItemVenda(
-
-                venda_id=
-                    venda.id,
-
-                produto_id=
-                    produto.id,
-
-                produto_nome=
-                    item["produto_nome"],
-
-                quantidade=
-                    quantidade,
-
-                preco_unitario=
-                    item["preco"]
-            )
-        )
-
-
-        produto.estoque_atual -= (
-            quantidade
-        )
-
-
-    # ========================================================
-    # SALVAR
-    # ========================================================
-
-    try:
-
-        db.commit()
-
-    except Exception:
+    if abs(
+        total_pago - total_liquido
+    ) > 0.01:
 
         db.rollback()
 
+        return redirecionar_erro(
+            "pagamento_total"
+        )
+
+    # ======================================================
+    # SALVAR VENDA
+    # ======================================================
+
+    try:
+
+        venda = Venda(
+            cliente_id=(
+                cliente.id
+                if cliente
+                else None
+            ),
+
+            usuario_id=(
+                usuario.id
+                if usuario
+                else None
+            ),
+
+            desconto_percentual=(
+                desconto_percentual
+            ),
+
+            total_bruto=(
+                total_bruto
+            ),
+
+            total_liquido=(
+                total_liquido
+            ),
+
+            observacao=(
+                observacao.strip()
+                if observacao
+                else None
+            )
+        )
+
+        db.add(venda)
+        db.flush()
+
+        # ==================================================
+        # ITENS DA VENDA
+        # ==================================================
+
+        for item in itens_validados:
+
+            produto = item["produto"]
+
+            item_venda = ItemVenda(
+                venda_id=venda.id,
+                produto_id=produto.id,
+                produto_nome=produto.nome,
+                quantidade=item["quantidade"],
+                preco_unitario=item["preco"]
+            )
+
+            db.add(item_venda)
+
+            produto.estoque_atual -= (
+                item["quantidade"]
+            )
+
+        # ==================================================
+        # PAGAMENTO 1
+        # ==================================================
+
+        pagamento_1 = Pagamento(
+            venda_id=venda.id,
+            forma_pagamento=(
+                forma_pagamento_1
+            ),
+            valor=round(
+                valor_pagamento_1,
+                2
+            )
+        )
+
+        db.add(pagamento_1)
+
+        # ==================================================
+        # PAGAMENTO 2
+        # ==================================================
+
+        if forma_pagamento_2:
+
+            pagamento_2 = Pagamento(
+                venda_id=venda.id,
+                forma_pagamento=(
+                    forma_pagamento_2
+                ),
+                valor=round(
+                    valor_pagamento_2,
+                    2
+                )
+            )
+
+            db.add(pagamento_2)
+
+        # ==================================================
+        # COMMIT
+        # ==================================================
+
+        db.commit()
+
         return RedirectResponse(
-
-            url="/pdv?erro=salvar",
-
+            url=(
+                f"/pdv/venda/"
+                f"{venda.id}"
+                f"?sucesso=ok"
+            ),
             status_code=303
         )
 
+    except Exception as erro:
 
-    return RedirectResponse(
+        db.rollback()
 
-        url=(
-            f"/pdv/venda/"
-            f"{venda.id}"
-            f"?sucesso=ok"
-        ),
-
-        status_code=303
-    )
-
-
-# ============================================================
-# COMPROVANTE
-# ============================================================
-
-@router.get("/venda/{venda_id}")
-def detalhe_venda(
-
-    venda_id: int,
-
-    request: Request,
-
-    db: Session = Depends(get_db),
-
-    usuario=Depends(
-        get_usuario_logado
-    )
-):
-
-    venda = (
-
-        db.query(Venda)
-
-        .filter(
-            Venda.id ==
-                venda_id
+        print(
+            "ERRO AO FINALIZAR VENDA:",
+            erro
         )
 
+        return redirecionar_erro(
+            "salvar"
+        )
+
+
+# ==========================================================
+# COMPROVANTE
+# ==========================================================
+
+@router.get("/venda/{venda_id}")
+def comprovante(
+    venda_id: int,
+    request: Request,
+    db: Session = Depends(get_db),
+    usuario=Depends(get_usuario_logado)
+):
+    venda = (
+        db.query(Venda)
+        .filter(
+            Venda.id == venda_id
+        )
         .first()
     )
-
 
     if not venda:
 
         return RedirectResponse(
-
-            url="/pdv",
-
+            url="/pdv/?erro=venda_inexistente",
             status_code=303
         )
 
-
     return templates.TemplateResponse(
-
-        request=request,
-
-        name="pdv/comprovante.html",
-
-        context={
-
-            "request":
-                request,
-
-            "usuario":
-                usuario,
-
-            "venda":
-                venda
+        request,
+        "pdv/comprovante.html",
+        {
+            "request": request,
+            "venda": venda,
+            "usuario": usuario
         }
     )
 
 
-# ============================================================
+# ==========================================================
 # HISTÓRICO
-# ============================================================
+# ==========================================================
 
 @router.get("/historico")
-def historico_vendas(
-
+def historico(
     request: Request,
-
     db: Session = Depends(get_db),
-
-    usuario=Depends(
-        get_usuario_logado
-    )
+    usuario=Depends(get_usuario_logado)
 ):
-
     vendas = (
-
         db.query(Venda)
-
         .order_by(
-            Venda.criado_em.desc()
+            Venda.id.desc()
         )
-
         .limit(100)
-
         .all()
     )
 
-
     return templates.TemplateResponse(
-
-        request=request,
-
-        name="pdv/historico.html",
-
-        context={
-
-            "request":
-                request,
-
-            "usuario":
-                usuario,
-
-            "vendas":
-                vendas
+        request,
+        "pdv/historico.html",
+        {
+            "request": request,
+            "vendas": vendas,
+            "usuario": usuario
         }
     )

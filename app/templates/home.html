@@ -2,299 +2,917 @@
 <html lang="pt-br">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>Dashboard | M&J Store</title>
+
 
     <link
         href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+        rel="stylesheet"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="/static/css/navbar.css"
+    >
+
 
     <style>
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+
             font-family: 'Montserrat', sans-serif;
         }
 
-        body {
-            background: #060606;
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+
+        /* =====================================================
+           CORES DO TEMA
+           ===================================================== */
+
+        :root {
+
+            --verde: #d2ff1f;
+            --verde-hover: #beee16;
+
+            --fundo: #060606;
+            --fundo-header: #000000;
+            --fundo-card: #0d0d0d;
+
+            --texto: #ffffff;
+            --texto-secundario: #666666;
+
+            --borda: #1a1a1a;
+            --borda-header: #141414;
+            --borda-botao: #262626;
         }
 
+
+        /* =====================================================
+           BODY
+           ===================================================== */
+
+        body {
+
+            background: var(--fundo);
+
+            color: var(--texto);
+
+            min-height: 100vh;
+
+            display: flex;
+
+            flex-direction: column;
+
+            transition:
+                background 0.35s ease,
+                color 0.35s ease;
+        }
+
+
+        /* Barra verde lateral */
+
         body::before {
+
             content: '';
+
             position: fixed;
+
             left: 0;
             top: 0;
+
             width: 5px;
             height: 100%;
-            background: #d2ff1f;
+
+            background: var(--verde);
+
             z-index: 10;
         }
 
+
+        /* =====================================================
+           HEADER
+           ===================================================== */
+
         header {
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
             padding: 25px 5%;
-            background-color: #000;
-            border-bottom: 1px solid #141414;
+
+            background-color: var(--fundo-header);
+
+            border-bottom:
+                1px solid var(--borda-header);
+
+            transition:
+                background-color 0.35s ease,
+                border-color 0.35s ease;
         }
+
+
+        /* =====================================================
+           LOGO
+           ===================================================== */
 
         .logo-container {
+
             display: flex;
+
             align-items: baseline;
+
             text-decoration: none;
-            color: #fff;
+
+            color: var(--texto);
+
+            transition:
+                color 0.35s ease;
         }
+
 
         .logo-main {
+
             font-family: 'Anton', sans-serif;
+
             font-size: 32px;
+
             letter-spacing: 1px;
+
             text-transform: uppercase;
         }
+
 
         .logo-sub {
-            color: #d2ff1f;
+
+            color: var(--verde);
+
             font-size: 11px;
+
             font-weight: 900;
+
             margin-left: 4px;
+
             letter-spacing: 1px;
         }
+
+
+        /* =====================================================
+           LOGOUT
+           ===================================================== */
 
         .btn-logout {
+
             text-decoration: none;
-            color: #fff;
-            border: 1px solid #262626;
+
+            color: var(--texto);
+
+            border:
+                1px solid var(--borda-botao);
+
             padding: 12px 28px;
+
             font-size: 12px;
+
             font-weight: 700;
+
             text-transform: uppercase;
+
             letter-spacing: 1px;
-            transition: all 0.3s ease;
+
+            transition:
+                all 0.3s ease;
         }
+
 
         .btn-logout:hover {
-            background: #fff;
-            color: #000;
-            border-color: #fff;
+
+            background: var(--texto);
+
+            color: var(--fundo);
+
+            border-color: var(--texto);
         }
 
+
+        /* =====================================================
+           CONTAINER
+           ===================================================== */
+
         .container {
+
             max-width: 1200px;
+
             width: 100%;
+
             margin: 0 auto;
+
             padding: 60px 5%;
+
             flex: 1;
         }
 
+
+        /* =====================================================
+           TEXTO DE BOAS-VINDAS
+           ===================================================== */
+
         .tag-bem-vindo {
-            color: #d2ff1f;
+
+            color: var(--verde);
+
             font-size: 11px;
+
             font-weight: 900;
+
             letter-spacing: 3px;
+
             text-transform: uppercase;
+
             display: inline-block;
         }
 
+
         .titulo-usuario {
+
             font-family: 'Anton', sans-serif;
-            font-size: clamp(38px, 6vw, 60px);
+
+            font-size:
+                clamp(38px, 6vw, 60px);
+
             margin-top: 10px;
+
             margin-bottom: 40px;
+
             text-transform: uppercase;
+
             letter-spacing: 1px;
+
             line-height: 1.1;
         }
 
+
+        /* =====================================================
+           GRID
+           ===================================================== */
+
         .dashboard-grid {
+
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(320px, 1fr)
+                );
+
             gap: 30px;
+
             align-items: start;
         }
 
+
+        /* =====================================================
+           CARD PERFIL
+           ===================================================== */
+
         .profile-card {
-            background: #0d0d0d;
-            border: 1px solid #1a1a1a;
+
+            background:
+                var(--fundo-card);
+
+            border:
+                1px solid var(--borda);
+
             padding: 40px;
+
+            transition:
+                background 0.35s ease,
+                border-color 0.35s ease,
+                box-shadow 0.35s ease;
         }
 
+
         .info-grupo {
+
             margin-bottom: 30px;
         }
 
+
         .info-grupo:last-child {
+
             margin-bottom: 0;
         }
 
+
         .info-label {
-            color: #666;
+
+            color:
+                var(--texto-secundario);
+
             font-size: 11px;
+
             font-weight: 700;
+
             text-transform: uppercase;
+
             margin-bottom: 8px;
+
             display: block;
+
             letter-spacing: 1px;
+
+            transition:
+                color 0.35s ease;
         }
 
+
         .info-valor {
+
             font-size: 20px;
+
             font-weight: 600;
+
             letter-spacing: -0.5px;
         }
 
+
+        /* =====================================================
+           BADGE
+           ===================================================== */
+
         .role-badge {
-            background: #d2ff1f;
+
+            background:
+                var(--verde);
+
             color: #000;
+
             padding: 6px 16px;
+
             display: inline-block;
+
             font-size: 11px;
+
             font-weight: 900;
+
             text-transform: uppercase;
+
             letter-spacing: 1.5px;
+
             margin-top: 4px;
         }
 
+
         .role-badge.admin-role {
-            background: #ffffff;
+
+            background:
+                #ffffff;
+
             color: #000000;
         }
 
+
+        /* =====================================================
+           MENU
+           ===================================================== */
+
         .panel-menu {
+
             display: flex;
+
             flex-direction: column;
+
             gap: 15px;
         }
 
+
+        /* =====================================================
+           BOTÃO PRINCIPAL
+           ===================================================== */
+
         .btn-action {
+
             display: block;
+
             text-align: center;
-            background: #d2ff1f;
+
+            background:
+                var(--verde);
+
             color: #000;
+
             padding: 18px 30px;
+
             text-decoration: none;
+
             font-size: 13px;
+
             font-weight: 900;
+
             text-transform: uppercase;
+
             letter-spacing: 1px;
-            transition: all 0.2s ease;
+
+            transition:
+                all 0.2s ease;
         }
+
 
         .btn-action:hover {
-            background: #beee16;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(210, 255, 31, 0.15);
+
+            background:
+                var(--verde-hover);
+
+            color: #000;
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 5px 15px
+                rgba(210, 255, 31, 0.15);
         }
+
+
+        /* =====================================================
+           BOTÕES SECUNDÁRIOS
+           ===================================================== */
 
         .btn-action-secondary {
+
             display: block;
+
             text-align: center;
-            background: transparent;
-            color: #fff;
-            border: 1px solid #262626;
+
+            background:
+                transparent;
+
+            color:
+                var(--texto);
+
+            border:
+                1px solid var(--borda-botao);
+
             padding: 18px 30px;
+
             text-decoration: none;
+
             font-size: 13px;
+
             font-weight: 800;
+
             text-transform: uppercase;
+
             letter-spacing: 1px;
-            transition: all 0.2s ease;
+
+            transition:
+                all 0.2s ease;
         }
+
 
         .btn-action-secondary:hover {
-            border-color: #fff;
-            transform: translateY(-2px);
+
+            border-color:
+                var(--texto);
+
+            color:
+                var(--texto);
+
+            transform:
+                translateY(-2px);
         }
+
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
 
         footer {
+
             text-align: center;
+
             color: #444;
+
             font-size: 12px;
+
             font-weight: 600;
+
             letter-spacing: 1px;
+
             padding: 40px;
-            border-top: 1px solid #141414;
+
+            border-top:
+                1px solid var(--borda-header);
+
             margin-top: auto;
+
             text-transform: uppercase;
+
+            transition:
+                color 0.35s ease,
+                border-color 0.35s ease;
         }
+
+
+        /* =====================================================
+           TEMA CLARO
+           ===================================================== */
+
+        body.light-theme {
+
+            --fundo: #eef1f4;
+
+            --fundo-header: #ffffff;
+
+            --fundo-card: #ffffff;
+
+            --texto: #202428;
+
+            --texto-secundario: #6c757d;
+
+            --borda: #dfe3e8;
+
+            --borda-header: #dfe3e8;
+
+            --borda-botao: #cfd4da;
+
+            background:
+                var(--fundo);
+
+            color:
+                var(--texto);
+        }
+
+
+        /* Barra lateral no claro */
+
+        body.light-theme::before {
+
+            background:
+                #b8ed18;
+        }
+
+
+        /* Header */
+
+        body.light-theme header {
+
+            background:
+                #ffffff;
+
+            border-bottom-color:
+                #dfe3e8;
+        }
+
+
+        /* Logo */
+
+        body.light-theme .logo-container {
+
+            color:
+                #202428;
+        }
+
+
+        /* Logout */
+
+        body.light-theme .btn-logout {
+
+            color:
+                #202428;
+
+            border-color:
+                #cfd4da;
+        }
+
+
+        body.light-theme .btn-logout:hover {
+
+            background:
+                #202428;
+
+            color:
+                #ffffff;
+
+            border-color:
+                #202428;
+        }
+
+
+        /* Texto pequeno */
+
+        body.light-theme .tag-bem-vindo {
+
+            color:
+                #789d00;
+        }
+
+
+        /* Card */
+
+        body.light-theme .profile-card {
+
+            box-shadow:
+                0 10px 30px
+                rgba(0, 0, 0, 0.06);
+        }
+
+
+        /* Botões */
+
+        body.light-theme .btn-action-secondary {
+
+            color:
+                #202428;
+
+            border-color:
+                #cfd4da;
+        }
+
+
+        body.light-theme .btn-action-secondary:hover {
+
+            color:
+                #202428;
+
+            border-color:
+                #202428;
+        }
+
+
+        /* Footer */
+
+        body.light-theme footer {
+
+            color:
+                #6c757d;
+
+            border-top-color:
+                #dfe3e8;
+        }
+
+
+        /* =====================================================
+           RESPONSIVO
+           ===================================================== */
+
+        @media (max-width: 700px) {
+
+            header {
+
+                padding:
+                    20px 5%;
+            }
+
+
+            .container {
+
+                padding:
+                    40px 6%;
+            }
+
+
+            .dashboard-grid {
+
+                grid-template-columns:
+                    1fr;
+            }
+
+
+            .profile-card {
+
+                padding:
+                    30px;
+            }
+        }
+
+
+        @media (max-width: 500px) {
+
+            .logo-main {
+
+                font-size: 26px;
+            }
+
+
+            .logo-sub {
+
+                font-size: 9px;
+            }
+
+
+            .btn-logout {
+
+                padding:
+                    10px 16px;
+
+                font-size: 10px;
+            }
+
+
+            .container {
+
+                padding:
+                    35px 20px;
+            }
+
+
+            .profile-card {
+
+                padding:
+                    25px;
+            }
+
+
+            .btn-action,
+            .btn-action-secondary {
+
+                padding:
+                    16px 20px;
+
+                font-size: 11px;
+            }
+        }
+
     </style>
-    <link rel="stylesheet" href="/static/css/navbar.css">
+
 </head>
 
+
 <body>
+
+
     {% include "shared/navbar.html" %}
-
-
 
 
     <main class="container">
 
+
         <span class="tag-bem-vindo">
+
             Painel de Controle Corporativo
+
         </span>
 
+
         <h1 class="titulo-usuario">
+
             Olá, {{ usuario.nome }}
+
         </h1>
+
 
         <div class="dashboard-grid">
 
+
+            <!-- PERFIL -->
+
             <div class="profile-card">
-                <div class="info-grupo">
-                    <span class="info-label">Usuário Autenticado</span>
-                    <span class="info-valor">{{ usuario.email }}</span>
-                </div>
+
 
                 <div class="info-grupo">
-                    <span class="info-label">Nível de Permissão</span>
-                    <span class="role-badge {% if usuario.role == 'admin' %}admin-role{% endif %}">
-                        {% if usuario.role == 'admin' %}
-                        Administrador
-                        {% else %}
-                        Operador
-                        {% endif %}
+
+                    <span class="info-label">
+
+                        Usuário Autenticado
+
                     </span>
+
+                    <span class="info-valor">
+
+                        {{ usuario.email }}
+
+                    </span>
+
                 </div>
+
+
+                <div class="info-grupo">
+
+                    <span class="info-label">
+
+                        Nível de Permissão
+
+                    </span>
+
+
+                    <span
+                        class="role-badge
+                        {% if usuario.role == 'admin' %}
+                            admin-role
+                        {% endif %}"
+                    >
+
+                        {% if usuario.role == 'admin' %}
+
+                            Administrador
+
+                        {% else %}
+
+                            Operador
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
             </div>
 
+
+            <!-- MENU -->
+
             <div class="panel-menu">
-                <a href="/produtos" class="btn-action">
+
+
+                <a
+                    href="/produtos"
+                    class="btn-action"
+                >
+
                     Gerenciar Produtos
+
                 </a>
+
 
                 {% if usuario and usuario.get('role') == 'admin' %}
 
-                <a href="/categorias" class="btn-action-secondary">
-                    GERENCIAR CATEGORIAS
-                </a>
 
+<<<<<<< HEAD
                 <a href="/movimentacoes" class="btn-action-secondary">
                     CONSULTAR ESTOQUE
                 </a>
+=======
+                    <a
+                        href="/categorias"
+                        class="btn-action-secondary"
+                    >
+
+                        GERENCIAR CATEGORIAS
+
+                    </a>
+
+
+                    <a
+                        href="/estoque"
+                        class="btn-action-secondary"
+                    >
+
+                        CONSULTAR ESTOQUE
+
+                    </a>
+
+>>>>>>> 355333ad499cc1422c8390f2a348d332b601d908
 
                 {% endif %}
+
 
                 {% if usuario.role == 'admin' %}
-                <a href="/usuarios" class="btn-action-secondary">
-                    Controle de Usuários
-                </a>
+
+
+                    <a
+                        href="/usuarios"
+                        class="btn-action-secondary"
+                    >
+
+                        Controle de Usuários
+
+                    </a>
+
+
                 {% endif %}
+
+
             </div>
+
 
         </div>
 
+
     </main>
 
+
     <footer>
+
         © 2026 M&J Store — Sistema Interno
+
     </footer>
+
 
 </body>
 
