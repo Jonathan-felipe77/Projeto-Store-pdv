@@ -3,7 +3,7 @@ import importlib
 from pathlib import Path
 
 from fastapi import FastAPI, Depends, Request
-from fastapi.responses import RedirectResponse, Response
+from fastapi.responses import RedirectResponse, Response, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from starlette.middleware.sessions import SessionMiddleware
@@ -21,7 +21,10 @@ MODELS_DIR = BASE_DIR / "models"
 CONTROLLERS_DIR = BASE_DIR / "controllers"
 
 
-# Cria as pastas caso não existam
+# ============================================================
+# CRIAR PASTAS
+# ============================================================
+
 STATIC_DIR.mkdir(
     parents=True,
     exist_ok=True
@@ -71,14 +74,10 @@ try:
     load_dotenv()
 
 except Exception:
-
     pass
 
 
-def configurar_variavel(
-    nome,
-    padrao
-):
+def configurar_variavel(nome, padrao):
 
     valor = os.getenv(nome)
 
@@ -87,15 +86,11 @@ def configurar_variavel(
         or str(valor).strip() == ""
     ):
 
-        os.environ[nome] = str(
-            padrao
-        )
+        os.environ[nome] = str(padrao)
 
     else:
 
-        os.environ[nome] = str(
-            valor
-        ).strip()
+        os.environ[nome] = str(valor).strip()
 
 
 # ============================================================
@@ -143,7 +138,6 @@ app = FastAPI(
     ),
 
     version="1.0.0"
-
 )
 
 
@@ -156,7 +150,6 @@ templates = Jinja2Templates(
     directory=str(
         TEMPLATES_DIR
     )
-
 )
 
 
@@ -175,7 +168,6 @@ app.mount(
     ),
 
     name="static"
-
 )
 
 
@@ -187,9 +179,7 @@ app.add_middleware(
 
     SessionMiddleware,
 
-    secret_key=os.environ[
-        "SECRET_KEY"
-    ],
+    secret_key=os.environ["SECRET_KEY"],
 
     session_cookie="mj_session",
 
@@ -198,7 +188,6 @@ app.add_middleware(
     same_site="lax",
 
     https_only=False
-
 )
 
 
@@ -214,7 +203,7 @@ try:
     )
 
     # ========================================================
-    # CARREGAR MODELOS
+    # MODELOS
     # ========================================================
 
     MODELOS = [
@@ -234,7 +223,6 @@ try:
         "app.models.pagamento"
 
     ]
-
 
     modelos_carregados = []
 
@@ -407,33 +395,29 @@ if AUTH_DISPONIVEL:
 
     @app.get(
         "/",
+        response_class=HTMLResponse,
         include_in_schema=False
     )
     def inicio(
-
-        usuario=Depends(
-            get_usuario_opcional
-        )
-
+        request: Request,
+        usuario=Depends(get_usuario_opcional)
     ):
 
-        if usuario:
+        if not usuario:
 
             return RedirectResponse(
-
-                url="/dashboard",
-
+                url="/auth/login",
                 status_code=303
-
             )
 
 
-        return RedirectResponse(
-
-            url="/auth/login",
-
-            status_code=303
-
+        return templates.TemplateResponse(
+            request=request,
+            name="dashboard.html",
+            context={
+                "request": request,
+                "usuario": usuario
+            }
         )
 
 
@@ -446,11 +430,8 @@ else:
     def inicio_sem_auth():
 
         return RedirectResponse(
-
             url="/auth/login",
-
             status_code=303
-
         )
 
 
@@ -479,35 +460,29 @@ if not dashboard_ja_existe():
 
         @app.get(
             "/dashboard",
+            response_class=HTMLResponse,
             include_in_schema=False
         )
         def dashboard_fallback(
-
             request: Request,
-
-            usuario=Depends(
-                get_usuario_opcional
-            )
-
+            usuario=Depends(get_usuario_opcional)
         ):
 
             if not usuario:
 
                 return RedirectResponse(
-
                     url="/auth/login",
-
                     status_code=303
-
                 )
 
 
-            return RedirectResponse(
-
-                url="/pdv/",
-
-                status_code=303
-
+            return templates.TemplateResponse(
+                request=request,
+                name="dashboard.html",
+                context={
+                    "request": request,
+                    "usuario": usuario
+                }
             )
 
 
@@ -520,11 +495,8 @@ if not dashboard_ja_existe():
         def dashboard_fallback_sem_auth():
 
             return RedirectResponse(
-
                 url="/auth/login",
-
                 status_code=303
-
             )
 
 
@@ -585,14 +557,12 @@ async def erro_404(
             name="404.html",
 
             context={
-
                 "request": request
-
             },
 
             status_code=404
-
         )
+
 
     except Exception:
 
@@ -680,7 +650,6 @@ async def erro_404(
             status_code=404,
 
             media_type="text/html"
-
         )
 
 
@@ -768,7 +737,6 @@ async def erro_403(
         status_code=403,
 
         media_type="text/html"
-
     )
 
 
@@ -847,5 +815,4 @@ if __name__ == "__main__":
         port=8000,
 
         reload=True
-
     )
