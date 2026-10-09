@@ -13,9 +13,66 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="/static/css/navbar.css">
 
     <style>
+        /* Barra superior do painel: discreta, fixa no topo e igual ao restante da loja. */
+        .barra-admin {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            width: 100%;
+            min-height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 22px;
+            background: rgba(7, 7, 7, .97);
+            color: #a6a6a6;
+            border-bottom: 1px solid rgba(255,255,255,.07);
+            box-shadow: 0 8px 25px rgba(0,0,0,.16);
+            backdrop-filter: blur(16px);
+        }
+        .barra-admin-inner {
+            width: 100%;
+            max-width: 1540px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .barra-admin-inner::-webkit-scrollbar { display: none; }
+        .barra-admin a {
+            position: relative;
+            flex: 0 0 auto;
+            min-height: 46px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 0 14px;
+            color: #a6a6a6;
+            border-radius: 8px 8px 0 0;
+            font-size: 14px;
+            font-weight: 750;
+            text-decoration: none;
+            transition: color .2s ease, background .2s ease;
+        }
+        .barra-admin a:hover { color: #f6f6f6; background: #151515; }
+        .barra-admin a.ativo { color: #c8ff1a; background: #111; }
+        .barra-admin a.ativo::after {
+            content: "";
+            position: absolute;
+            left: 11px;
+            right: 11px;
+            bottom: 0;
+            height: 3px;
+            border-radius: 8px;
+            background: #c8ff1a;
+            box-shadow: 0 0 12px rgba(200,255,26,.16);
+        }
+        .admin-icone { width: 16px; text-align: center; font-size: 15px; }
+
         * {
             font-family: 'Montserrat', sans-serif;
         }
@@ -24,6 +81,7 @@
             margin: 0;
             color: white;
             min-height: 100vh;
+            overflow-x: hidden;
             background:
                 radial-gradient(circle at 80% 0%, rgba(200,255,26,.12), transparent 25%),
                 radial-gradient(circle at 0% 100%, rgba(200,255,26,.06), transparent 25%),
@@ -40,14 +98,21 @@
         }
 
         .glass {
-            background: rgba(15,15,15,.78);
-            border: 1px solid rgba(255,255,255,.08);
+            background: linear-gradient(145deg, rgba(18,18,18,.94), rgba(9,9,9,.88));
+            border: 1px solid rgba(255,255,255,.075);
             backdrop-filter: blur(15px);
+            box-shadow: 0 16px 45px rgba(0,0,0,.12);
+        }
+        main { animation: catalogo-entrada .4s ease both; }
+        @keyframes catalogo-entrada {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .hero {
             position: relative;
             overflow: hidden;
+            border-radius: 26px;
             background:
                 linear-gradient(110deg, rgba(200,255,26,.08), transparent 50%),
                 #0b0b0b;
@@ -68,7 +133,8 @@
         .product-card {
             position: relative;
             overflow: hidden;
-            transition: .35s ease;
+            border-radius: 23px;
+            transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
         }
 
         .product-card:hover {
@@ -109,9 +175,14 @@
             transition: .2s ease;
         }
 
-        .btn:hover {
-            transform: translateY(-2px);
+        .btn:hover { transform: translateY(-2px); }
+        .btn:focus-visible, .barra-admin a:focus-visible {
+            outline: 2px solid #c8ff1a;
+            outline-offset: 3px;
         }
+        .product-card h3 { overflow-wrap: anywhere; }
+        .image-overlay { pointer-events: none; }
+        .image-container { isolation: isolate; }
 
         input,
         select {
@@ -142,18 +213,49 @@
         }
 
         .empty-icon {
-            background: linear-gradient(
-                135deg,
-                #111,
-                #080808
-            );
+            background: linear-gradient(135deg, #111, #080808);
+        }
+        @media (max-width: 720px) {
+            .barra-admin { min-height: 58px; padding: 0 7px; justify-content: flex-start; }
+            .barra-admin-inner { gap: 2px; }
+            .barra-admin a { min-height: 43px; padding: 0 11px; gap: 7px; font-size: 12px; }
+            .hero { border-radius: 21px; }
+            .image-container { height: 250px; }
+        }
+        @media (max-width: 420px) {
+            .barra-admin a { padding: 0 9px; gap: 6px; font-size: 11px; }
+            .image-container { height: 220px; }
         }
     </style>
 </head>
 
 <body>
 
-{% include "shared/navbar.html" %}
+<nav class="barra-admin" aria-label="Navegação administrativa">
+    <div class="barra-admin-inner">
+        <a href="/dashboard" class="{% if request.url.path.startswith('/dashboard') %}ativo{% endif %}">
+            <span class="admin-icone" aria-hidden="true">⌂</span>Dashboard
+        </a>
+        <a href="/pdv/" class="{% if request.url.path.startswith('/pdv') %}ativo{% endif %}">
+            <span class="admin-icone" aria-hidden="true">▣</span>PDV
+        </a>
+        <a href="/produtos/" class="{% if request.url.path.startswith('/produtos') %}ativo{% endif %}">
+            <span class="admin-icone" aria-hidden="true">▫</span>Produtos
+        </a>
+        <a href="/categorias" class="{% if request.url.path.startswith('/categorias') %}ativo{% endif %}">
+            <span class="admin-icone" aria-hidden="true">◫</span>Categorias
+        </a>
+        <a href="/clientes" class="{% if request.url.path.startswith('/clientes') %}ativo{% endif %}">
+            <span class="admin-icone" aria-hidden="true">♟</span>Clientes
+        </a>
+        <a href="/movimentacoes" class="{% if request.url.path.startswith('/movimentacoes') %}ativo{% endif %}">
+            <span class="admin-icone" aria-hidden="true">↕</span>Estoque
+        </a>
+        <a href="/usuarios" class="{% if request.url.path.startswith('/usuarios') %}ativo{% endif %}">
+            <span class="admin-icone" aria-hidden="true">♟</span>Usuários
+        </a>
+    </div>
+</nav>
 
 <main class="max-w-7xl mx-auto px-5 py-8 md:py-12">
 
