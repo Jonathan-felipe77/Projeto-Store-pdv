@@ -3,388 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categorias | M&J Store</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-
+    <title>Categorias | M&amp;J Store</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
+        :root {
+            --neon: #c8ff1a;
+            --page: #080908;
+            --panel: #111211;
+            --panel-soft: #151615;
+            --line: rgba(255,255,255,.085);
+            --muted: #969995;
+            --white: #f7f8f6;
         }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
+        html { scroll-behavior: smooth; }
         body {
-            background: #060606;
-            color: #fff;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            color: var(--white);
+            background:
+                radial-gradient(ellipse at 82% -12%, rgba(200,255,26,.075), transparent 32%),
+                var(--page);
+            overflow-x: hidden;
         }
+        a { color: inherit; }
 
-        body::before {
-            content: '';
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 5px;
-            height: 100%;
-            background: #c8ff1a;
-            z-index: 10;
+        /* Navegação superior compartilhada com as outras páginas do painel */
+        .barra-admin {
+            position: sticky; top: 0; z-index: 100; width: 100%; min-height: 68px;
+            display: flex; align-items: center; justify-content: center; padding: 0 22px;
+            background: rgba(7,7,7,.97); color: #a6a6a6;
+            border-bottom: 1px solid rgba(255,255,255,.07);
+            box-shadow: 0 8px 25px rgba(0,0,0,.16); backdrop-filter: blur(16px);
         }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 25px 5%;
-            background-color: #000;
-            border-bottom: 1px solid #141414;
+        .barra-admin-inner {
+            width: 100%; max-width: 1540px; display: flex; align-items: center; gap: 7px;
+            overflow-x: auto; scrollbar-width: none;
         }
-
-        .logo-container {
-            display: flex;
-            align-items: baseline;
-            text-decoration: none;
-            color: #fff;
+        .barra-admin-inner::-webkit-scrollbar { display: none; }
+        .barra-admin a {
+            position: relative; flex: 0 0 auto; min-height: 46px; padding: 0 14px;
+            display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+            border-radius: 8px 8px 0 0; color: #a6a6a6; font-size: 14px; font-weight: 750;
+            text-decoration: none; transition: color .2s ease, background .2s ease;
         }
-
-        .logo-main {
-            font-family: 'Anton', sans-serif;
-            font-size: 32px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+        .barra-admin a:hover { color: #f6f6f6; background: #151515; }
+        .barra-admin a.ativo { color: var(--neon); background: #111; }
+        .barra-admin a.ativo::after {
+            content: ''; position: absolute; left: 11px; right: 11px; bottom: 0;
+            height: 3px; border-radius: 8px; background: var(--neon);
+            box-shadow: 0 0 12px rgba(200,255,26,.16);
         }
+        .admin-icone { width: 16px; text-align: center; font-size: 15px; }
 
-        .logo-sub {
-            color: #c8ff1a;
-            font-size: 11px;
-            font-weight: 900;
-            margin-left: 4px;
-            letter-spacing: 1px;
+        main { width: min(1240px, 100%); margin: 0 auto; padding: 42px 28px 72px; flex: 1; animation: enter .35s ease both; }
+        @keyframes enter { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: translateY(0); } }
+        .hero {
+            position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between;
+            gap: 28px; padding: clamp(25px, 4vw, 44px); margin-bottom: 24px;
+            border: 1px solid var(--line); border-radius: 24px;
+            background: linear-gradient(115deg, rgba(200,255,26,.075), transparent 46%), linear-gradient(145deg,#151615,#0e0f0e);
+            box-shadow: 0 20px 55px rgba(0,0,0,.18);
         }
-
-        .btn-voltar-painel {
-            text-decoration: none;
-            color: #aaa;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: color 0.2s ease;
-        }
-
-        .btn-voltar-painel:hover {
-            color: #c8ff1a;
-        }
-
-        .container {
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 60px 5%;
-            flex: 1;
-        }
-
-        .top-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 35px;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .titulo-bloco {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .tag-contexto {
-            color: #c8ff1a;
-            font-size: 11px;
-            font-weight: 900;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        .titulo-pagina {
-            font-family: 'Anton', sans-serif;
-            font-size: clamp(32px, 5vw, 48px);
-            margin-top: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            line-height: 1;
-        }
-
+        .hero::after { content: ''; position: absolute; width: 250px; height: 250px; right: -100px; top: -135px; border-radius: 50%; background: rgba(200,255,26,.08); filter: blur(38px); pointer-events:none; }
+        .hero-copy { position: relative; z-index: 1; }
+        .eyebrow { display: flex; align-items: center; gap: 11px; color: var(--neon); font-size: 10px; font-weight: 900; letter-spacing: .28em; text-transform: uppercase; }
+        .eyebrow::before { content: ''; width: 28px; height: 2px; background: var(--neon); }
+        h1 { margin-top: 13px; font-size: clamp(32px, 5vw, 54px); font-weight: 900; letter-spacing: -.055em; line-height: 1.05; }
+        h1 span { color: var(--neon); }
+        .hero-description { color: #969995; margin-top: 12px; font-size: 13px; line-height: 1.75; max-width: 540px; }
         .btn-add-nova {
-            background: #c8ff1a;
-            color: #000;
-            text-decoration: none;
-            padding: 16px 28px;
-            font-size: 12px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.2s ease;
+            position: relative; z-index: 1; flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+            padding: 15px 22px; border: 1px solid var(--neon); border-radius: 11px; background: var(--neon);
+            color: #090a07; font-size: 11px; font-weight: 900; letter-spacing: .055em; text-decoration: none;
+            box-shadow: 0 10px 26px rgba(200,255,26,.08); transition: transform .2s, box-shadow .2s, background .2s;
         }
+        .btn-add-nova:hover { transform: translateY(-2px); background: #d7ff55; box-shadow: 0 13px 32px rgba(200,255,26,.15); }
+        .summary-row { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; margin-bottom: 26px; }
+        .summary-card { padding: 19px 21px; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(145deg,#141514,#0d0e0d); }
+        .summary-top { display:flex; align-items:center; justify-content:space-between; gap:12px; color:var(--muted); font-size:11px; font-weight:700; }
+        .summary-icon { width:34px; height:34px; display:grid; place-items:center; border-radius:10px; background:rgba(200,255,26,.09); color:var(--neon); font-size:17px; }
+        .summary-number { margin-top: 12px; font-size: 27px; font-weight: 900; letter-spacing: -.04em; }
+        .summary-caption { margin-top: 3px; color: #696d68; font-size: 10px; }
 
-        .btn-add-nova:hover {
-            background: #b1e012;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(200, 255, 26, 0.15);
+        .content-panel { border: 1px solid var(--line); border-radius: 20px; background: rgba(15,16,15,.94); overflow: hidden; box-shadow: 0 16px 48px rgba(0,0,0,.16); }
+        .panel-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:22px 24px; border-bottom:1px solid var(--line); }
+        .panel-heading h2 { font-size:16px; font-weight:850; letter-spacing:-.02em; }
+        .panel-heading p { color:#777c75; font-size:11px; margin-top:5px; }
+        .table-responsive { width:100%; overflow-x:auto; }
+        .mj-table { width:100%; min-width:620px; border-collapse:collapse; text-align:left; color:var(--white); }
+        .mj-table th { padding:16px 24px; background:#0b0c0b; border-bottom:1px solid var(--line); color:#777c75; font-size:9px; font-weight:800; text-transform:uppercase; letter-spacing:.16em; }
+        .mj-table td { padding:19px 24px; border-bottom:1px solid rgba(255,255,255,.055); color:#bfc2bd; font-size:12px; font-weight:500; vertical-align:middle; transition:background .18s; }
+        .mj-table tbody tr:last-child td { border-bottom:0; }
+        .mj-table tbody tr:hover td { background:rgba(255,255,255,.025); }
+        .categoria-cell { display:flex; align-items:center; gap:13px; }
+        .categoria-icon { width:38px; height:38px; flex:0 0 38px; display:grid; place-items:center; border:1px solid rgba(200,255,26,.12); border-radius:12px; background:rgba(200,255,26,.06); color:var(--neon); font-size:17px; }
+        .categoria-nome { display:block; color:#f4f5f2; font-weight:800; font-size:13px; }
+        .categoria-ref { display:block; margin-top:4px; color:#656a63; font-size:9px; letter-spacing:.04em; }
+        .count-pill { display:inline-flex; align-items:center; gap:7px; padding:7px 10px; border-radius:9px; background:#191b18; color:#d7d9d4; font-size:10px; font-weight:800; }
+        .count-pill::before { content:''; width:5px; height:5px; border-radius:50%; background:#757a72; }
+        .status-badge { display:inline-flex; align-items:center; gap:7px; border-radius:999px; padding:7px 10px; font-size:9px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; }
+        .status-badge::before { content:''; width:5px; height:5px; border-radius:50%; background:currentColor; }
+        .status-badge.ativa { color:var(--neon); background:rgba(200,255,26,.075); border:1px solid rgba(200,255,26,.13); }
+        .status-badge.inativa { color:#a2a59f; background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.08); }
+        .actions-cell { display:flex; align-items:center; gap:8px; }
+        .btn-link-edit,.btn-toggle-status { display:inline-flex; align-items:center; justify-content:center; min-height:34px; padding:0 12px; border-radius:9px; font-size:9px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; white-space:nowrap; transition:all .18s; }
+        .btn-link-edit { border:1px solid rgba(255,255,255,.1); background:rgba(255,255,255,.035); color:#d6d8d3; text-decoration:none; }
+        .btn-link-edit:hover { color:#fff; border-color:rgba(200,255,26,.35); background:rgba(200,255,26,.06); }
+        .btn-toggle-status { border:1px solid rgba(255,255,255,.1); background:transparent; color:#999d96; cursor:pointer; }
+        .btn-toggle-status:hover { color:#0b0c09; background:var(--neon); border-color:var(--neon); }
+        .alert-toast { display:flex; align-items:center; gap:12px; padding:14px 17px; border-radius:13px; margin-bottom:16px; font-size:12px; font-weight:700; line-height:1.55; }
+        .alert-sucesso { color:#d8ff71; background:rgba(200,255,26,.07); border:1px solid rgba(200,255,26,.17); }
+        .alert-erro { color:#ffaaa4; background:rgba(255,76,76,.07); border:1px solid rgba(255,76,76,.18); }
+        .empty-state { text-align:center; padding:62px 24px; }
+        .empty-icon { width:64px; height:64px; display:grid; place-items:center; margin:0 auto 18px; border:1px solid rgba(200,255,26,.12); border-radius:19px; background:rgba(200,255,26,.055); color:var(--neon); font-size:25px; }
+        .empty-state h3 { font-size:18px; font-weight:900; }
+        .empty-state p { max-width:360px; margin:9px auto 0; color:#858981; font-size:12px; line-height:1.7; }
+        footer { margin-top:auto; padding:25px 20px; border-top:1px solid rgba(255,255,255,.06); color:#62665f; text-align:center; font-size:9px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
+        a:focus-visible, button:focus-visible { outline:2px solid var(--neon); outline-offset:3px; }
+
+        @media (max-width: 760px) {
+            .barra-admin { min-height:58px; padding:0 7px; justify-content:flex-start; }
+            .barra-admin-inner { gap:2px; }
+            .barra-admin a { min-height:43px; padding:0 10px; gap:6px; font-size:11px; }
+            main { padding:25px 15px 45px; }
+            .hero { align-items:flex-start; flex-direction:column; padding:25px 22px; border-radius:20px; }
+            .btn-add-nova { width:100%; }
+            .summary-row { grid-template-columns:1fr; gap:10px; }
+            .summary-card { padding:16px 18px; }
+            .summary-number { font-size:23px; }
+            .panel-heading { padding:18px; }
+            .mj-table th,.mj-table td { padding:15px; }
         }
-
-        .alert-toast {
-            padding: 16px 20px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 25px;
-            border-radius: 2px;
-            display: flex;
-            align-items: center;
+        @media (max-width: 420px) {
+            .barra-admin a { padding:0 8px; gap:5px; font-size:10px; }
+            .admin-icone { width:13px; }
+            h1 { font-size:34px; }
+            .hero-description { font-size:12px; }
+            .panel-heading h2 { font-size:14px; }
         }
-
-        .alert-sucesso {
-            background: rgba(200, 255, 26, 0.08);
-            border-left: 4px solid #c8ff1a;
-            color: #c8ff1a;
-        }
-
-        .alert-erro {
-            background: rgba(255, 76, 76, 0.08);
-            border-left: 4px solid #ff4c4c;
-            color: #ff8888;
-            line-height: 1.4;
-        }
-
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            border: 1px solid #1a1a1a;
-            background: #0d0d0d;
-        }
-
-        .mj-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            color: #fff;
-            min-width: 600px;
-        }
-
-        .mj-table th {
-            background: #000;
-            color: #666;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 20px;
-            border-bottom: 1px solid #1a1a1a;
-        }
-
-        .mj-table td {
-            padding: 20px;
-            font-size: 14px;
-            font-weight: 500;
-            border-bottom: 1px solid #141414;
-            color: #ccc;
-            vertical-align: middle;
-        }
-
-        .mj-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .mj-table tr:hover td {
-            background: #111;
-            color: #fff;
-        }
-
-        .categoria-nome {
-            font-weight: 700;
-            color: #fff;
-            font-size: 15px;
-        }
-
-        .status-badge {
-            font-size: 10px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 6px 12px;
-            display: inline-block;
-        }
-
-        .status-badge.ativa {
-            background: rgba(200, 255, 26, 0.1);
-            color: #c8ff1a;
-            border: 1px solid rgba(200, 255, 26, 0.2);
-        }
-
-        .status-badge.inativa {
-            background: rgba(255, 255, 255, 0.05);
-            color: #666;
-            border: 1px solid #222;
-        }
-
-        .actions-cell {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .btn-link-edit {
-            text-decoration: none;
-            color: #aaa;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: color 0.2s ease;
-        }
-
-        .btn-link-edit:hover {
-            color: #fff;
-        }
-
-        .btn-toggle-status {
-            background: transparent;
-            border: 1px solid #262626;
-            color: #fff;
-            padding: 8px 16px;
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn-toggle-status:hover {
-            background: #fff;
-            color: #000;
-            border-color: #fff;
-        }
-
-        .empty-row {
-            text-align: center;
-            color: #555;
-            font-style: italic;
-            padding: 40px !important;
-        }
-
-        footer {
-            text-align: center;
-            color: #444;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            padding: 40px;
-            border-top: 1px solid #141414;
-            margin-top: auto;
-            text-transform: uppercase;
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior:auto !important; animation-duration:.01ms !important; transition-duration:.01ms !important; }
         }
     </style>
-    <link rel="stylesheet" href="/static/css/navbar.css">
 </head>
 <body>
-    {% include "shared/navbar.html" %}
-
-
-
-
-<main class="container">
-
-    <div class="top-row">
-        <div class="titulo-bloco">
-            <span class="tag-contexto">Controle de Estoque</span>
-            <h1 class="titulo-pagina">Categorias</h1>
+    <nav class="barra-admin" aria-label="Navegação administrativa">
+        <div class="barra-admin-inner">
+            <a href="/dashboard" class="{% if request.url.path.startswith('/dashboard') %}ativo{% endif %}"><span class="admin-icone" aria-hidden="true">⌂</span>Dashboard</a>
+            <a href="/pdv/" class="{% if request.url.path.startswith('/pdv') %}ativo{% endif %}"><span class="admin-icone" aria-hidden="true">▣</span>PDV</a>
+            <a href="/produtos/" class="{% if request.url.path.startswith('/produtos') %}ativo{% endif %}"><span class="admin-icone" aria-hidden="true">▫</span>Produtos</a>
+            <a href="/categorias" class="{% if request.url.path.startswith('/categorias') %}ativo{% endif %}"><span class="admin-icone" aria-hidden="true">◫</span>Categorias</a>
+            <a href="/clientes" class="{% if request.url.path.startswith('/clientes') %}ativo{% endif %}"><span class="admin-icone" aria-hidden="true">♟</span>Clientes</a>
+            <a href="/movimentacoes" class="{% if request.url.path.startswith('/movimentacoes') %}ativo{% endif %}"><span class="admin-icone" aria-hidden="true">↕</span>Estoque</a>
+            <a href="/usuarios" class="{% if request.url.path.startswith('/usuarios') %}ativo{% endif %}"><span class="admin-icone" aria-hidden="true">♟</span>Usuários</a>
         </div>
-        <a href="/categorias/nova" class="btn-add-nova">+ Nova Categoria</a>
-    </div>
+    </nav>
 
-    {% if request.query_params.get('criado') == 'ok' %}
-        <div class="alert-toast alert-sucesso">
-            ✓ Categoria criada com sucesso no sistema!
-        </div>
-    {% endif %}
-    
-    {% if request.query_params.get('editado') == 'ok' %}
-        <div class="alert-toast alert-sucesso">
-            ✓ Definições da categoria atualizadas com sucesso!
-        </div>
-    {% endif %}
-   
-    {% if request.query_params.get('erro') == 'vinculo' %}
-        <div class="alert-toast alert-erro">
-             Não é possível desativar uma categoria que possui produtos vinculados no estoque.
-        </div>
-    {% endif %}
+    {% set ns = namespace(ativas=0, inativas=0) %}
+    {% for categoria in categorias %}
+        {% if categoria.ativo %}{% set ns.ativas = ns.ativas + 1 %}{% else %}{% set ns.inativas = ns.inativas + 1 %}{% endif %}
+    {% endfor %}
 
-    <div class="table-responsive">
-        <table class="mj-table">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Produtos Ativos</th>
-                    <th>Status</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                
-                {% for c in categorias %}
-                <tr>
-                    <td class="categoria-nome">{{ c.nome }}</td>
-                    
-                    <td>
-                        {{ c.produtos|length if c.produtos else 0 }} itens
-                    </td>
-                    
-                    <td>
-                        {% if c.ativo %}
-                            <span class="status-badge ativa">Ativa</span>
+    <main>
+        <section class="hero">
+            <div class="hero-copy">
+                <div class="eyebrow">M&amp;J Store · Administração</div>
+                <h1>Suas categorias<span>.</span></h1>
+                <p class="hero-description">Organize os produtos da loja, acompanhe as categorias ativas e mantenha seu catálogo fácil de navegar.</p>
+            </div>
+            <a href="/categorias/nova" class="btn-add-nova"><span aria-hidden="true">＋</span> Nova categoria</a>
+        </section>
+
+        {% if request.query_params.get('criado') == 'ok' %}
+            <div class="alert-toast alert-sucesso"><span aria-hidden="true">✓</span> Categoria criada com sucesso no sistema!</div>
+        {% endif %}
+        {% if request.query_params.get('editado') == 'ok' %}
+            <div class="alert-toast alert-sucesso"><span aria-hidden="true">✓</span> Definições da categoria atualizadas com sucesso!</div>
+        {% endif %}
+        {% if request.query_params.get('erro') == 'vinculo' %}
+            <div class="alert-toast alert-erro"><span aria-hidden="true">!</span> Não é possível desativar uma categoria que possui produtos vinculados no estoque.</div>
+        {% endif %}
+
+        <section class="summary-row" aria-label="Resumo das categorias">
+            <article class="summary-card">
+                <div class="summary-top"><span>Total de categorias</span><span class="summary-icon" aria-hidden="true">▤</span></div>
+                <div class="summary-number">{{ categorias|length }}</div>
+                <p class="summary-caption">Categorias cadastradas no sistema</p>
+            </article>
+            <article class="summary-card">
+                <div class="summary-top"><span>Categorias ativas</span><span class="summary-icon" aria-hidden="true">✓</span></div>
+                <div class="summary-number">{{ ns.ativas }}</div>
+                <p class="summary-caption">Disponíveis para organização do catálogo</p>
+            </article>
+            <article class="summary-card">
+                <div class="summary-top"><span>Categorias inativas</span><span class="summary-icon" aria-hidden="true">◌</span></div>
+                <div class="summary-number">{{ ns.inativas }}</div>
+                <p class="summary-caption">Desativadas no momento</p>
+            </article>
+        </section>
+
+        <section class="content-panel">
+            <div class="panel-heading">
+                <div>
+                    <h2>Lista de categorias</h2>
+                    <p>Gerencie nomes, status e categorias usadas no catálogo.</p>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="mj-table">
+                    <thead>
+                        <tr><th>Categoria</th><th>Produtos</th><th>Status</th><th>Ações</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for c in categorias %}
+                        <tr>
+                            <td>
+                                <div class="categoria-cell">
+                                    <span class="categoria-icon" aria-hidden="true">◇</span>
+                                    <div><span class="categoria-nome">{{ c.nome }}</span><span class="categoria-ref">CATEGORIA #{{ c.id }}</span></div>
+                                </div>
+                            </td>
+                            <td><span class="count-pill">{{ c.produtos|length if c.produtos else 0 }} itens</span></td>
+                            <td>
+                                {% if c.ativo %}<span class="status-badge ativa">Ativa</span>
+                                {% else %}<span class="status-badge inativa">Inativa</span>{% endif %}
+                            </td>
+                            <td>
+                                <div class="actions-cell">
+                                    <a href="/categorias/{{ c.id }}/editar" class="btn-link-edit">Editar</a>
+                                    <form action="/categorias/{{ c.id }}/toggle-ativo" method="post" style="display:inline">
+                                        <button type="submit" class="btn-toggle-status">{% if c.ativo %}Desativar{% else %}Ativar{% endif %}</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
                         {% else %}
-                            <span class="status-badge inativa">Inativa</span>
-                        {% endif %}
-                    </td>
-                    
-                    <td>
-                        <div class="actions-cell">
-                            <a href="/categorias/{{ c.id }}/editar" class="btn-link-edit">Editar</a>
-                            
-                            <form action="/categorias/{{ c.id }}/toggle-ativo" method="post" style="display:inline">
-                                <button type="submit" class="btn-toggle-status">
-                                    {% if c.ativo %}
-                                        Desativar
-                                    {% else %}
-                                        Ativar
-                                    {% endif %}
-                                </button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="4" class="empty-row">
-                        Nenhuma categoria cadastrada.
-                    </td>
-                </tr>
-                {% endfor %}
-                
-            </tbody>
-        </table>
-    </div>
+                        <tr><td colspan="4">
+                            <div class="empty-state">
+                                <div class="empty-icon" aria-hidden="true">◇</div>
+                                <h3>Nenhuma categoria cadastrada</h3>
+                                <p>Crie sua primeira categoria para começar a organizar os produtos da M&amp;J Store.</p>
+                            </div>
+                        </td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
 
-</main>
-
-<footer>
-    © 2026 M&J Store — Gestão de Inventário de Produtos
-</footer>
-
+    <footer>© 2026 M&amp;J Store — Gestão de inventário</footer>
 </body>
 </html>
