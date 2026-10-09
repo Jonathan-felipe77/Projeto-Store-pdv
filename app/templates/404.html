@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ status_code | default('404') }} — M&J STORE</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --preto-bg: #050505;
+            --preto-card: #0d0d0d;
+            --verde-neon: #c8ff1a;
+            --verde-hover: #d9ff4d;
+            --branco: #ffffff;
+            --cinza-texto: #a1a1aa;
+            --cinza-sub: #52525b;
+            --borda: #1f1f23;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--preto-bg);
+            background-image: 
+                radial-gradient(circle at 80% 10%, rgba(200, 255, 26, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 20% 90%, rgba(200, 255, 26, 0.04) 0%, transparent 35%);
+            color: var(--branco);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .error-wrapper {
+            width: min(500px, 100%);
+            text-align: center;
+        }
+
+        .brand-header {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-bottom: 32px;
+            text-transform: uppercase;
+        }
+
+        .brand-header .highlight {
+            color: var(--verde-neon);
+        }
+
+        .error-card {
+            position: relative;
+            background: linear-gradient(160deg, #121214 0%, #09090a 100%);
+            border: 1px solid var(--borda);
+            border-radius: 20px;
+            padding: 56px 40px;
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+        }
+
+        .error-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--verde-neon), transparent);
+        }
+
+        .status-number {
+            font-size: 96px;
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -4px;
+            color: var(--verde-neon);
+            margin-bottom: 16px;
+            text-shadow: 0 0 30px rgba(200, 255, 26, 0.25);
+        }
+
+        .error-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--branco);
+            margin-bottom: 12px;
+        }
+
+        .error-description {
+            font-size: 14px;
+            color: var(--cinza-texto);
+            line-height: 1.6;
+            margin-bottom: 36px;
+            font-weight: 500;
+        }
+
+        .action-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px 32px;
+            background: var(--verde-neon);
+            color: #000000;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .action-button:hover {
+            background: var(--verde-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(200, 255, 26, 0.25);
+        }
+
+        .action-button:active {
+            transform: translateY(0);
+        }
+
+        .brand-footer {
+            margin-top: 32px;
+            font-size: 11px;
+            color: var(--cinza-sub);
+            font-weight: 600;
+            letter-spacing: 1.5px;
+        }
+
+        @media (max-width: 480px) {
+            .error-card {
+                padding: 40px 24px;
+            }
+            .status-number {
+                font-size: 76px;
+            }
+            .error-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="error-wrapper">
+        <div class="brand-header">
+            M&J <span class="highlight">STORE</span>
+        </div>
+
+        <article class="error-card">
+            <div class="status-number">{{ status_code | default('404') }}</div>
+            <h1 class="error-title">{{ titulo | default('Página não encontrada') }}</h1>
+            <p class="error-description">
+                {{ mensagem | default('A rota acessada não existe ou não está disponível no sistema.') }}
+            </p>
+
+            <a href="/" class="action-button">
+                <span>←</span> Voltar para o Início
+            </a>
+        </article>
+
+        <footer class="brand-footer">
+            © 2026 M&J STORE — SISTEMA INTERNO
+        </footer>
+    </main>
+</body>
+</html>
