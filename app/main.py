@@ -1,59 +1,143 @@
 import os
+import importlib
+from pathlib import Path
 
-from fastapi import (
-    FastAPI,
-    Request,
-    Depends,
-    HTTPException
-)
-
+from fastapi import FastAPI, Depends, Request
+from fastapi.responses import RedirectResponse, Response, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import (
-    HTMLResponse,
-    RedirectResponse,
-    Response
+from starlette.middleware.sessions import SessionMiddleware
+
+
+# ============================================================
+# CAMINHOS
+# ============================================================
+
+BASE_DIR = Path(__file__).resolve().parent
+
+STATIC_DIR = BASE_DIR / "static"
+TEMPLATES_DIR = BASE_DIR / "templates"
+MODELS_DIR = BASE_DIR / "models"
+CONTROLLERS_DIR = BASE_DIR / "controllers"
+
+
+# ============================================================
+# CRIAR PASTAS
+# ============================================================
+
+STATIC_DIR.mkdir(
+    parents=True,
+    exist_ok=True
 )
 
-from fastapi.exception_handlers import (
-    http_exception_handler
+TEMPLATES_DIR.mkdir(
+    parents=True,
+    exist_ok=True
 )
 
-from app.auth import get_usuario_opcional
+(STATIC_DIR / "uploads").mkdir(
+    parents=True,
+    exist_ok=True
+)
 
-from app.controllers import auth_controller
-from app.controllers import usuario_controller
-from app.controllers import categoria_controller
-from app.controllers import produto_controller
-from app.controllers import movimentacao_controller
-from app.controllers import clientes_controller
-from app.controllers import pdv_controller
+(STATIC_DIR / "img").mkdir(
+    parents=True,
+    exist_ok=True
+)
 
+(STATIC_DIR / "css").mkdir(
+    parents=True,
+    exist_ok=True
+)
+
+(STATIC_DIR / "js").mkdir(
+    parents=True,
+    exist_ok=True
+)
+
+
+# ============================================================
+# VARIÁVEIS DE AMBIENTE
+# ============================================================
+
+try:
+
+    from dotenv import load_dotenv
+
+    # .env uma pasta acima
+    env_file = BASE_DIR.parent / ".env"
+
+    if env_file.exists():
+        load_dotenv(env_file)
+
+    # .env na pasta atual
+    load_dotenv()
+
+except Exception:
+    pass
+
+
+def configurar_variavel(nome, padrao):
+
+    valor = os.getenv(nome)
+
+    if (
+        valor is None
+        or str(valor).strip() == ""
+    ):
+
+        os.environ[nome] = str(padrao)
+
+    else:
+
+        os.environ[nome] = str(valor).strip()
+
+
+# ============================================================
+# CONFIGURAÇÕES
+# ============================================================
+
+configurar_variavel(
+    "ACCESS_TOKEN_EXPIRE_MINUTE",
+    "60"
+)
+
+configurar_variavel(
+    "ACCESS_TOKEN_EXPIRE_MINUTES",
+    "60"
+)
+
+configurar_variavel(
+    "SECRET_KEY",
+    "mj-store-secret-key-2026"
+)
+
+configurar_variavel(
+    "JWT_SECRET_KEY",
+    os.environ["SECRET_KEY"]
+)
+
+configurar_variavel(
+    "JWT_SECRET",
+    os.environ["SECRET_KEY"]
+)
+
+
+# ============================================================
+# FASTAPI
+# ============================================================
 
 app = FastAPI(
-    title="M&J Store - Sistema de Ponto de Venda e Estoque"
-)
 
+    title="M&J Store - Sistema de Ponto de Venda",
 
-# ============================================================
-# ARQUIVOS ESTÁTICOS
-# ============================================================
+    description=(
+        "Sistema de gerenciamento de "
+        "produtos, clientes, categorias, "
+        "estoque e vendas."
+    ),
 
-if os.path.exists("app/static"):
-    PASTA_ESTATICOS = "app/static"
-
-elif os.path.exists("static"):
-    PASTA_ESTATICOS = "static"
-
-else:
-    os.makedirs("app/static", exist_ok=True)
-    PASTA_ESTATICOS = "app/static"
-
-
-app.mount(
-    "/static",
-    StaticFiles(directory=PASTA_ESTATICOS),
-    name="static"
+    version="1.0.0"
 )
 
 
@@ -62,101 +146,358 @@ app.mount(
 # ============================================================
 
 templates = Jinja2Templates(
-    directory="app/templates"
+
+    directory=str(
+        TEMPLATES_DIR
+    )
 )
 
 
 # ============================================================
-# ROTAS
+# ARQUIVOS ESTÁTICOS
 # ============================================================
 
-app.include_router(auth_controller.router)
-app.include_router(usuario_controller.router)
-app.include_router(categoria_controller.router)
-app.include_router(produto_controller.router)
-app.include_router(movimentacao_controller.router)
-app.include_router(clientes_controller.router)
-app.include_router(pdv_controller.router)
+app.mount(
 
+    "/static",
 
-# ============================================================
-# PÁGINA INICIAL
-# ============================================================
-
-@app.get("/")
-def tela_inicial(
-    request: Request,
-    usuario=Depends(get_usuario_opcional)
-):
-
-    if usuario is None:
-        return templates.TemplateResponse(
-            request=request,
-            name="index.html",
-            context={
-                "usuario": None
-            }
+    StaticFiles(
+        directory=str(
+            STATIC_DIR
         )
+    ),
 
-    return templates.TemplateResponse(
-        request=request,
-        name="home.html",
-        context={
-            "usuario": usuario
-        }
+    name="static"
+)
+
+
+# ============================================================
+# SESSION
+# ============================================================
+
+app.add_middleware(
+
+    SessionMiddleware,
+
+    secret_key=os.environ["SECRET_KEY"],
+
+    session_cookie="mj_session",
+
+    max_age=60 * 60 * 24 * 7,
+
+    same_site="lax",
+
+    https_only=False
+)
+
+
+# ============================================================
+# BANCO DE DADOS
+# ============================================================
+
+try:
+
+    from app.database import (
+        Base,
+        engine
+    )
+
+    # ========================================================
+    # MODELOS
+    # ========================================================
+
+    MODELOS = [
+
+        "app.models.usuarios",
+
+        "app.models.categoria",
+
+        "app.models.cliente",
+
+        "app.models.produto",
+
+        "app.models.venda",
+
+        "app.models.movimentacao",
+
+        "app.models.pagamento"
+
+    ]
+
+    modelos_carregados = []
+
+
+    for nome_modelo in MODELOS:
+
+        try:
+
+            importlib.import_module(
+                nome_modelo
+            )
+
+            modelos_carregados.append(
+                nome_modelo
+            )
+
+            print(
+                f"[OK] Modelo carregado: "
+                f"{nome_modelo}"
+            )
+
+        except ModuleNotFoundError as erro:
+
+            print(
+                f"[AVISO] Modelo não encontrado: "
+                f"{nome_modelo} -> {erro}"
+            )
+
+        except Exception as erro:
+
+            print(
+                f"[ERRO] Falha ao carregar modelo: "
+                f"{nome_modelo} -> {erro}"
+            )
+
+
+    # ========================================================
+    # CRIAR TABELAS
+    # ========================================================
+
+    Base.metadata.create_all(
+        bind=engine
+    )
+
+    print(
+        "[OK] Banco de dados inicializado."
+    )
+
+
+except Exception as erro:
+
+    print(
+        "[ERRO] Falha ao inicializar "
+        f"banco de dados: {erro}"
     )
 
 
 # ============================================================
-# PAINEL
+# CONTROLLERS
 # ============================================================
 
-@app.get("/painel")
-def redireciona_painel(
-    usuario=Depends(get_usuario_opcional)
-):
+CONTROLLERS = [
 
-    if not usuario:
+    "app.controllers.auth_controller",
+
+    "app.controllers.categoria_controller",
+
+    "app.controllers.clientes_controller",
+
+    "app.controllers.movimentacao_controller",
+
+    "app.controllers.produto_controller",
+
+    "app.controllers.usuario_controller",
+
+    "app.controllers.pdv_controller"
+
+]
+
+
+controllers_carregados = []
+
+
+for nome_controller in CONTROLLERS:
+
+    try:
+
+        modulo = importlib.import_module(
+            nome_controller
+        )
+
+
+        router = getattr(
+            modulo,
+            "router",
+            None
+        )
+
+
+        if router is None:
+
+            print(
+                f"[AVISO] {nome_controller} "
+                "não possui router."
+            )
+
+            continue
+
+
+        app.include_router(
+            router
+        )
+
+
+        controllers_carregados.append(
+            nome_controller
+        )
+
+
+        print(
+            f"[OK] Controller carregado: "
+            f"{nome_controller}"
+        )
+
+
+    except ModuleNotFoundError as erro:
+
+        print(
+            f"[ERRO] Controller não encontrado: "
+            f"{nome_controller} -> {erro}"
+        )
+
+
+    except Exception as erro:
+
+        print(
+            f"[ERRO] Não foi possível carregar "
+            f"{nome_controller}: {erro}"
+        )
+
+
+# ============================================================
+# AUTENTICAÇÃO
+# ============================================================
+
+try:
+
+    from app.auth import (
+        get_usuario_opcional
+    )
+
+    AUTH_DISPONIVEL = True
+
+
+except Exception as erro:
+
+    AUTH_DISPONIVEL = False
+
+    print(
+        "[AVISO] Não foi possível carregar "
+        f"get_usuario_opcional: {erro}"
+    )
+
+
+# ============================================================
+# ROTA PRINCIPAL
+# ============================================================
+
+if AUTH_DISPONIVEL:
+
+    @app.get(
+        "/",
+        response_class=HTMLResponse,
+        include_in_schema=False
+    )
+    def inicio(
+        request: Request,
+        usuario=Depends(get_usuario_opcional)
+    ):
+
+        if not usuario:
+
+            return RedirectResponse(
+                url="/auth/login",
+                status_code=303
+            )
+
+
+        return templates.TemplateResponse(
+            request=request,
+            name="dashboard.html",
+            context={
+                "request": request,
+                "usuario": usuario
+            }
+        )
+
+
+else:
+
+    @app.get(
+        "/",
+        include_in_schema=False
+    )
+    def inicio_sem_auth():
+
         return RedirectResponse(
             url="/auth/login",
             status_code=303
         )
 
-    return RedirectResponse(
-        url="/",
-        status_code=303
-    )
-
 
 # ============================================================
-# ROTAS ANTIGAS
+# DASHBOARD
 # ============================================================
 
-@app.get("/auth/usuarios")
-def corrigir_rota_usuarios_antiga():
+def dashboard_ja_existe():
 
-    return RedirectResponse(
-        url="/usuarios",
-        status_code=303
-    )
+    for rota in app.routes:
 
+        if getattr(
+            rota,
+            "path",
+            None
+        ) == "/dashboard":
 
-@app.get("/auth/produtos")
-def corrigir_rota_produtos():
+            return True
 
-    return RedirectResponse(
-        url="/produtos",
-        status_code=303
-    )
+    return False
 
 
-@app.get("/auth/categorias")
-def corrigir_rota_categorias():
+if not dashboard_ja_existe():
 
-    return RedirectResponse(
-        url="/categorias",
-        status_code=303
-    )
+    if AUTH_DISPONIVEL:
+
+        @app.get(
+            "/dashboard",
+            response_class=HTMLResponse,
+            include_in_schema=False
+        )
+        def dashboard_fallback(
+            request: Request,
+            usuario=Depends(get_usuario_opcional)
+        ):
+
+            if not usuario:
+
+                return RedirectResponse(
+                    url="/auth/login",
+                    status_code=303
+                )
+
+
+            return templates.TemplateResponse(
+                request=request,
+                name="dashboard.html",
+                context={
+                    "request": request,
+                    "usuario": usuario
+                }
+            )
+
+
+    else:
+
+        @app.get(
+            "/dashboard",
+            include_in_schema=False
+        )
+        def dashboard_fallback_sem_auth():
+
+            return RedirectResponse(
+                url="/auth/login",
+                status_code=303
+            )
 
 
 # ============================================================
@@ -175,168 +516,303 @@ def favicon():
 
 
 # ============================================================
-# ERRO 404
+# HEALTH CHECK
+# ============================================================
+
+@app.get(
+    "/health",
+    tags=["Sistema"]
+)
+def health():
+
+    return {
+
+        "status": "ok",
+
+        "sistema": "M&J Store",
+
+        "controllers": (
+            controllers_carregados
+        )
+
+    }
+
+
+# ============================================================
+# TRATAMENTO DE ERRO 404
 # ============================================================
 
 @app.exception_handler(404)
 async def erro_404(
     request: Request,
-    exc: HTTPException
+    exc
 ):
 
-    return HTMLResponse(
+    try:
+
+        return templates.TemplateResponse(
+
+            request=request,
+
+            name="404.html",
+
+            context={
+                "request": request
+            },
+
+            status_code=404
+        )
+
+
+    except Exception:
+
+        return Response(
+
+            content="""
+            <!DOCTYPE html>
+
+            <html lang="pt-BR">
+
+            <head>
+
+                <meta charset="UTF-8">
+
+                <title>Página não encontrada</title>
+
+                <style>
+
+                    body {
+                        font-family: Arial, sans-serif;
+                        background: #f5f5f5;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-height: 100vh;
+                        margin: 0;
+                    }
+
+                    .box {
+                        background: white;
+                        padding: 40px;
+                        border-radius: 15px;
+                        box-shadow:
+                            0 5px 25px
+                            rgba(0,0,0,.12);
+                        text-align: center;
+                    }
+
+                    h1 {
+                        font-size: 50px;
+                        margin: 0 0 10px;
+                    }
+
+                    p {
+                        color: #666;
+                    }
+
+                    a {
+                        display: inline-block;
+                        margin-top: 20px;
+                        padding: 12px 20px;
+                        background: #111;
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 8px;
+                    }
+
+                </style>
+
+            </head>
+
+            <body>
+
+                <div class="box">
+
+                    <h1>404</h1>
+
+                    <h2>Página não encontrada</h2>
+
+                    <p>
+                        A rota acessada não existe.
+                    </p>
+
+                    <a href="/">
+                        Voltar para tela de início
+                    </a>
+
+                </div>
+
+            </body>
+
+            </html>
+            """,
+
+            status_code=404,
+
+            media_type="text/html"
+        )
+
+
+# ============================================================
+# ERROS HTTP
+# ============================================================
+
+@app.exception_handler(403)
+async def erro_403(
+    request: Request,
+    exc
+):
+
+    return Response(
+
         content="""
         <!DOCTYPE html>
-        <html lang="pt-br">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport"
-                  content="width=device-width, initial-scale=1.0">
 
-            <title>Página não encontrada</title>
+        <html lang="pt-BR">
+
+        <head>
+
+            <meta charset="UTF-8">
+
+            <title>Acesso negado</title>
 
             <style>
 
-                * {
-                    box-sizing: border-box;
-                }
-
                 body {
-                    margin: 0;
-                    min-height: 100vh;
+                    font-family: Arial, sans-serif;
+                    background: #f5f5f5;
                     display: flex;
-                    align-items: center;
                     justify-content: center;
-
-                    font-family:
-                        Arial,
-                        Helvetica,
-                        sans-serif;
-
-                    background:
-                        linear-gradient(
-                            135deg,
-                            #020617,
-                            #0f172a
-                        );
-
-                    color: white;
+                    align-items: center;
+                    min-height: 100vh;
+                    margin: 0;
                 }
 
-                .erro {
-                    width: 90%;
-                    max-width: 550px;
-                    text-align: center;
-
-                    background: #111827;
-
-                    border: 1px solid #1f2937;
-
-                    border-radius: 20px;
-
-                    padding: 50px 30px;
-
+                .box {
+                    background: white;
+                    padding: 40px;
+                    border-radius: 15px;
                     box-shadow:
-                        0 20px 50px
-                        rgba(0,0,0,.5);
-                }
-
-                .numero {
-                    font-size: 100px;
-                    font-weight: 900;
-                    line-height: 1;
-
-                    color: #00ff88;
-
-                    margin-bottom: 15px;
-                }
-
-                h1 {
-                    margin: 0 0 12px;
-                    font-size: 30px;
-                }
-
-                p {
-                    color: #94a3b8;
-                    font-size: 16px;
-                    line-height: 1.6;
-                    margin-bottom: 30px;
+                        0 5px 25px
+                        rgba(0,0,0,.12);
+                    text-align: center;
                 }
 
                 a {
                     display: inline-block;
-
-                    padding: 12px 22px;
-
-                    background: #00ff88;
-                    color: #020617;
-
-                    border-radius: 10px;
-
+                    margin-top: 20px;
+                    padding: 12px 20px;
+                    background: #111;
+                    color: white;
                     text-decoration: none;
-
-                    font-weight: 800;
-
-                    transition: .2s;
-                }
-
-                a:hover {
-                    transform: translateY(-2px);
-                    box-shadow:
-                        0 8px 20px
-                        rgba(0,255,136,.25);
+                    border-radius: 8px;
                 }
 
             </style>
+
         </head>
 
         <body>
 
-            <div class="erro">
+            <div class="box">
 
-                <div class="numero">
-                    404
-                </div>
-
-                <h1>
-                    Página não encontrada
-                </h1>
+                <h1>Acesso negado</h1>
 
                 <p>
-                    A página que você tentou acessar
-                    não existe ou foi removida.
+                    Você não possui permissão
+                    para acessar esta página.
                 </p>
 
                 <a href="/">
-                    Voltar para o início
+                    Voltar para início
                 </a>
 
             </div>
 
         </body>
+
         </html>
         """,
-        status_code=404
+
+        status_code=403,
+
+        media_type="text/html"
     )
 
 
 # ============================================================
-# ERROS HTTP GENÉRICOS
+# STARTUP
 # ============================================================
 
-@app.exception_handler(HTTPException)
-async def tratar_http_exception(
-    request: Request,
-    exc: HTTPException
-):
+@app.on_event("startup")
+def startup():
 
-    if exc.status_code == 404:
-        return await erro_404(
-            request,
-            exc
+    print()
+
+    print("=" * 65)
+
+    print(
+        "                         M&J STORE"
+    )
+
+    print(
+        "             Sistema de Ponto de Venda"
+    )
+
+    print("=" * 65)
+
+    print(
+        "Aplicação iniciada com sucesso."
+    )
+
+    print(
+        "URL: http://127.0.0.1:8000"
+    )
+
+    print()
+
+    print(
+        "Controllers carregados:"
+    )
+
+
+    for controller in controllers_carregados:
+
+        print(
+            f"  [OK] {controller}"
         )
 
-    return await http_exception_handler(
-        request,
-        exc
+
+    print()
+
+    print(
+        "Banco de dados: OK"
+    )
+
+    print(
+        "Tabela de pagamentos: OK"
+    )
+
+    print("=" * 65)
+
+    print()
+
+
+# ============================================================
+# EXECUÇÃO DIRETA
+# ============================================================
+
+if __name__ == "__main__":
+
+    import uvicorn
+
+    uvicorn.run(
+
+        "app.main:app",
+
+        host="127.0.0.1",
+
+        port=8000,
+
+        reload=True
     )

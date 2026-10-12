@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venda finalizada — M&amp;J Store</title>
+    <link rel="stylesheet" href="/static/css/navbar.css">
+    <style>
+        :root {
+            color-scheme: dark;
+            --green: #00ff88;
+            --bg: #0b0b0b;
+            --panel: #151515;
+            --line: #2b2b2b;
+            --muted: #a0a0a0;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: var(--bg);
+            color: #f5f5f5;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .page {
+            width: min(760px, calc(100% - 28px));
+            margin: 34px auto;
+        }
+
+        .success {
+            text-align: center;
+            padding: 28px 18px 22px;
+        }
+
+        .check {
+            width: 66px;
+            height: 66px;
+            display: grid;
+            place-items: center;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            color: #001b0e;
+            background: var(--green);
+            font-size: 38px;
+            font-weight: 900;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(25px, 4vw, 34px);
+        }
+
+        .sub {
+            color: var(--muted);
+            margin: 9px 0 0;
+        }
+
+        .card {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .section {
+            padding: 20px 22px;
+            border-top: 1px solid var(--line);
+        }
+
+        .section:first-child {
+            border-top: 0;
+        }
+
+        h2 {
+            margin: 0 0 16px;
+            font-size: 16px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            gap: 18px;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .label {
+            color: var(--muted);
+        }
+
+        .value {
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .items {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .items th,
+        .items td {
+            padding: 11px 6px;
+            text-align: left;
+            border-bottom: 1px solid #292929;
+        }
+
+        .items th {
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .items td:last-child,
+        .items th:last-child {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .items td:nth-child(2),
+        .items th:nth-child(2) {
+            text-align: center;
+        }
+
+        .discount {
+            color: var(--green);
+        }
+
+        .total {
+            padding-top: 14px;
+            margin-top: 14px;
+            border-top: 1px solid #3b3b3b;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .total .value {
+            color: var(--green);
+        }
+
+        .payment {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 11px 0;
+            border-bottom: 1px solid #292929;
+        }
+
+        .payment:last-child {
+            border-bottom: 0;
+        }
+
+        .method {
+            text-transform: capitalize;
+        }
+
+        .payment-value {
+            font-weight: 700;
+        }
+
+        .note {
+            color: var(--muted);
+            font-size: 13px;
+            white-space: pre-wrap;
+            line-height: 1.5;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .btn {
+            flex: 1;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 46px;
+            padding: 12px 16px;
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--green);
+            color: #04130b;
+            border-color: var(--green);
+        }
+
+        .btn-secondary {
+            color: #fff;
+            background: #191919;
+        }
+
+        @media (max-width: 520px) {
+            .section {
+                padding: 17px 15px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .items {
+                font-size: 12px;
+            }
+        }
+
+        @media print {
+            body {
+                background: #fff;
+                color: #111;
+            }
+
+            .page {
+                width: 100%;
+                margin: 0;
+            }
+
+            .card {
+                background: #fff;
+                color: #111;
+                border-color: #ccc;
+            }
+
+            .section {
+                border-color: #ddd;
+            }
+
+            .label,
+            .sub,
+            .note,
+            .items th {
+                color: #555;
+            }
+
+            .actions,
+            .success .sub {
+                display: none;
+            }
+
+            .check {
+                background: #eee;
+                color: #111;
+            }
+
+            .discount,
+            .total .value {
+                color: #111;
+            }
+
+            .items td {
+                border-color: #ddd;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="page">
+        <header class="success">
+            <div class="check" aria-hidden="true">✓</div>
+            <h1>Venda finalizada!</h1>
+            <p class="sub">Venda #{{ venda.id }} registrada com sucesso.</p>
+        </header>
+
+        <div class="card">
+            <section class="section">
+                <h2>Dados da venda</h2>
+                <div class="row"><span class="label">Número</span><span class="value">#{{ venda.id }}</span></div>
+                <div class="row"><span class="label">Data</span><span class="value">{{
+                        venda.criado_em.strftime('%d/%m/%Y %H:%M') if venda.criado_em else '—' }}</span></div>
+                <div class="row"><span class="label">Cliente</span><span class="value">{{ venda.cliente.nome if
+                        venda.cliente else 'Consumidor não identificado' }}</span></div>
+                <div class="row"><span class="label">Operador</span><span class="value">{{ venda.usuario.nome if
+                        venda.usuario else '—' }}</span></div>
+            </section>
+
+            <section class="section">
+                <h2>Produtos</h2>
+                {% if venda.itens %}
+                <table class="items">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Qtd.</th>
+                            <th>Unitário</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in venda.itens %}
+                        <tr>
+                            <td>{{ item.produto_nome }}</td>
+                            <td>{{ item.quantidade }}</td>
+                            <td>R$ {{ '%.2f'|format(item.preco_unitario)|replace('.', ',') }}</td>
+                            <td>R$ {{ '%.2f'|format(item.subtotal)|replace('.', ',') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p class="note">Nenhum item foi encontrado para esta venda.</p>
+                {% endif %}
+            </section>
+
+            <section class="section">
+                <h2>Resumo financeiro</h2>
+                <div class="row"><span class="label">Subtotal</span><span class="value">R$ {{
+                        '%.2f'|format(venda.total_bruto)|replace('.', ',') }}</span></div>
+                <div class="row discount"><span>Desconto</span><span class="value">− R$ {{
+                        '%.2f'|format(venda.desconto_valor)|replace('.', ',') }}</span></div>
+                <div class="row total"><span>Total pago</span><span class="value">R$ {{
+                        '%.2f'|format(venda.total_liquido)|replace('.', ',') }}</span></div>
+            </section>
+
+            <section class="section">
+                <h2>Forma(s) de pagamento</h2>
+                {% if venda.pagamentos %}
+                {% for pagamento in venda.pagamentos %}
+                <div class="payment">
+                    <span class="method">{{ pagamento.forma_pagamento|replace('_', ' ') }}</span>
+                    <span class="payment-value">R$ {{ '%.2f'|format(pagamento.valor)|replace('.', ',') }}</span>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p class="note">Nenhum pagamento registrado.</p>
+                {% endif %}
+            </section>
+
+            {% if venda.observacao %}
+            <section class="section">
+                <h2>Observação</h2>
+                <p class="note">{{ venda.observacao }}</p>
+            </section>
+            {% endif %}
+        </div>
+
+        <div class="actions">
+            <a class="btn btn-primary" href="/pdv/">Nova venda</a>
+            <a class="btn btn-secondary" href="/pdv/historico">Histórico de vendas</a>
+            <button class="btn btn-secondary" type="button" onclick="window.print()">Imprimir comprovante</button>
+        </div>
+    </main>
+</body>
+
+</html>

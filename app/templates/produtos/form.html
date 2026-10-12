@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
-        {{ 'Editar Produto' if editando else 'Novo Produto' }} — M&J Store
+        {{ "Editar Produto" if editando else "Novo Produto" }} | M&J Store
     </title>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,361 +15,514 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
         rel="stylesheet"
     >
 
+    <link rel="stylesheet" href="/static/css/navbar.css">
+
     <style>
-        body {
+
+        * {
             font-family: 'Montserrat', sans-serif;
-            background-color: #050505;
         }
 
-        .text-neon {
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: white;
+
+            background:
+                radial-gradient(
+                    circle at 85% 0%,
+                    rgba(200,255,26,.12),
+                    transparent 28%
+                ),
+                radial-gradient(
+                    circle at 0% 100%,
+                    rgba(200,255,26,.06),
+                    transparent 25%
+                ),
+                #050505;
+        }
+
+        .neon {
             color: #c8ff1a;
         }
 
-        .bg-neon {
-            background-color: #c8ff1a;
+        .neon-bg {
+            background: #c8ff1a;
+            color: #050505;
         }
 
-        .bg-neon:hover {
-            background-color: #b2df00;
+        .main-card {
+            background: rgba(13,13,13,.88);
+            border: 1px solid rgba(255,255,255,.08);
+            box-shadow:
+                0 30px 80px rgba(0,0,0,.55);
+            backdrop-filter: blur(18px);
         }
 
-        input:focus,
-        select:focus,
-        textarea:focus {
-            border-color: #c8ff1a !important;
-            box-shadow: 0 0 0 2px rgba(200, 255, 26, 0.2) !important;
+        .input-box {
+            background: #080808;
+            border: 1px solid rgba(255,255,255,.1);
+            transition: .25s ease;
         }
 
-        select option {
-            background-color: #121212;
-            color: white;
+        .input-box:hover {
+            border-color: rgba(255,255,255,.18);
         }
+
+        .input-box:focus {
+            outline: none;
+            border-color: #c8ff1a;
+            box-shadow:
+                0 0 0 3px rgba(200,255,26,.08),
+                0 0 25px rgba(200,255,26,.04);
+        }
+
+        .upload-box {
+            border: 1px dashed rgba(200,255,26,.35);
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(200,255,26,.03),
+                    rgba(255,255,255,.01)
+                );
+            transition: .3s ease;
+        }
+
+        .upload-box:hover {
+            border-color: #c8ff1a;
+            background: rgba(200,255,26,.06);
+            transform: translateY(-2px);
+        }
+
+        .btn {
+            transition: .25s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .preview {
+            transition: .3s ease;
+        }
+
+        .preview:hover {
+            transform: scale(1.02);
+        }
+
+        .divider {
+            height: 1px;
+            background: rgba(255,255,255,.07);
+        }
+
+        select {
+            color-scheme: dark;
+        }
+
     </style>
-
-    <link rel="stylesheet" href="/static/css/navbar.css">
 </head>
 
-<body class="text-gray-200 min-h-screen flex items-center justify-center p-6 my-6">
 
-    {% include "shared/navbar.html" %}
+<body>
 
-
-    <!-- ======================================================
-         CONTAINER
-    ======================================================= -->
-
-    <div class="w-full max-w-2xl bg-[#0b0b0b] border border-gray-800 rounded p-8 shadow-2xl">
-
-        <!-- ==================================================
-             CABEÇALHO
-        =================================================== -->
-
-        <div class="text-center mb-8">
-
-            <h1 class="text-2xl font-black text-white uppercase tracking-tight">
-                {{ 'Editar Produto' if editando else 'Adicionar Produto' }}
-            </h1>
-
-            <p class="text-xs text-gray-500 font-semibold uppercase tracking-wider mt-2">
-                M&J Store Backoffice System
-            </p>
-
-        </div>
+{% include "shared/navbar.html" %}
 
 
-        <!-- ==================================================
-             MENSAGEM DE ERRO
-        =================================================== -->
+<main class="max-w-5xl mx-auto px-5 py-8 md:py-12">
 
-        {% if erro %}
+    <!-- VOLTAR -->
 
-        <div class="bg-red-950/40 border border-red-500 text-red-400 p-4 rounded text-sm mb-6 font-semibold">
+    <a
+        href="/produtos/"
+        class="inline-flex items-center gap-2 text-gray-500 hover:text-lime-300 text-sm transition"
+    >
+        ← Voltar para produtos
+    </a>
 
-            {{ erro }}
+
+    <!-- CABEÇALHO -->
+
+    <div class="mt-7 mb-8">
+
+        <div class="flex items-center gap-3 mb-4">
+
+            <span class="w-9 h-[2px] neon-bg"></span>
+
+            <span class="text-xs font-bold tracking-[.35em] neon uppercase">
+                M&J Store
+            </span>
 
         </div>
 
-        {% endif %}
+        <h1 class="text-4xl md:text-5xl font-black">
+
+            {% if editando %}
+                EDITAR PRODUTO<span class="neon">.</span>
+            {% else %}
+                NOVO PRODUTO<span class="neon">.</span>
+            {% endif %}
+
+        </h1>
+
+        <p class="text-gray-500 mt-3">
+
+            {% if editando %}
+                Atualize as informações e mantenha seu catálogo organizado.
+            {% else %}
+                Cadastre um novo produto para adicionar ao catálogo.
+            {% endif %}
+
+        </p>
+
+    </div>
 
 
-        <!-- ==================================================
-             FORMULÁRIO
-        =================================================== -->
+    <!-- FORM -->
 
-        <form
-            action="{{
-                '/produtos/' ~ editando.id ~ '/editar'
-                if editando
-                else '/produtos/novo'
-            }}"
-            method="post"
-            enctype="multipart/form-data"
-            class="space-y-6"
-        >
+    <form
+        method="post"
+        enctype="multipart/form-data"
+        action="{% if editando %}/produtos/{{ editando.id }}/editar{% else %}/produtos/novo{% endif %}"
+        class="main-card rounded-3xl overflow-hidden"
+    >
 
+        <!-- TOPO DO CARD -->
 
-            <!-- ==================================================
-                 NOME
-            =================================================== -->
+        <div class="p-6 md:p-9 border-b border-white/5">
 
-            <div class="flex flex-col">
+            <div class="flex items-center justify-between">
 
-                <label
-                    for="nome"
-                    class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2"
-                >
-                    Nome do Produto
-                </label>
+                <div>
 
-                <input
-                    type="text"
-                    id="nome"
-                    name="nome"
-                    required
-                    value="{{
-                        editando.nome
-                        if editando
-                        else (valores.nome if valores else '')
-                    }}"
-                    placeholder="Ex: CAMISETA NIKE DRI-FIT PRETA"
-                    class="bg-[#121212] border border-gray-800 rounded p-3.5 text-white outline-none transition text-sm font-semibold uppercase"
-                >
+                    <p class="text-[10px] text-gray-600 uppercase tracking-[.25em]">
+                        Informações
+                    </p>
+
+                    <h2 class="text-xl font-black mt-1">
+                        Dados do produto
+                    </h2>
+
+                </div>
+
+                {% if editando %}
+
+                <span class="px-3 py-1.5 rounded-full bg-lime-400/10 text-lime-300 text-[10px] font-black uppercase">
+                    ID #{{ editando.id }}
+                </span>
+
+                {% else %}
+
+                <span class="px-3 py-1.5 rounded-full bg-white/5 text-gray-500 text-[10px] font-black uppercase">
+                    Novo
+                </span>
+
+                {% endif %}
 
             </div>
 
+        </div>
 
-            <!-- ==================================================
-                 PREÇO + ESTOQUE
-            =================================================== -->
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <!-- CAMPOS -->
 
-                <!-- PREÇO -->
+        <div class="p-6 md:p-9">
 
-                <div class="flex flex-col">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                    <label
-                        for="preco"
-                        class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2"
-                    >
-                        Preço (R$)
+
+                <!-- NOME -->
+
+                <div class="md:col-span-2">
+
+                    <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">
+                        Nome do produto
                     </label>
 
                     <input
-                        type="number"
-                        id="preco"
-                        name="preco"
-                        step="0.01"
-                        min="0"
+                        type="text"
+                        name="nome"
                         required
-                        value="{{
-                            editando.preco
-                            if editando
-                            else (valores.preco if valores else '0.00')
-                        }}"
-                        placeholder="0.00"
-                        class="bg-[#121212] border border-gray-800 rounded p-3.5 text-white outline-none transition text-sm font-semibold"
+                        autocomplete="off"
+                        value="{{ editando.nome if editando else valores.get('nome','') }}"
+                        placeholder="Ex: Camiseta Oversized M&J"
+                        class="input-box w-full rounded-xl px-4 py-4 text-sm text-white"
                     >
+
+                    <p class="text-[10px] text-gray-600 mt-2">
+                        Escolha um nome claro para o produto.
+                    </p>
+
+                </div>
+
+
+                <!-- PREÇO -->
+
+                <div>
+
+                    <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">
+                        Preço
+                    </label>
+
+                    <div class="relative">
+
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">
+                            R$
+                        </span>
+
+                        <input
+                            type="number"
+                            name="preco"
+                            step="0.01"
+                            min="0"
+                            required
+                            value="{{ editando.preco if editando else valores.get('preco','') }}"
+                            placeholder="199.90"
+                            class="input-box w-full rounded-xl pl-12 pr-4 py-4 text-sm text-white"
+                        >
+
+                    </div>
 
                 </div>
 
 
                 <!-- ESTOQUE -->
 
-                <div class="flex flex-col">
+                <div>
 
-                    <label
-                        for="estoque_atual"
-                        class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2"
-                    >
-                        Quantidade em Estoque
+                    <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">
+                        Estoque
                     </label>
 
                     <input
                         type="number"
-                        id="estoque_atual"
                         name="estoque_atual"
                         min="0"
                         required
-                        value="{{
-                            editando.estoque_atual
-                            if editando
-                            else (valores.estoque_atual if valores else '0')
-                        }}"
-                        placeholder="Quantidade"
-                        class="bg-[#121212] border border-gray-800 rounded p-3.5 text-white outline-none transition text-sm font-semibold"
+                        value="{{ editando.estoque_atual if editando else valores.get('estoque_atual','') }}"
+                        placeholder="10"
+                        class="input-box w-full rounded-xl px-4 py-4 text-sm text-white"
                     >
 
                 </div>
 
-            </div>
 
+                <!-- CATEGORIA -->
 
-            <!-- ==================================================
-                 CATEGORIA
-            =================================================== -->
+                <div class="md:col-span-2">
 
-            <div class="flex flex-col">
+                    <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">
+                        Categoria
+                    </label>
 
-                <label
-                    for="categoria_id"
-                    class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2"
-                >
-                    Categoria
-                </label>
-
-                <select
-                    id="categoria_id"
-                    name="categoria_id"
-                    required
-                    class="bg-[#121212] border border-gray-800 rounded p-3.5 text-white outline-none transition text-sm font-bold uppercase cursor-pointer"
-                >
-
-                    <!-- OPÇÃO PADRÃO -->
-
-                    <option value="0">
-                        Selecione uma categoria
-                    </option>
-
-
-                    <!-- ==================================================
-                         CATEGORIAS VINDAS DO BANCO
-                    =================================================== -->
-
-                    {% for categoria in categorias %}
-
-                    <option
-                        value="{{ categoria.id }}"
-
-                        {% if editando and editando.categoria_id == categoria.id %}
-                            selected
-                        {% elif valores and valores.categoria_id == categoria.id %}
-                            selected
-                        {% endif %}
+                    <select
+                        name="categoria_id"
+                        required
+                        class="input-box w-full rounded-xl px-4 py-4 text-sm"
                     >
 
-                        {{ categoria.nome }}
+                        <option value="0">
+                            Selecione uma categoria
+                        </option>
 
-                    </option>
+                        {% for categoria in categorias %}
 
-                    {% endfor %}
+                        <option
+                            value="{{ categoria.id }}"
+                            {% if editando and editando.categoria_id == categoria.id %}
+                                selected
+                            {% elif valores.get('categoria_id')|string == categoria.id|string %}
+                                selected
+                            {% endif %}
+                        >
+                            {{ categoria.nome }}
+                        </option>
 
-                </select>
+                        {% endfor %}
 
-            </div>
-
-
-            <!-- ==================================================
-                 AVISO SE NÃO EXISTIR CATEGORIA
-            =================================================== -->
-
-            {% if not categorias %}
-
-            <div class="border border-yellow-500/50 bg-yellow-950/20 text-yellow-400 p-4 rounded text-sm">
-
-                <strong>Nenhuma categoria encontrada.</strong>
-
-                <br>
-
-                Cadastre uma categoria antes de adicionar um produto.
-
-            </div>
-
-            {% endif %}
-
-
-            <!-- ==================================================
-                 IMAGEM ATUAL
-            =================================================== -->
-
-            {% if editando and editando.imagem_path %}
-
-            <div class="bg-[#121212] border border-gray-800 p-4 rounded text-center">
-
-                <p class="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">
-                    Imagem Atual
-                </p>
-
-                <div class="flex justify-center">
-
-                    <img
-                        src="/static/{{ editando.imagem_path }}"
-                        alt="{{ editando.nome }}"
-                        class="w-32 h-32 object-contain border border-gray-800 rounded bg-[#0b0b0b] p-2"
-                    >
+                    </select>
 
                 </div>
 
+
+                <!-- DIVISOR -->
+
+                <div class="md:col-span-2 divider"></div>
+
+
+                <!-- IMAGEM -->
+
+                <div class="md:col-span-2">
+
+                    <label class="block text-xs font-bold uppercase tracking-widest text-gray-400 mb-3">
+                        Imagem do produto
+                    </label>
+
+
+                    <label
+                        for="imagem"
+                        class="upload-box block rounded-2xl p-8 text-center cursor-pointer"
+                    >
+
+                        <div
+                            class="w-16 h-16 mx-auto rounded-2xl bg-lime-400/10 flex items-center justify-center text-3xl mb-4"
+                        >
+                            🖼️
+                        </div>
+
+                        <h3 class="font-bold text-sm">
+                            Escolher imagem
+                        </h3>
+
+                        <p class="text-xs text-gray-500 mt-2">
+                            Clique aqui para selecionar uma imagem do produto
+                        </p>
+
+                        <p class="text-[10px] text-gray-700 mt-2">
+                            JPG • JPEG • PNG • WEBP
+                        </p>
+
+                        <input
+                            id="imagem"
+                            type="file"
+                            name="imagem"
+                            accept=".jpg,.jpeg,.png,.webp"
+                            class="hidden"
+                            onchange="mostrarArquivo(this)"
+                        >
+
+                    </label>
+
+
+                    <!-- NOME ARQUIVO -->
+
+                    <div
+                        id="arquivoContainer"
+                        class="hidden mt-3 p-3 rounded-xl bg-lime-400/5 border border-lime-400/10"
+                    >
+
+                        <p
+                            id="arquivoSelecionado"
+                            class="text-xs neon font-semibold"
+                        ></p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- IMAGEM ATUAL -->
+
+                {% if editando and editando.imagem_path %}
+
+                <div class="md:col-span-2">
+
+                    <div class="flex items-center justify-between mb-3">
+
+                        <div>
+
+                            <p class="text-xs font-bold uppercase tracking-widest text-gray-400">
+                                Imagem atual
+                            </p>
+
+                            <p class="text-[10px] text-gray-600 mt-1">
+                                Ao escolher uma nova imagem, ela substituirá esta.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="preview max-w-sm rounded-2xl overflow-hidden border border-white/10 bg-black">
+
+                        <img
+                            src="/static/{{ editando.imagem_path }}"
+                            alt="{{ editando.nome }}"
+                            class="w-full h-72 object-cover"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        >
+
+                        <div class="hidden h-72 items-center justify-center text-gray-600 text-sm">
+                            Imagem indisponível
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
             </div>
 
-            {% endif %}
 
+            <!-- BOTÕES -->
 
-            <!-- ==================================================
-                 NOVA IMAGEM
-            =================================================== -->
+            <div class="flex flex-col-reverse sm:flex-row gap-3 mt-10 pt-7 border-t border-white/5">
 
-            <div class="flex flex-col">
-
-                <label
-                    for="imagem"
-                    class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2"
+                <a
+                    href="/produtos/"
+                    class="btn flex-1 text-center rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 py-4 font-bold text-xs"
                 >
-                    {{ 'Alterar Imagem' if editando else 'Imagem do Produto' }}
-                </label>
-
-                <input
-                    type="file"
-                    id="imagem"
-                    name="imagem"
-                    accept=".jpg,.jpeg,.png,.webp"
-                    class="bg-[#121212] border border-gray-800 rounded p-2.5 text-gray-400 text-xs font-mono file:mr-4 file:py-1.5 file:px-4 file:rounded file:border-0 file:text-xs file:font-black file:bg-zinc-800 file:text-white hover:file:bg-zinc-700 file:cursor-pointer cursor-pointer"
-                >
-
-                <p class="text-[10px] text-gray-600 mt-2 uppercase">
-                    Formatos permitidos: JPG, JPEG, PNG e WEBP
-                </p>
-
-            </div>
-
-
-            <!-- ==================================================
-                 BOTÕES
-            =================================================== -->
-
-            <div class="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-                <!-- SALVAR -->
+                    CANCELAR
+                </a>
 
                 <button
                     type="submit"
-                    class="bg-neon text-black font-black uppercase text-xs tracking-widest py-4 transition rounded-none shadow-lg"
+                    class="btn flex-1 rounded-xl neon-bg py-4 font-black text-xs shadow-lg shadow-lime-400/10"
                 >
 
-                    {{ 'Atualizar Produto' if editando else 'Salvar Produto' }}
+                    {% if editando %}
+                        ✓ SALVAR ALTERAÇÕES
+                    {% else %}
+                        + CADASTRAR PRODUTO
+                    {% endif %}
 
                 </button>
 
-
-                <!-- CANCELAR -->
-
-                <a
-                    href="/produtos"
-                    class="border border-gray-800 hover:border-gray-600 bg-transparent text-gray-400 hover:text-white font-black uppercase text-xs tracking-widest py-4 text-center transition"
-                >
-                    Cancelar
-                </a>
-
             </div>
 
-        </form>
+        </div>
 
-    </div>
+    </form>
+
+
+    <!-- RODAPÉ -->
+
+    <p class="text-center text-[10px] text-gray-700 uppercase tracking-widest mt-7">
+        M&J Store • Sistema de gerenciamento
+    </p>
+
+</main>
+
+
+<script>
+
+function mostrarArquivo(input) {
+
+    const container = document.getElementById("arquivoContainer");
+    const texto = document.getElementById("arquivoSelecionado");
+
+    if (input.files && input.files.length > 0) {
+
+        const arquivo = input.files[0];
+
+        texto.textContent = "✓ Imagem selecionada: " + arquivo.name;
+
+        container.classList.remove("hidden");
+
+    } else {
+
+        container.classList.add("hidden");
+
+    }
+
+}
+
+</script>
 
 </body>
-
 </html>

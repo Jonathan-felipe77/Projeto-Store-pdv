@@ -97,3 +97,5 @@ def get_admin(request: Request):
         )
     else:
         return usuario
+
+    

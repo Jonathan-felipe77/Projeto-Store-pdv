@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Estoque atualizado | M&J Store</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        * {
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+
+            margin: 0;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: white;
+
+            background:
+                radial-gradient(
+                    circle at center,
+                    rgba(200,255,26,.12),
+                    transparent 38%
+                ),
+                #050505;
+        }
+
+        .card {
+
+            background: rgba(15,15,15,.94);
+
+            border: 1px solid rgba(200,255,26,.15);
+
+            box-shadow:
+                0 30px 100px rgba(0,0,0,.7);
+
+            backdrop-filter: blur(20px);
+        }
+
+        .success-icon {
+
+            width: 90px;
+
+            height: 90px;
+
+            border-radius: 50%;
+
+            background:
+                rgba(200,255,26,.10);
+
+            border: 2px solid #c8ff1a;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: #c8ff1a;
+
+            font-size: 42px;
+
+            margin: 0 auto;
+
+            box-shadow:
+                0 0 40px rgba(200,255,26,.15);
+
+            animation: aparecer .5s ease;
+        }
+
+        @keyframes aparecer {
+
+            from {
+                opacity: 0;
+                transform: scale(.5);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+        }
+
+        .neon {
+            color: #c8ff1a;
+        }
+
+        .neon-bg {
+
+            background: #c8ff1a;
+
+            color: #050505;
+        }
+
+        .btn {
+
+            transition: .2s ease;
+        }
+
+        .btn:hover {
+
+            transform: translateY(-2px);
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <main class="w-full max-w-lg px-5">
+
+        <div class="card rounded-3xl p-8 md:p-12 text-center">
+
+            <!-- ÍCONE -->
+
+            <div class="success-icon mb-7">
+                ✓
+            </div>
+
+
+            <!-- MARCA -->
+
+            <p
+                class="text-xs font-black tracking-[.4em] neon uppercase mb-4"
+            >
+                M&J Store
+            </p>
+
+
+            <!-- TÍTULO -->
+
+            <h1 class="text-3xl md:text-4xl font-black">
+
+                Estoque atualizado<span class="neon">!</span>
+
+            </h1>
+
+
+            <!-- TEXTO -->
+
+            <p class="text-gray-500 mt-4 leading-relaxed">
+
+                A movimentação foi registrada com sucesso
+                e o estoque foi atualizado.
+
+            </p>
+
+
+            {% if produto %}
+
+            <!-- PRODUTO -->
+
+            <div
+                class="mt-7 p-5 rounded-2xl bg-white/5 border border-white/5"
+            >
+
+                <p
+                    class="text-[10px] text-gray-600 uppercase tracking-widest"
+                >
+                    Produto
+                </p>
+
+                <p class="font-bold mt-1">
+                    {{ produto.nome }}
+                </p>
+
+
+                <!-- TIPO -->
+
+                <div class="mt-4">
+
+                    <p
+                        class="text-[10px] text-gray-600 uppercase tracking-widest"
+                    >
+                        Movimentação
+                    </p>
+
+                    <p class="font-bold mt-1 neon">
+
+                        {% if movimentacao.tipo == "entrada" %}
+
+                            ENTRADA
+
+                        {% else %}
+
+                            SAÍDA
+
+                        {% endif %}
+
+                    </p>
+
+                </div>
+
+
+                <!-- QUANTIDADE -->
+
+                <div class="mt-4">
+
+                    <p
+                        class="text-[10px] text-gray-600 uppercase tracking-widest"
+                    >
+                        Quantidade
+                    </p>
+
+                    <p class="font-bold text-xl mt-1">
+
+                        {{ movimentacao.quantidade }}
+
+                        unidade(s)
+
+                    </p>
+
+                </div>
+
+
+                <!-- ESTOQUE ATUAL -->
+
+                <div class="mt-4">
+
+                    <p
+                        class="text-[10px] text-gray-600 uppercase tracking-widest"
+                    >
+                        Estoque atual
+                    </p>
+
+                    <p class="font-black text-2xl mt-1 neon">
+
+                        {{ produto.estoque_atual }}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+            <!-- BOTÕES -->
+
+            <div
+                class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-8"
+            >
+
+                <a
+                    href="/produtos/"
+                    class="btn rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 py-4 text-xs font-black"
+                >
+                    VER PRODUTOS
+                </a>
+
+
+                <a
+                    href="/movimentacoes/nova"
+                    class="btn neon-bg rounded-xl py-4 text-xs font-black"
+                >
+                    MOVIMENTAR NOVAMENTE
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- RODAPÉ -->
+
+        <p
+            class="text-center text-[10px] text-gray-700 uppercase tracking-widest mt-6"
+        >
+            M&J Store • Controle de estoque
+        </p>
+
+    </main>
+
+</body>
+
+</html>
