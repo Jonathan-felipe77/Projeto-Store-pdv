@@ -6,6 +6,12 @@ from fastapi import FastAPI, Depends, Request
 from fastapi.responses import RedirectResponse, Response, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+<<<<<<< HEAD
+
+from fastapi.responses import (
+    RedirectResponse,
+    Response
+=======
 from starlette.middleware.sessions import SessionMiddleware
 
 
@@ -28,6 +34,7 @@ CONTROLLERS_DIR = BASE_DIR / "controllers"
 STATIC_DIR.mkdir(
     parents=True,
     exist_ok=True
+>>>>>>> 055d98445d7e333beb489a0aae65946a0bbe9994
 )
 
 TEMPLATES_DIR.mkdir(
@@ -40,19 +47,61 @@ TEMPLATES_DIR.mkdir(
     exist_ok=True
 )
 
+<<<<<<< HEAD
+
+# ============================================================
+# DATABASE
+# ============================================================
+=======
 (STATIC_DIR / "img").mkdir(
     parents=True,
     exist_ok=True
 )
+>>>>>>> 055d98445d7e333beb489a0aae65946a0bbe9994
 
 (STATIC_DIR / "css").mkdir(
     parents=True,
     exist_ok=True
 )
 
+<<<<<<< HEAD
+
+# ============================================================
+# MODELOS
+# ============================================================
+
+# IMPORTANTE:
+# O Pagamento precisa ser importado antes do create_all()
+# para o SQLAlchemy criar a tabela pagamentos.
+
+from app.models.venda import Venda, ItemVenda
+from app.models.pagamento import Pagamento
+
+
+# ============================================================
+# CONTROLLERS
+# ============================================================
+
+from app.controllers import auth_controller
+from app.controllers import usuario_controller
+from app.controllers import categoria_controller
+from app.controllers import produto_controller
+from app.controllers import movimentacao_controller
+from app.controllers import clientes_controller
+from app.controllers import pdv_controller
+
+
+# ============================================================
+# CRIAR TABELAS
+# ============================================================
+
+Base.metadata.create_all(
+    bind=engine
+=======
 (STATIC_DIR / "js").mkdir(
     parents=True,
     exist_ok=True
+>>>>>>> 055d98445d7e333beb489a0aae65946a0bbe9994
 )
 
 
@@ -547,6 +596,16 @@ async def erro_404(
     request: Request,
     exc
 ):
+<<<<<<< HEAD
+
+    return templates.TemplateResponse(
+        request,
+        "errors/erro.html",
+        {
+            "request": request,
+            "status_code": 401,
+=======
+>>>>>>> 055d98445d7e333beb489a0aae65946a0bbe9994
 
     try:
 
@@ -663,6 +722,61 @@ async def erro_403(
     exc
 ):
 
+<<<<<<< HEAD
+    return templates.TemplateResponse(
+        request,
+        "errors/erro.html",
+        {
+            "request": request,
+            "status_code": 403,
+
+            "titulo": "Acesso não permitido",
+
+            "mensagem": (
+                "Você não possui permissão "
+                "para acessar esta área."
+            ),
+
+            "detalhe": (
+                "Entre com uma conta de administrador "
+                "para continuar."
+            ),
+        },
+        status_code=403
+    )
+
+
+# ============================================================
+# ERRO 404 — ROTA NÃO ENCONTRADA
+# ============================================================
+
+@app.exception_handler(404)
+async def erro_404(
+    request: Request,
+    exc
+):
+
+    return templates.TemplateResponse(
+        request=request,
+        name="errors/erro.html",
+        context={
+            "request": request,
+            "status_code": 404,
+
+            "titulo": "Rota não encontrada",
+
+            "mensagem": (
+                "A página que você tentou acessar "
+                "não existe."
+            ),
+
+            "detalhe": (
+                "Verifique o endereço ou volte "
+                "para a página inicial."
+            ),
+        },
+        status_code=404
+=======
     return Response(
 
         content="""
@@ -737,6 +851,7 @@ async def erro_403(
         status_code=403,
 
         media_type="text/html"
+>>>>>>> 055d98445d7e333beb489a0aae65946a0bbe9994
     )
 
 
