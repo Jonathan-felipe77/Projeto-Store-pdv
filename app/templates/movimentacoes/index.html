@@ -1,305 +1,91 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estoque | M&J Store</title>
 
-    <title>Estoque e Movimentações — M&J STORE</title>
+    <link rel="stylesheet" href="/static/css/navbar.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         :root {
-            --preto: #050505;
-            --preto-card: #0d0d0d;
-            --preto-card-2: #111111;
-            --cinza: #a1a1aa;
-            --cinza-escuro: #242424;
-            --branco: #ffffff;
-            --verde: #c8ff1a;
-            --verde-hover: #d9ff4d;
-            --verde-fraco: rgba(200, 255, 26, 0.10);
-            --vermelho: #ff4d4d;
-            --vermelho-fraco: rgba(255, 77, 77, 0.10);
-            --amarelo: #ffc107;
-            --amarelo-fraco: rgba(255, 193, 7, 0.10);
+            --bg: #101010;
+            --surface: #151515;
+            --surface-hover: #1c1c1c;
+            --line: #303030;
+            --text: #f5f5f5;
+            --muted: #999999;
+            --green: #c8ff1a;
+            --red: #ff6464;
+            --yellow: #ffc857;
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
+            background: var(--bg);
+            color: var(--text);
             font-family: 'Montserrat', sans-serif;
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(200, 255, 26, 0.08),
-                    transparent 30%
-                ),
-                radial-gradient(
-                    circle at bottom left,
-                    rgba(200, 255, 26, 0.04),
-                    transparent 25%
-                ),
-                var(--preto);
-            color: var(--branco);
             min-height: 100vh;
         }
 
-        /* =========================================================
-           CONTAINER
-        ========================================================= */
+        a { color: inherit; text-decoration: none; }
 
         .container {
-            width: min(1450px, 94%);
+            width: min(1000px, 94%);
             margin: 0 auto;
-            padding: 40px 0 60px;
+            padding: 28px 0 50px;
         }
 
-        /* =========================================================
-           TÍTULO
-        ========================================================= */
-
-        .page-title {
-            margin-bottom: 30px;
-        }
-
-        .page-title .mini-title {
-            color: var(--verde);
-            font-size: 12px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 9px;
-        }
-
-        .page-title h1 {
-            font-size: clamp(28px, 4vw, 42px);
-            font-weight: 800;
-            letter-spacing: -1.5px;
-        }
-
-        .page-title p {
-            color: var(--cinza);
-            margin-top: 10px;
-            font-size: 14px;
-        }
-
-        /* =========================================================
-           TÍTULOS DE SEÇÃO
-        ========================================================= */
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 18px;
-            font-size: 16px;
-            font-weight: 800;
-        }
-
-        .section-title::before {
-            content: "";
-            width: 4px;
-            height: 20px;
-            background: var(--verde);
-            border-radius: 5px;
-        }
-
-        /* =========================================================
-           CARDS DE RESUMO
-        ========================================================= */
-
-        .summary {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 18px;
-            margin-bottom: 30px;
-        }
-
-        .summary-card {
-            background: linear-gradient(145deg, #101010, #090909);
-            border: 1px solid #222;
-            border-radius: 16px;
-            padding: 22px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .summary-card::after {
-            content: "";
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            background: var(--verde);
-            opacity: 0.04;
-            border-radius: 50%;
-            right: -25px;
-            bottom: -25px;
-        }
-
-        .summary-label {
-            color: var(--cinza);
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .summary-value {
-            font-size: 28px;
-            font-weight: 800;
-            margin-top: 8px;
-        }
-
-        .summary-value.green {
-            color: var(--verde);
-        }
-
-        .summary-value.red {
-            color: var(--vermelho);
-        }
-
-        .summary-value.yellow {
-            color: var(--amarelo);
-        }
-
-        /* =========================================================
-           ÁREA DE ESTOQUE
-        ========================================================= */
-
-        .stock-card {
-            background: var(--preto-card);
-            border: 1px solid #222;
-            border-radius: 18px;
-            overflow: hidden;
-            margin-bottom: 30px;
-        }
-
-        .stock-header {
-            padding: 20px 22px;
-            border-bottom: 1px solid #222;
+        .page-heading {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 20px;
+            gap: 18px;
+            flex-wrap: wrap;
+            padding-bottom: 22px;
+            border-bottom: 1px solid var(--line);
+            margin-bottom: 22px;
         }
 
-        .stock-header h2 {
-            font-size: 16px;
-            font-weight: 800;
-        }
-
-        .stock-header span {
-            color: var(--cinza);
-            font-size: 11px;
-        }
-
-        .stock-container {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .stock-table {
-            min-width: 900px;
-        }
-
-        thead {
-            background: #111111;
-        }
-
-        th {
-            padding: 15px 18px;
-            text-align: left;
-            color: #85858c;
+        .eyebrow {
+            color: var(--muted);
             font-size: 10px;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.8px;
-            font-weight: 800;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-size: clamp(22px, 3vw, 30px);
+            font-weight: 600;
+            letter-spacing: -0.8px;
+        }
+
+        .heading-meta {
+            display: inline-block;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 500;
+            margin-left: 8px;
             white-space: nowrap;
         }
 
-        td {
-            padding: 17px 18px;
-            border-top: 1px solid #1d1d1d;
-            color: #d8d8dc;
+        .subtitle {
+            color: var(--muted);
             font-size: 12px;
-            font-weight: 500;
-            vertical-align: middle;
+            line-height: 1.7;
+            margin-top: 9px;
         }
-
-        tbody tr {
-            transition: 0.2s;
-        }
-
-        tbody tr:hover {
-            background: rgba(200, 255, 26, 0.025);
-        }
-
-        .product-name {
-            color: white;
-            font-weight: 700;
-        }
-
-        .quantity {
-            font-size: 18px;
-            font-weight: 800;
-            color: white;
-        }
-
-        .category {
-            color: var(--cinza);
-        }
-
-        /* =========================================================
-           STATUS
-        ========================================================= */
-
-        .status {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 7px 10px;
-            border-radius: 8px;
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-
-        .status-ok {
-            color: var(--verde);
-            background: var(--verde-fraco);
-            border: 1px solid rgba(200, 255, 26, 0.14);
-        }
-
-        .status-low {
-            color: var(--amarelo);
-            background: var(--amarelo-fraco);
-            border: 1px solid rgba(255, 193, 7, 0.15);
-        }
-
-        .status-out {
-            color: var(--vermelho);
-            background: var(--vermelho-fraco);
-            border: 1px solid rgba(255, 77, 77, 0.14);
-        }
-
-        /* =========================================================
-           BOTÕES
-        ========================================================= */
 
         .actions {
             display: flex;
-            gap: 8px;
+            gap: 9px;
             flex-wrap: wrap;
         }
 
@@ -307,990 +93,355 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            text-decoration: none;
-            border-radius: 9px;
-            padding: 9px 12px;
+            gap: 8px;
+            padding: 11px 14px;
+            background: transparent;
+            border: 1px solid #414141;
+            border-radius: 7px;
+            color: var(--text);
+            font-family: inherit;
             font-size: 10px;
-            font-weight: 800;
-            transition: 0.2s;
-        }
-
-        .btn-main {
-            background: var(--verde);
-            color: #050505;
-        }
-
-        .btn-main:hover {
-            background: var(--verde-hover);
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background: #171717;
-            border: 1px solid #292929;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            color: var(--verde);
-            border-color: var(--verde);
-        }
-
-        /* =========================================================
-           FILTROS
-        ========================================================= */
-
-        .filter-card {
-            background: var(--preto-card);
-            border: 1px solid #222;
-            border-radius: 18px;
-            padding: 22px;
-            margin-bottom: 20px;
-        }
-
-        .filter-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 17px;
-            font-size: 14px;
             font-weight: 700;
+            text-align: center;
+            transition: .2s;
+            cursor: pointer;
         }
 
-        .filter-title::before {
-            content: "";
-            width: 4px;
-            height: 18px;
-            background: var(--verde);
-            border-radius: 5px;
+        .btn:hover {
+            border-color: var(--green);
+            color: var(--green);
         }
 
-        .filters {
+        .btn-primary {
+            background: var(--green);
+            color: #101010;
+            border-color: var(--green);
+        }
+
+        .btn-primary:hover {
+            background: #dcff70;
+            border-color: #dcff70;
+            color: #101010;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .summary-card {
+            background: var(--surface);
+            border: 1px solid #282828;
+            padding: 17px;
+            min-width: 0;
+        }
+
+        .summary-label {
+            color: var(--muted);
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .7px;
+            line-height: 1.5;
+        }
+
+        .summary-value {
+            margin-top: 10px;
+            font-size: 26px;
+            font-weight: 600;
+        }
+
+        .green { color: var(--green); }
+        .red { color: var(--red); }
+        .yellow { color: var(--yellow); }
+
+        .section-heading {
             display: flex;
+            justify-content: space-between;
+            align-items: center;
             gap: 12px;
             flex-wrap: wrap;
+            margin-bottom: 15px;
         }
 
-        select {
-            background: #080808;
-            color: white;
-            border: 1px solid #292929;
-            border-radius: 10px;
-            padding: 13px 42px 13px 14px;
-            font-family: inherit;
-            font-size: 13px;
+        .section-heading h2 {
+            font-size: 15px;
             font-weight: 600;
-            outline: none;
-            cursor: pointer;
-            min-width: 210px;
-            transition: 0.2s;
         }
 
-        select:hover,
-        select:focus {
-            border-color: var(--verde);
-            box-shadow: 0 0 0 3px rgba(200, 255, 26, 0.08);
+        .section-heading p {
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 5px;
         }
 
-        button {
-            border: none;
-            background: var(--verde);
-            color: #050505;
-            padding: 13px 24px;
-            border-radius: 10px;
-            font-family: inherit;
-            font-size: 13px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        button:hover {
-            background: var(--verde-hover);
-            transform: translateY(-1px);
-            box-shadow: 0 8px 20px rgba(200, 255, 26, 0.12);
-        }
-
-        .clear-btn {
-            display: flex;
-            align-items: center;
-            padding: 0 18px;
-            color: var(--cinza);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-            transition: 0.2s;
-        }
-
-        .clear-btn:hover {
-            color: var(--verde);
-        }
-
-        /* =========================================================
-           NOVA MOVIMENTAÇÃO
-        ========================================================= */
-
-        .action-area {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
-        }
-
-        .new-movement {
-            display: inline-flex;
-            align-items: center;
-            gap: 9px;
-            background: var(--verde);
-            color: #050505;
-            padding: 13px 20px;
-            border-radius: 11px;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 800;
-            transition: 0.2s;
-        }
-
-        .new-movement:hover {
-            background: var(--verde-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(200, 255, 26, 0.14);
-        }
-
-        .plus {
-            font-size: 19px;
-            line-height: 1;
-        }
-
-        /* =========================================================
-           HISTÓRICO
-        ========================================================= */
-
-        .history-card {
-            background: var(--preto-card);
-            border: 1px solid #222;
-            border-radius: 18px;
+        .table-card {
+            border: 1px solid #2d2d2d;
+            background: #121212;
             overflow: hidden;
         }
 
-        .history-header {
-            padding: 20px 22px;
-            border-bottom: 1px solid #222;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+        .table-scroll { width: 100%; overflow-x: auto; }
 
-        .history-header h2 {
-            font-size: 15px;
-            font-weight: 800;
-        }
-
-        .history-header span {
-            color: var(--cinza);
-            font-size: 11px;
-        }
-
-        .table-container {
+        table {
             width: 100%;
-            overflow-x: auto;
+            border-collapse: collapse;
+            text-align: left;
         }
 
-        .history-table {
-            min-width: 1050px;
-        }
+        .stock-table { min-width: 720px; }
 
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 7px 10px;
-            border-radius: 8px;
-            font-size: 10px;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
+        thead { background: #191919; }
 
-        .badge-entrada {
-            color: var(--verde);
-            background: var(--verde-fraco);
-            border: 1px solid rgba(200, 255, 26, 0.14);
-        }
-
-        .badge-saida {
-            color: var(--vermelho);
-            background: var(--vermelho-fraco);
-            border: 1px solid rgba(255, 77, 77, 0.14);
-        }
-
-        .price {
-            color: #cfcfcf;
-            white-space: nowrap;
-        }
-
-        .total {
-            color: var(--verde);
-            font-weight: 800;
-            white-space: nowrap;
-        }
-
-        .observation {
-            color: #999;
-            max-width: 180px;
-        }
-
-        .user {
+        th {
+            color: #969696;
+            font-size: 9px;
             font-weight: 700;
-            color: white;
+            text-transform: uppercase;
+            letter-spacing: .7px;
+            padding: 15px;
+            white-space: nowrap;
         }
 
-        /* =========================================================
-           VAZIO
-        ========================================================= */
+        td {
+            padding: 15px;
+            border-top: 1px solid #282828;
+            font-size: 11px;
+            vertical-align: middle;
+        }
+
+        tbody tr { transition: background .2s; }
+        tbody tr:hover { background: var(--surface-hover); }
+
+        .product-name { font-weight: 600; color: #fff; }
+        .category { color: var(--muted); }
+
+        .quantity {
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 8px;
+            font-size: 9px;
+            font-weight: 700;
+            white-space: nowrap;
+            border: 1px solid;
+        }
+
+        .status-ok {
+            color: var(--green);
+            background: #c8ff1a0d;
+            border-color: #c8ff1a30;
+        }
+
+        .status-low {
+            color: var(--yellow);
+            background: #ffc8570d;
+            border-color: #ffc85730;
+        }
+
+        .status-out {
+            color: var(--red);
+            background: #ff64640d;
+            border-color: #ff646430;
+        }
+
+        .row-actions { display: flex; gap: 7px; flex-wrap: wrap; }
+
+        .small-btn {
+            display: inline-block;
+            padding: 8px 10px;
+            border: 1px solid #414141;
+            font-size: 9px;
+            font-weight: 700;
+            white-space: nowrap;
+            transition: .2s;
+        }
+
+        .small-btn:hover { border-color: var(--green); color: var(--green); }
+
+        .small-btn.primary {
+            background: var(--green);
+            color: #101010;
+            border-color: var(--green);
+        }
+
+        .small-btn.primary:hover { background: #dcff70; }
 
         .empty {
-            text-align: center !important;
-            padding: 60px 20px !important;
-            color: #777;
-        }
-
-        .empty-icon {
-            font-size: 35px;
-            margin-bottom: 12px;
-            opacity: 0.6;
+            padding: 42px 20px !important;
+            color: var(--muted);
+            text-align: center;
+            line-height: 1.8;
         }
 
         .empty strong {
             display: block;
-            color: #aaa;
-            font-size: 14px;
+            color: var(--text);
+            font-size: 13px;
             margin-bottom: 5px;
         }
 
-        /* =========================================================
-           VOLTAR
-        ========================================================= */
-
-        .back {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 25px;
-            color: var(--cinza);
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 700;
-            transition: 0.2s;
+        .bottom-link {
+            display: inline-block;
+            margin-top: 22px;
+            color: var(--muted);
+            font-size: 11px;
+            transition: .2s;
         }
 
-        .back:hover {
-            color: var(--verde);
+        .bottom-link:hover { color: var(--green); }
+
+        @media (max-width: 700px) {
+            .container { padding-top: 22px; }
+            .page-heading { align-items: flex-start; }
+            .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .summary-card { padding: 13px; }
+            .summary-value { font-size: 23px; }
+            .actions { width: 100%; }
+            .actions .btn { flex: 1; }
         }
 
-        /* =========================================================
-           RESPONSIVO
-        ========================================================= */
-
-        @media (max-width: 1000px) {
-            .summary {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 800px) {
-            .container {
-                width: 92%;
-                padding-top: 30px;
-            }
-
-            .summary {
-                grid-template-columns: 1fr;
-            }
-
-            .filters {
-                flex-direction: column;
-            }
-
-            select,
-            button {
-                width: 100%;
-            }
-
-            .clear-btn {
-                padding: 5px 0;
-            }
-
-            .action-area {
-                justify-content: stretch;
-            }
-
-            .new-movement {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .stock-header,
-            .history-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+        @media (max-width: 380px) {
+            .summary { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .heading-meta { display: block; margin: 7px 0 0; }
         }
     </style>
-
-    <link rel="stylesheet" href="/static/css/navbar.css">
 </head>
 
 <body>
-
-    <!-- =========================================================
-         NAVBAR GLOBAL
-    ========================================================= -->
-
     {% include "shared/navbar.html" %}
 
-
     <main class="container">
-
-        <!-- =====================================================
-             TÍTULO
-        ===================================================== -->
-
-        <section class="page-title">
-
-            <div class="mini-title">
-                Controle de estoque
+        <header class="page-heading">
+            <div>
+                <div class="eyebrow">M&J STORE / ADMINISTRAÇÃO</div>
+                <h1>
+                    ESTOQUE
+                    <span class="heading-meta">{{ produtos|length }} produtos</span>
+                </h1>
+                <p class="subtitle">
+                    Consulte a quantidade disponível e controle as movimentações.
+                </p>
             </div>
 
-            <h1>
-                Estoque e movimentações
-            </h1>
-
-            <p>
-                Acompanhe a quantidade disponível de cada produto
-                e consulte as entradas e saídas realizadas.
-            </p>
-
-        </section>
-
-
-        <!-- =====================================================
-             RESUMO
-        ===================================================== -->
+            <div class="actions">
+                <a href="/movimentacoes/nova" class="btn btn-primary">
+                    + NOVA MOVIMENTAÇÃO
+                </a>
+                <a href="/movimentacoes/historico" class="btn">
+                    HISTÓRICO ↗
+                </a>
+            </div>
+        </header>
 
         <section class="summary">
+            <article class="summary-card">
+                <div class="summary-label">Produtos ativos</div>
+                <div class="summary-value">{{ produtos|length }}</div>
+            </article>
 
-            <div class="summary-card">
+            <article class="summary-card">
+                <div class="summary-label">Unidades em estoque</div>
+                <div class="summary-value green">{{ total_unidades }}</div>
+            </article>
 
-                <div class="summary-label">
-                    Produtos ativos
-                </div>
+            <article class="summary-card">
+                <div class="summary-label">Estoque baixo</div>
+                <div class="summary-value yellow">{{ estoque_baixo }}</div>
+            </article>
 
-                <div class="summary-value">
-                    {{ produtos|length }}
-                </div>
-
-            </div>
-
-
-            <div class="summary-card">
-
-                <div class="summary-label">
-                    Unidades em estoque
-                </div>
-
-                <div class="summary-value green">
-                    {{ total_unidades }}
-                </div>
-
-            </div>
-
-
-            <div class="summary-card">
-
-                <div class="summary-label">
-                    Estoque baixo
-                </div>
-
-                <div class="summary-value yellow">
-                    {{ estoque_baixo }}
-                </div>
-
-            </div>
-
-
-            <div class="summary-card">
-
-                <div class="summary-label">
-                    Sem estoque
-                </div>
-
-                <div class="summary-value red">
-                    {{ sem_estoque }}
-                </div>
-
-            </div>
-
+            <article class="summary-card">
+                <div class="summary-label">Sem estoque</div>
+                <div class="summary-value red">{{ sem_estoque }}</div>
+            </article>
         </section>
 
-
-        <!-- =====================================================
-             QUANTIDADE DE ESTOQUE POR PRODUTO
-        ===================================================== -->
-
-        <section class="stock-card">
-
-            <div class="stock-header">
-
+        <section>
+            <div class="section-heading">
                 <div>
-
-                    <h2>
-                        Quantidade em estoque
-                    </h2>
-
-                    <span>
-                        Situação atual dos produtos
-                    </span>
-
+                    <h2>Quantidade em estoque</h2>
+                    <p>Situação atual dos produtos cadastrados</p>
                 </div>
-
             </div>
 
-
-            <div class="stock-container">
-
-                <table class="stock-table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                Produto
-                            </th>
-
-                            <th>
-                                Categoria
-                            </th>
-
-                            <th>
-                                Quantidade
-                            </th>
-
-                            <th>
-                                Status
-                            </th>
-
-                            <th>
-                                Ações
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody>
-
-                        {% if produtos %}
-
-                            {% for p in produtos %}
-
-                                <tr>
-
-                                    <!-- PRODUTO -->
-
-                                    <td>
-                                        <span class="product-name">
-                                            {{ p.nome }}
-                                        </span>
-                                    </td>
-
-
-                                    <!-- CATEGORIA -->
-
-                                    <td class="category">
-
-                                        {% if p.categoria %}
-
-                                            {{ p.categoria.nome }}
-
-                                        {% else %}
-
-                                            Sem categoria
-
-                                        {% endif %}
-
-                                    </td>
-
-
-                                    <!-- QUANTIDADE -->
-
-                                    <td>
-
-                                        <span class="quantity">
-                                            {{ p.estoque_atual or 0 }}
-                                        </span>
-
-                                        un.
-
-                                    </td>
-
-
-                                    <!-- STATUS -->
-
-                                    <td>
-
-                                        {% if (p.estoque_atual or 0) <= 0 %}
-
-                                            <span class="status status-out">
-                                                Sem estoque
-                                            </span>
-
-                                        {% elif (p.estoque_atual or 0) <= 10 %}
-
-                                            <span class="status status-low">
-                                                Estoque baixo
-                                            </span>
-
-                                        {% else %}
-
-                                            <span class="status status-ok">
-                                                Normal
-                                            </span>
-
-                                        {% endif %}
-
-                                    </td>
-
-
-                                    <!-- AÇÕES -->
-
-                                    <td>
-
-                                        <div class="actions">
-
-                                            <a
-                                                class="btn btn-main"
-                                                href="/movimentacoes/nova?produto_id={{ p.id }}"
-                                            >
-                                                Movimentar
-                                            </a>
-
-                                            <a
-                                                class="btn btn-secondary"
-                                                href="/movimentacoes/produto/{{ p.id }}"
-                                            >
-                                                Histórico
-                                            </a>
-
-                                        </div>
-
-                                    </td>
-
-                                </tr>
-
-                            {% endfor %}
-
-                        {% else %}
-
+            <div class="table-card">
+                <div class="table-scroll">
+                    <table class="stock-table">
+                        <thead>
                             <tr>
-
-                                <td colspan="5" class="empty">
-
-                                    <div class="empty-icon">
-                                        ◌
-                                    </div>
-
-                                    <strong>
-                                        Nenhum produto encontrado
-                                    </strong>
-
-                                    Não existem produtos ativos cadastrados.
-
-                                </td>
-
+                                <th>Produto</th>
+                                <th>Categoria</th>
+                                <th>Quantidade</th>
+                                <th>Status</th>
+                                <th>Ações</th>
                             </tr>
-
-                        {% endif %}
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </section>
-
-
-        <!-- =====================================================
-             FILTROS DE MOVIMENTAÇÃO
-        ===================================================== -->
-
-        <section class="filter-card">
-
-            <div class="filter-title">
-                Filtrar movimentações
-            </div>
-
-
-            <form
-                method="get"
-                action="/movimentacoes"
-            >
-
-                <div class="filters">
-
-                    <!-- FILTRO POR PRODUTO -->
-
-                    <select name="produto_id">
-
-                        <option value="0">
-                            Todos os produtos
-                        </option>
-
-
-                        {% for p in produtos %}
-
-                            <option
-                                value="{{ p.id }}"
-                                {% if produto_id == p.id %}
-                                    selected
-                                {% endif %}
-                            >
-                                {{ p.nome }}
-                            </option>
-
-                        {% endfor %}
-
-                    </select>
-
-
-                    <!-- FILTRO POR TIPO -->
-
-                    <select name="tipo">
-
-                        <option value="">
-                            Todos os tipos
-                        </option>
-
-
-                        <option
-                            value="entrada"
-                            {% if tipo == 'entrada' %}
-                                selected
-                            {% endif %}
-                        >
-                            ▲ Entrada
-                        </option>
-
-
-                        <option
-                            value="saida"
-                            {% if tipo == 'saida' %}
-                                selected
-                            {% endif %}
-                        >
-                            ▼ Saída
-                        </option>
-
-                    </select>
-
-
-                    <button type="submit">
-                        Filtrar
-                    </button>
-
-
-                    <a
-                        href="/movimentacoes"
-                        class="clear-btn"
-                    >
-                        Limpar filtros
-                    </a>
-
-                </div>
-
-            </form>
-
-        </section>
-
-
-        <!-- =====================================================
-             REGISTRAR NOVA MOVIMENTAÇÃO
-        ===================================================== -->
-
-        <div class="action-area">
-
-            <a
-                href="/movimentacoes/nova"
-                class="new-movement"
-            >
-
-                <span class="plus">
-                    +
-                </span>
-
-                Registrar movimentação
-
-            </a>
-
-        </div>
-
-
-        <!-- =====================================================
-             HISTÓRICO DE MOVIMENTAÇÕES
-        ===================================================== -->
-
-        <section class="history-card">
-
-            <div class="history-header">
-
-                <h2>
-                    Histórico de movimentações
-                </h2>
-
-                <span>
-                    Registros recentes do estoque
-                </span>
-
-            </div>
-
-
-            <div class="table-container">
-
-                <table class="history-table">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                Data
-                            </th>
-
-                            <th>
-                                Produto
-                            </th>
-
-                            <th>
-                                Tipo
-                            </th>
-
-                            <th>
-                                Quantidade
-                            </th>
-
-                            <th>
-                                Preço unit.
-                            </th>
-
-                            <th>
-                                Total
-                            </th>
-
-                            <th>
-                                Observação
-                            </th>
-
-                            <th>
-                                Registrado por
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody>
-
-                        {% if movimentacoes %}
-
-                            {% for m in movimentacoes %}
-
-                                <tr>
-
-                                    <!-- DATA -->
-
-                                    <td>
-
-                                        {% if m.criado_em %}
-
-                                            {{ m.criado_em.strftime('%d/%m/%Y %H:%M') }}
-
-                                        {% else %}
-
-                                            -
-
-                                        {% endif %}
-
-                                    </td>
-
-
-                                    <!-- PRODUTO -->
-
-                                    <td>
-
-                                        <a
-                                            href="/produtos/{{ m.produto_id }}"
-                                            class="product-link"
-                                        >
-
-                                            {% if m.produto %}
-
-                                                {{ m.produto.nome }}
-
+                        </thead>
+
+                        <tbody>
+                            {% if produtos %}
+                                {% for p in produtos %}
+                                    <tr>
+                                        <td>
+                                            <span class="product-name">{{ p.nome }}</span>
+                                        </td>
+
+                                        <td class="category">
+                                            {% if p.categoria %}
+                                                {{ p.categoria.nome }}
                                             {% else %}
-
-                                                Produto removido
-
+                                                Sem categoria
                                             {% endif %}
+                                        </td>
 
-                                        </a>
+                                        <td>
+                                            <span class="quantity">{{ p.estoque_atual or 0 }}</span>
+                                            <span class="category"> un.</span>
+                                        </td>
 
+                                        <td>
+                                            {% if (p.estoque_atual or 0) <= 0 %}
+                                                <span class="status status-out">Sem estoque</span>
+                                            {% elif (p.estoque_atual or 0) <= 10 %}
+                                                <span class="status status-low">Estoque baixo</span>
+                                            {% else %}
+                                                <span class="status status-ok">Normal</span>
+                                            {% endif %}
+                                        </td>
+
+                                        <td>
+                                            <div class="row-actions">
+                                                <a class="small-btn primary"
+                                                   href="/movimentacoes/nova?produto_id={{ p.id }}">
+                                                    Movimentar
+                                                </a>
+                                                <a class="small-btn"
+                                                   href="/movimentacoes/produto/{{ p.id }}">
+                                                    Histórico
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="empty">
+                                        <strong>Nenhum produto encontrado</strong>
+                                        Não existem produtos ativos cadastrados.
                                     </td>
-
-
-                                    <!-- TIPO -->
-
-                                    <td>
-
-                                        {% if m.tipo == 'entrada' %}
-
-                                            <span class="badge badge-entrada">
-                                                ▲ Entrada
-                                            </span>
-
-                                        {% elif m.tipo == 'saida' %}
-
-                                            <span class="badge badge-saida">
-                                                ▼ Saída
-                                            </span>
-
-                                        {% else %}
-
-                                            <span class="badge">
-                                                {{ m.tipo }}
-                                            </span>
-
-                                        {% endif %}
-
-                                    </td>
-
-
-                                    <!-- QUANTIDADE -->
-
-                                    <td>
-
-                                        <span class="quantity">
-                                            {{ m.quantidade }}
-                                        </span>
-
-                                    </td>
-
-
-                                    <!-- PREÇO UNITÁRIO -->
-
-                                    <td class="price">
-
-                                        R$
-
-                                        {{ "%.2f"|format(
-                                            m.preco_unitario or 0
-                                        ) }}
-
-                                    </td>
-
-
-                                    <!-- TOTAL -->
-
-                                    <td class="total">
-
-                                        R$
-
-                                        {{ "%.2f"|format(
-                                            (m.quantidade or 0) *
-                                            (m.preco_unitario or 0)
-                                        ) }}
-
-                                    </td>
-
-
-                                    <!-- OBSERVAÇÃO -->
-
-                                    <td class="observation">
-
-                                        {{ m.observacao or '-' }}
-
-                                    </td>
-
-
-                                    <!-- USUÁRIO -->
-
-                                    <td class="user">
-
-                                        {% if m.usuario %}
-
-                                            {{ m.usuario.nome }}
-
-                                        {% else %}
-
-                                            -
-
-                                        {% endif %}
-
-                                    </td>
-
                                 </tr>
-
-                            {% endfor %}
-
-
-                        {% else %}
-
-                            <tr>
-
-                                <td
-                                    colspan="8"
-                                    class="empty"
-                                >
-
-                                    <div class="empty-icon">
-                                        ◌
-                                    </div>
-
-                                    <strong>
-                                        Nenhuma movimentação encontrada
-                                    </strong>
-
-                                    Não existem registros para os filtros selecionados.
-
-                                </td>
-
-                            </tr>
-
-                        {% endif %}
-
-                    </tbody>
-
-                </table>
-
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
         </section>
 
-
-        <!-- =====================================================
-             VOLTAR
-        ===================================================== -->
-
-        <a
-            href="/"
-            class="back"
-        >
-            ← Voltar para o Dashboard
-        </a>
-
+        <a href="/" class="bottom-link">← Voltar para o Dashboard</a>
     </main>
-
 </body>
-
 </html>
