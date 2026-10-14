@@ -2,6 +2,9 @@
 <html lang="pt-br">
 <head>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 2d524973bd6085d3dd75cd58c37e95e20a0aa9d3
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>M&amp;J Store — Camisetas Masculinas</title>
@@ -23,6 +26,7 @@
     @media(max-width:720px){.barra-admin{height:48px;padding:0 5px}.barra-admin-inner{height:48px;gap:2px}.barra-admin a{height:48px;padding:0 12px;gap:7px;font-size:13px}.cabecalho-principal{min-height:auto;grid-template-columns:1fr auto;gap:12px;padding:16px}.logo{font-size:25px}.campo-busca{grid-row:2;grid-column:1/-1;height:42px}.acoes-topo{gap:12px}.icone-topo{font-size:24px}.navegacao-inner{min-height:43px;gap:22px;padding:0 15px}main{padding:22px 14px 100px}.titulo-linha{align-items:flex-start;flex-direction:column;gap:14px;margin-bottom:22px}.btn-filtro{min-height:43px;font-size:13px}.categorias-redondas{grid-template-columns:repeat(2,minmax(0,1fr));gap:17px 12px;padding:4px 0 24px;margin-bottom:25px}.categoria-imagem{width:clamp(62px,17vw,100px);margin-bottom:8px}.categoria-redonda span:last-child{font-size:12px}.chips-categorias{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:0 0 22px}.chip-categoria{font-size:11px;height:41px}.grade-produtos{grid-template-columns:repeat(2,minmax(0,1fr));gap:25px 12px}.produto-imagem-wrap{height:175px}.favorito{width:31px;height:31px;top:7px;left:7px;font-size:22px}.selo-produto{min-height:29px;font-size:10px}.produto-nome{font-size:13px;min-height:52px}.produto-preco{font-size:16px}.produto-parcela{font-size:12px}.btn-adicionar{font-size:10px}.voltar-topo{width:48px;height:48px;font-size:29px;right:13px;bottom:103px}.consentimento{padding:10px 12px;min-height:auto}.consentimento p,.consentimento label{font-size:10px}.atalhos-rodape{flex-wrap:wrap;gap:12px}}
     @media(max-width:380px){.grade-produtos{gap:21px 9px}.produto-imagem-wrap{height:150px}.pagamento-grid{grid-template-columns:1fr}.item-carrinho{gap:5px;padding:9px 8px}.item-subtotal{min-width:48px}}
   </style>
+<<<<<<< HEAD
 =======
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -746,6 +750,10 @@
 </head>
 <body>
 <<<<<<< HEAD
+=======
+</head>
+<body>
+>>>>>>> 2d524973bd6085d3dd75cd58c37e95e20a0aa9d3
   <nav class="barra-admin" aria-label="Navegação administrativa"><div class="barra-admin-inner">
     <a href="/dashboard" class="{% if request.url.path.startswith('/dashboard') %}ativo{% endif %}"><span class="admin-icone">⌂</span>Dashboard</a>
     <a href="/pdv/" class="{% if request.url.path.startswith('/pdv') %}ativo{% endif %}"><span class="admin-icone">▣</span>PDV</a>
@@ -755,6 +763,7 @@
     <a href="/movimentacoes" class="{% if request.url.path.startswith('/movimentacoes') %}ativo{% endif %}"><span class="admin-icone">↕</span>Estoque</a>
     <a href="/usuarios" class="{% if request.url.path.startswith('/usuarios') %}ativo{% endif %}"><span class="admin-icone">♟</span>Usuários</a>
   </div></nav>
+<<<<<<< HEAD
 
   <header class="cabecalho-principal">
     <a class="logo" href="/pdv/">M&amp;J <span>STORE</span></a>
@@ -925,72 +934,114 @@
           estoque_max:estoque,
           tamanho
 =======
+=======
+>>>>>>> 2d524973bd6085d3dd75cd58c37e95e20a0aa9d3
 
-    {% include "shared/navbar.html" %}
-
-    <!-- =========================================================
-         TOPO
-    ========================================================== -->
-    <header class="topbar">
-        <span class="topbar-title"></span>
-
-        <nav class="topbar-links">
-            <a href="/pdv/historico">Histórico de vendas</a>
-            <a href="/clientes">Clientes</a>
-            <a href="/dashboard">Dashboard</a>
-        </nav>
-    </header>
-
-    <!-- =========================================================
-         ALERTAS
-    ========================================================== -->
-    {% set erro = request.query_params.get('erro') %}
-
-    {% if erro %}
-    <div class="alerta">
-
-        {% if erro == 'vazio' %}
-            Carrinho vazio. Adicione produtos antes de finalizar.
-
-        {% elif erro == 'estoque' %}
-            Estoque insuficiente para:
-            {{ request.query_params.get('produto') }}
-
-        {% elif erro == 'quantidade' %}
-            Quantidade inválida.
-
-        {% elif erro == 'pagamento_total' %}
-            A soma dos pagamentos deve ser igual ao total da venda.
-
-        {% elif erro == 'pagamento_valor' %}
-            Informe valores de pagamento maiores que zero e válidos.
-
-        {% elif erro == 'pagamento_invalido' %}
-            Selecione uma forma de pagamento válida.
-
-        {% elif erro == 'pagamentos_iguais' %}
-            Escolha duas formas de pagamento diferentes.
-
-        {% elif erro == 'desconto_limite' %}
-            O desconto não pode ser negativo nem ultrapassar o subtotal.
-
-        {% elif erro == 'desconto_invalido' %}
-            Tipo de desconto inválido.
-
-        {% elif erro == 'cliente_inexistente' %}
-            O cliente selecionado não existe ou está inativo.
-
-        {% elif erro == 'produto_inexistente' %}
-            Um dos produtos não existe ou está inativo.
-
-        {% elif erro == 'salvar' %}
-            Não foi possível salvar a venda. Confira o terminal para ver o erro.
-
-        {% else %}
-            Ocorreu um erro. Tente novamente.
-        {% endif %}
-
+  <header class="cabecalho-principal">
+    <a class="logo" href="/pdv/">M&amp;J <span>STORE</span></a>
+    <div class="campo-busca"><span class="lupa" aria-hidden="true">⌕</span><input id="busca-produto" type="search" placeholder="Buscar produtos" autocomplete="off" aria-label="Buscar produtos"></div>
+    <div class="acoes-topo">
+      <button class="botao-tema" id="botao-tema" type="button" onclick="alternarTema()" aria-label="Ativar tema escuro" title="Alternar tema"><span class="botao-tema-icone" id="botao-tema-icone">☾</span><span id="botao-tema-texto">Escuro</span></button>
+      <button class="icone-topo" type="button" aria-label="Favoritos" onclick="mostrarFavoritos()">♡</button>
+      <button class="icone-topo" type="button" aria-label="Abrir carrinho" onclick="abrirCarrinho()">♧<span class="contador-carrinho" id="contador-carrinho">0</span></button>
     </div>
+  </header>
+
+  <nav class="navegacao" aria-label="Categorias da loja"><div class="navegacao-inner">
+    <button type="button" data-categoria-nav="bones" onclick="buscarCategoria('bones')">Bonés</button>
+    <button type="button" data-categoria-nav="blusa de frio" onclick="buscarCategoria('blusa de frio')">Blusa de frio</button>
+    <button type="button" data-categoria-nav="camisetas polos" onclick="buscarCategoria('camisetas polos')">Camisetas polos</button>
+    <button type="button" data-categoria-nav="camisetas" onclick="buscarCategoria('camisetas')">Camisetas</button>
+    <button type="button" data-categoria-nav="tenis" onclick="buscarCategoria('tenis')">Tênis</button>
+    <button type="button" data-categoria-nav="conjuntos" onclick="buscarCategoria('conjuntos')">Conjuntos</button>
+    <button type="button" data-categoria-nav="todos" class="ativo" onclick="limparFiltros()">Todos os produtos</button>
+  </div></nav>
+
+  <main>
+    {% set erro = request.query_params.get('erro') %}
+    {% if erro %}<div class="alerta">
+      {% if erro == 'vazio' %}Carrinho vazio. Adicione produtos antes de finalizar.
+      {% elif erro == 'estoque' %}Estoque insuficiente para: {{ request.query_params.get('produto', '') }}
+      {% elif erro == 'quantidade' %}Quantidade inválida.
+      {% elif erro == 'pagamento_total' %}A soma dos pagamentos precisa ser igual ao total da venda.
+      {% elif erro == 'pagamento_invalido' %}Confira as formas de pagamento selecionadas.
+      {% elif erro == 'pagamento_valor' %}Confira os valores informados para o pagamento.
+      {% elif erro == 'pagamentos_iguais' %}Confira as formas de pagamento selecionadas.
+      {% elif erro == 'desconto_invalido' %}O desconto informado é inválido. Confira o tipo e o valor.
+      {% elif erro == 'cliente_inexistente' %}O cliente selecionado não foi encontrado ou está inativo.
+      {% elif erro == 'produto_inexistente' %}Um dos produtos não foi encontrado ou está inativo.
+      {% elif erro == 'item_invalido' %}Um dos itens do carrinho possui dados inválidos.
+      {% elif erro == 'json' %}Não foi possível ler os itens do carrinho. Tente novamente.
+      {% elif erro == 'salvar' %}Não foi possível salvar a venda. Confira os dados e tente novamente.
+      {% else %}Ocorreu um erro. Confira os dados e tente novamente.{% endif %}
+    </div>{% endif %}
+
+    <div class="migalhas"><a href="/pdv/">Início</a><span>›</span><strong id="categoria-atual">Todos os produtos</strong></div>
+    <section class="titulo-linha"><div class="titulo-grupo"><h1 id="titulo-categoria">TODOS OS PRODUTOS</h1><span class="contagem-produtos">{{ produtos|length }} produtos</span></div>
+      <div class="filtro-wrap"><button class="btn-filtro" type="button" onclick="alternarFiltro()"><span>☷</span> FILTRAR E ORDENAR</button><div class="painel-filtro" id="painel-filtro"><label for="ordenar-produtos">Ordenar produtos</label><select id="ordenar-produtos" onchange="ordenarPor(this.value)"><option value="relevancia">Mais relevantes</option><option value="menor-preco">Menor preço</option><option value="maior-preco">Maior preço</option><option value="nome">Nome A–Z</option></select></div></div>
+    </section>
+
+    {% set categorias_menu = [{'nome':'Bonés','chave':'bones'},{'nome':'Blusa de frio','chave':'blusa de frio'},{'nome':'Camisetas polos','chave':'camisetas polos'},{'nome':'Camisetas','chave':'camisetas'},{'nome':'Tênis','chave':'tenis'},{'nome':'Conjuntos','chave':'conjuntos'}] %}
+    <section class="categorias-redondas" aria-label="Categorias em destaque">
+      {% for categoria in categorias_menu %}{% set ns = namespace(produto=none) %}
+        {% for pc in produtos %}{% set nome_categoria = pc.nome|lower %}{% if ns.produto is none %}
+          {% if categoria.chave == 'bones' and ('boné' in nome_categoria or 'bone' in nome_categoria) %}{% set ns.produto = pc %}
+          {% elif categoria.chave == 'blusa de frio' and ('blusa de frio' in nome_categoria or 'moletom' in nome_categoria or 'jaqueta' in nome_categoria or 'casaco' in nome_categoria or 'hoodie' in nome_categoria) %}{% set ns.produto = pc %}
+          {% elif categoria.chave == 'camisetas polos' and 'polo' in nome_categoria %}{% set ns.produto = pc %}
+          {% elif categoria.chave == 'camisetas' and ('camiseta' in nome_categoria or 't-shirt' in nome_categoria or 'tee' in nome_categoria) and 'polo' not in nome_categoria %}{% set ns.produto = pc %}
+          {% elif categoria.chave == 'tenis' and ('tênis' in nome_categoria or 'tenis' in nome_categoria or 'sneaker' in nome_categoria or 'sapato' in nome_categoria) %}{% set ns.produto = pc %}
+          {% elif categoria.chave == 'conjuntos' and ('conjunto' in nome_categoria or 'conjuntos' in nome_categoria or 'set ' in nome_categoria) %}{% set ns.produto = pc %}{% endif %}{% endif %}{% endfor %}
+        <button class="categoria-redonda" type="button" onclick="buscarCategoria('{{ categoria.chave }}')"><span class="categoria-imagem">{% if ns.produto and ns.produto.imagem_url %}<img src="{{ ns.produto.imagem_url }}" alt="{{ categoria.nome }}" loading="lazy">{% else %}<span class="categoria-placeholder">◯</span>{% endif %}</span><span>{{ categoria.nome }}</span></button>
+      {% endfor %}
+    </section>
+
+    <section class="chips-categorias" aria-label="Filtros rápidos">
+      <button type="button" class="chip-categoria" data-filtro="bones" onclick="ativarChip(this,'bones')">BONÉS</button><button type="button" class="chip-categoria" data-filtro="blusa de frio" onclick="ativarChip(this,'blusa de frio')">BLUSA DE FRIO</button><button type="button" class="chip-categoria" data-filtro="camisetas polos" onclick="ativarChip(this,'camisetas polos')">CAMISETAS POLOS</button><button type="button" class="chip-categoria" data-filtro="camisetas" onclick="ativarChip(this,'camisetas')">CAMISETAS</button><button type="button" class="chip-categoria" data-filtro="tenis" onclick="ativarChip(this,'tenis')">TÊNIS</button><button type="button" class="chip-categoria" data-filtro="conjuntos" onclick="ativarChip(this,'conjuntos')">CONJUNTOS</button>
+    </section>
+
+    <section class="grade-produtos" id="grade-produtos" aria-label="Lista de produtos">
+      {% for p in produtos %}
+      <article class="produto-card {% if p.estoque_atual == 0 %}sem-estoque{% endif %}" data-id="{{ p.id }}" data-nome="{{ p.nome }}" data-preco="{{ p.preco }}" data-estoque="{{ p.estoque_atual }}" data-nome-lower="{{ p.nome.lower() }}" data-ordem="{{ loop.index }}" data-favorito="false">
+        <div class="produto-imagem-wrap"><button class="favorito" type="button" aria-label="Adicionar aos favoritos" onclick="alternarFavorito(event,this)">♡</button>{% if p.imagem_url %}<img class="produto-imagem" src="{{ p.imagem_url }}" alt="{{ p.nome }}" loading="lazy" onerror="this.style.display='none'">{% else %}<div class="produto-imagem" style="display:grid;place-items:center;color:#999;font-size:50px">◇</div>{% endif %}</div>
+        <div class="selo-produto">{% if loop.index % 3 == 1 %}MATERIAL PREMIUM{% elif loop.index % 3 == 2 %}M&amp;J ESSENTIALS{% else %}CONFORTO NO DIA A DIA{% endif %}</div>
+        <div class="produto-nome">{{ p.nome }}</div>
+        {% set nome_produto = p.nome|lower %}
+        {% if 'tênis' in nome_produto or 'tenis' in nome_produto or 'sneaker' in nome_produto or 'sapato' in nome_produto %}
+          <div class="tamanho-wrap"><label class="tamanho-label" for="tamanho-{{ p.id }}">Tamanho do tênis</label><select class="tamanho-produto" id="tamanho-{{ p.id }}" aria-label="Escolha o tamanho do tênis"><option value="">Escolha o número</option>{% for tamanho in range(34,45) %}<option value="{{ tamanho }}">{{ tamanho }}</option>{% endfor %}</select></div>
+        {% elif 'boné' in nome_produto or 'bone' in nome_produto or 'cap ' in nome_produto %}<span class="tamanho-unico">Tamanho: único</span>
+        {% else %}<div class="tamanho-wrap"><label class="tamanho-label" for="tamanho-{{ p.id }}">Tamanho da roupa</label><select class="tamanho-produto" id="tamanho-{{ p.id }}" aria-label="Escolha o tamanho da roupa"><option value="">Selecione o tamanho</option>{% for tamanho in ['PP','P','M','G','GG','XG','G1','G2'] %}<option value="{{ tamanho }}">{{ tamanho }}</option>{% endfor %}</select></div>{% endif %}
+        <div class="produto-preco">R$ {{ '%.2f'|format(p.preco)|replace('.',',') }}</div><div class="produto-parcela">ou em até 3x sem juros</div>
+        <button type="button" class="btn-adicionar" {% if p.estoque_atual == 0 %}disabled{% endif %} onclick="adicionarAoCarrinho(this.closest('.produto-card'))">{% if p.estoque_atual == 0 %}SEM ESTOQUE{% else %}ADICIONAR À SACOLA{% endif %}</button>
+      </article>
+      {% endfor %}<div class="sem-resultados" id="sem-resultados">Nenhum produto encontrado para essa busca.</div>
+    </section>
+    <div class="atalhos-rodape"><a href="/pdv/historico">Histórico de vendas</a><a href="/clientes">Clientes</a><a href="/dashboard">Dashboard</a></div>
+  </main>
+
+  <button type="button" class="voltar-topo" aria-label="Voltar ao topo" onclick="window.scrollTo({top:0,behavior:'smooth'})">⌃</button>
+  <div class="fundo-carrinho" id="fundo-carrinho" onclick="fecharCarrinho()"></div>
+  <aside class="carrinho-col" id="carrinho-col" aria-label="Carrinho de compras">
+    <div class="carrinho-header"><span>🛍️ Sua sacola</span><button class="fechar-carrinho" type="button" aria-label="Fechar carrinho" onclick="fecharCarrinho()">×</button></div>
+    <div class="cliente-section"><label for="select-cliente">Cliente</label><select class="cliente-select" id="select-cliente" onchange="atualizarCliente(this)"><option value="0" data-associado="false" data-desconto="0">Sem identificação (sem desconto)</option>{% for c in clientes %}<option value="{{ c.id }}" data-associado="{{ 'true' if c.is_associado else 'false' }}" data-desconto="{{ c.desconto_percentual or 0 }}">{{ c.nome }}{% if c.matricula %} ({{ c.matricula }}){% endif %}{% if c.is_associado %} — ASSOCIADO{% endif %}</option>{% endfor %}</select><div class="desconto-badge" id="badge-desconto" style="display:none"></div></div>
+    <div class="carrinho-itens" id="lista-carrinho"><div class="carrinho-vazio" id="msg-vazio"><span class="carrinho-vazio-icon">🛍️</span>Sua sacola está vazia.<br>Adicione produtos para continuar.</div></div>
+    <div class="carrinho-footer">
+      <div class="desconto-manual" id="desconto-manual" style="display:none"><label for="tipo-desconto-manual">Desconto manual</label><div class="desconto-manual-controles"><select id="tipo-desconto-manual" aria-label="Tipo de desconto"><option value="percentual">%</option><option value="valor">R$</option></select><input type="number" id="valor-desconto-manual" min="0" max="100" step="0.01" value="0.00" inputmode="decimal" aria-label="Valor do desconto" placeholder="0,00"></div><div class="desconto-ajuda" id="desconto-ajuda">Informe a porcentagem de desconto, de 0 a 100.</div></div>
+      <div class="totais" id="totais" style="display:none"><div class="total-linha"><span>Subtotal</span><span id="val-subtotal">R$ 0,00</span></div><div class="total-linha desconto" id="linha-desconto" style="display:none"><span id="label-desconto">Desconto</span><span id="val-desconto">− R$ 0,00</span></div><div class="total-linha final"><span>Total</span><span id="val-total">R$ 0,00</span></div></div>
+      <textarea class="obs-input" id="obs-input" rows="2" placeholder="Observação (opcional)..."></textarea>
+      <form id="form-venda" action="/pdv/finalizar" method="post">
+        <input type="hidden" name="carrinho_json" id="input-carrinho"><input type="hidden" name="cliente_id" id="input-cliente-id" value="0"><input type="hidden" name="observacao" id="input-obs">
+        <input type="hidden" name="desconto_manual_tipo" id="input-desconto-manual-tipo" value="percentual"><input type="hidden" name="desconto_manual_valor" id="input-desconto-manual-valor" value="0.00">
+        <input type="hidden" name="desconto_manual_aplicado_frontend" id="input-desconto-manual-aplicado" value="0.00"><input type="hidden" name="desconto_cliente_aplicado_frontend" id="input-desconto-cliente-aplicado" value="0.00">
+        <div class="pagamento-section" id="pagamento-section" style="display:none"><div class="pagamento-titulo"><span>💳 Pagamento</span><span id="status-pagamento">Informe o valor</span></div>
+          <div class="pagamento-grid"><div><label for="forma-pagamento-1">1º pagamento</label><select id="forma-pagamento-1" name="forma_pagamento_1"><option value="dinheiro">Dinheiro</option><option value="pix">PIX</option><option value="debito">Débito</option><option value="credito">Crédito</option></select></div><div><label for="valor-pagamento-1">Valor (R$)</label><input id="valor-pagamento-1" name="valor_pagamento_1" type="text" inputmode="decimal" autocomplete="off" value="0,00"></div></div>
+          <div class="pagamento-segundo" id="pagamento-segundo"><div class="pagamento-grid"><div><label for="forma-pagamento-2">2º pagamento</label><select id="forma-pagamento-2" name="forma_pagamento_2"><option value="">Selecione</option><option value="dinheiro">Dinheiro</option><option value="pix">PIX</option><option value="debito">Débito</option><option value="credito">Crédito</option></select></div><div><label for="valor-pagamento-2">Valor (R$)</label><input id="valor-pagamento-2" name="valor_pagamento_2" type="text" inputmode="decimal" autocomplete="off" value="0,00"></div></div></div>
+          <button class="pagamento-toggle" id="btn-segundo-pagamento" type="button" onclick="alternarSegundoPagamento()">+ Usar segundo pagamento</button>
+          <div class="pagamento-resumo"><div class="pagamento-resumo-box"><span>Total</span><strong id="pagamento-total">R$ 0,00</strong></div><div class="pagamento-resumo-box"><span>Pago</span><strong id="pagamento-pago">R$ 0,00</strong></div><div class="pagamento-resumo-box pendente" id="pagamento-restante-box"><span id="pagamento-restante-label">Falta</span><strong id="pagamento-restante">R$ 0,00</strong></div></div>
+        </div>
+        <button class="btn-finalizar" id="btn-finalizar" type="button" disabled onclick="finalizarVenda()">Finalizar venda</button>
+      </form>
+    </div>
+<<<<<<< HEAD
     {% endif %}
 
     <!-- =========================================================
@@ -2204,37 +2255,111 @@
     }
 =======
         document.getElementById('desconto-manual-valor').addEventListener('input', renderizarTotais);
+=======
+  </aside>
 
-        document
-            .getElementById(
-                'valor-pagamento-1'
-            )
-            .addEventListener(
-                'input',
-                atualizarResumoPagamentos
-            );
+  <div class="consentimento" id="consentimento"><p>Para sua maior segurança, atualizamos as Políticas de Privacidade e os Termos de Uso do site. Ao continuar navegando, você declara estar ciente.</p><label><input type="checkbox" id="aceite-termos"> Li, aceito os Termos de Uso e estou ciente da Política de Privacidade.</label></div>
 
+  <script>
+    'use strict';
+    let carrinho = [];
+    let clienteAtual = {id:0, associado:false, desconto:0};
+    let segundoPagamentoAtivo = false;
+    let filtroCategoriaAtivo = '';
+    let somenteFavoritos = false;
 
-        document
-            .getElementById(
-                'valor-pagamento-2'
-            )
-            .addEventListener(
-                'input',
-                atualizarResumoPagamentos
-            );
+    const formatoMoeda = valor => (Number(valor)||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+    function normalizarTexto(valor){return String(valor||'').toLocaleLowerCase('pt-BR').normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+    function lerValorMoeda(id){let texto=String(document.getElementById(id).value||'').trim().replace(/\s/g,'');if(texto.includes(',')&&texto.includes('.'))texto=texto.replace(/\./g,'').replace(',','.');else if(texto.includes(','))texto=texto.replace(',','.');const n=Number.parseFloat(texto);return Number.isFinite(n)?n:0;}
+    function centavos(valor){return Math.round((Number(valor)||0)*100);}
 
+    function aplicarTema(tema){const escuro=tema==='escuro';document.body.classList.toggle('tema-escuro',escuro);const icone=document.getElementById('botao-tema-icone');const texto=document.getElementById('botao-tema-texto');const botao=document.getElementById('botao-tema');icone.textContent=escuro?'☀':'☾';texto.textContent=escuro?'Claro':'Escuro';botao.setAttribute('aria-label',escuro?'Ativar tema claro':'Ativar tema escuro');botao.title=escuro?'Mudar para tema claro':'Mudar para tema escuro';try{localStorage.setItem('mj-store-tema',escuro?'escuro':'claro')}catch(e){}}
+    function alternarTema(){aplicarTema(document.body.classList.contains('tema-escuro')?'claro':'escuro');}
+    (function iniciarTema(){let tema='claro';try{tema=localStorage.getItem('mj-store-tema')||'claro'}catch(e){}aplicarTema(tema==='escuro'?'escuro':'claro')})();
 
-        document
-            .getElementById(
-                'forma-pagamento-1'
-            )
-            .addEventListener(
-                'change',
-                atualizarResumoPagamentos
-            );
+    function abrirCarrinho(){document.getElementById('carrinho-col').classList.add('aberto');document.getElementById('fundo-carrinho').classList.add('aberto');document.body.style.overflow='hidden';}
+    function fecharCarrinho(){document.getElementById('carrinho-col').classList.remove('aberto');document.getElementById('fundo-carrinho').classList.remove('aberto');document.body.style.overflow='';}
 
+    function adicionarAoCarrinho(card){
+      if(!card || Number(card.dataset.estoque)<=0) return;
 
+      const id=Number.parseInt(card.dataset.id,10);
+      const preco=Number.parseFloat(card.dataset.preco)||0;
+      const estoque=Number.parseInt(card.dataset.estoque,10)||0;
+      const seletor=card.querySelector('.tamanho-produto');
+      const tamanho=seletor ? seletor.value : 'Único';
+
+      if(seletor && !tamanho){
+        alert('Selecione o tamanho antes de adicionar o produto à sacola.');
+        seletor.focus();
+        return;
+      }
+
+      // O estoque é compartilhado entre todos os tamanhos do mesmo produto.
+      const quantidadeTotalProduto=carrinho
+        .filter(item=>item.produto_id===id)
+        .reduce((s,item)=>s+item.quantidade,0);
+
+      if(quantidadeTotalProduto>=estoque){
+        alert(`Estoque máximo atingido: ${estoque} unidade(s) desse produto.`);
+        return;
+      }
+
+      // Cada combinação produto+tamanho tem sua própria linha no carrinho.
+      const chave=`${id}::${tamanho}`;
+      const existente=carrinho.find(item=>item.chave===chave);
+
+      if(existente){
+        existente.quantidade+=1;
+      }else{
+        carrinho.push({
+          chave,
+          produto_id:id,
+          nome:card.dataset.nome,
+          preco,
+          quantidade:1,
+          estoque_max:estoque,
+          tamanho
+        });
+      }
+
+      renderizarCarrinho();
+      abrirCarrinho();
+    }
+>>>>>>> 2d524973bd6085d3dd75cd58c37e95e20a0aa9d3
+
+    function alterarQtd(chave,delta){
+      const item=carrinho.find(i=>i.chave===chave);
+      if(!item) return;
+
+      if(delta>0){
+        const quantidadeTotalProduto=carrinho
+          .filter(i=>i.produto_id===item.produto_id)
+          .reduce((s,i)=>s+i.quantidade,0);
+        if(quantidadeTotalProduto>=item.estoque_max){
+          alert(`Estoque máximo atingido: ${item.estoque_max} unidade(s) desse produto.`);
+          return;
+        }
+      }
+
+      item.quantidade+=delta;
+      if(item.quantidade<=0){
+        removerItem(chave);
+        return;
+      }
+      renderizarCarrinho();
+    }
+
+    function removerItem(chave){
+      carrinho=carrinho.filter(i=>i.chave!==chave);
+      renderizarCarrinho();
+    }
+
+    function atualizarContadorCarrinho(){document.getElementById('contador-carrinho').textContent=carrinho.reduce((s,i)=>s+i.quantidade,0);}
+
+    function atualizarCliente(select){const opt=select.options[select.selectedIndex];clienteAtual.id=Number.parseInt(opt.value||'0',10);clienteAtual.associado=opt.dataset.associado==='true';clienteAtual.desconto=clienteAtual.associado?(Number.parseFloat(opt.dataset.desconto||'0')||0):0;const badge=document.getElementById('badge-desconto');if(clienteAtual.associado&&clienteAtual.desconto>0){badge.textContent=`✓ ${clienteAtual.desconto}% de desconto aplicado`;badge.style.display='inline-flex';}else{badge.style.display='none';}renderizarTotais();}
+
+<<<<<<< HEAD
         document
             .getElementById(
                 'forma-pagamento-2'
@@ -2276,6 +2401,30 @@
       const pagamento=document.getElementById('pagamento-section');
       const controleDesconto=document.getElementById('desconto-manual');
 
+=======
+    function obterTotais(){
+      const subtotal=carrinho.reduce((acc,item)=>acc+item.preco*item.quantidade,0);
+      const descontoPct=Math.min(100,Math.max(0,Number(clienteAtual.desconto)||0));
+      const descontoClienteValor=Math.min(subtotal,subtotal*(clienteAtual.associado?descontoPct:0)/100);
+      const campoTipo=document.getElementById('tipo-desconto-manual');const campoValor=document.getElementById('valor-desconto-manual');
+      const tipoManual=campoTipo?campoTipo.value:'percentual';
+      const valorInformado=Math.max(0,Number.parseFloat(campoValor?.value||'0')||0);
+      const entradaManual=tipoManual==='percentual'?Math.min(100,valorInformado):valorInformado;
+      const valorDisponivel=Math.max(0,subtotal-descontoClienteValor);
+      const baseManual=valorDisponivel;
+      const descontoManualValor=tipoManual==='valor'?Math.min(baseManual,entradaManual):Math.min(baseManual,baseManual*(entradaManual/100));
+      const descontoValor=Math.min(subtotal,descontoClienteValor+descontoManualValor);
+      const total=Math.max(0,subtotal-descontoValor);
+      return{subtotal,descontoPct,descontoClienteValor,descontoManualValor,tipoManual,entradaManual,descontoValor,total};
+    }
+
+    function renderizarCarrinho(){
+      const lista=document.getElementById('lista-carrinho');
+      const totais=document.getElementById('totais');
+      const pagamento=document.getElementById('pagamento-section');
+      const controleDesconto=document.getElementById('desconto-manual');
+
+>>>>>>> 2d524973bd6085d3dd75cd58c37e95e20a0aa9d3
       // Recria os elementos da lista em toda renderização, inclusive a mensagem vazia.
       // Isso evita referências DOM nulas depois de esvaziar e reutilizar o carrinho.
       lista.replaceChildren();
@@ -2434,7 +2583,11 @@
   </script>
 </body>
 <<<<<<< HEAD
+<<<<<<< HEAD
 </html>
 =======
 </html>
 >>>>>>> cf0932eae84a6e7463f4f85ed0b04252e3bfd15a
+=======
+</html>
+>>>>>>> 2d524973bd6085d3dd75cd58c37e95e20a0aa9d3

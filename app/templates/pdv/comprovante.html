@@ -14,6 +14,9 @@
 </head>
 <body>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 2d524973bd6085d3dd75cd58c37e95e20a0aa9d3
 <main class="page">
     <header class="success">
         <div class="check" aria-hidden="true">✓</div>
@@ -34,6 +37,7 @@
             <table class="items"><thead><tr><th>Produto</th><th>Qtd.</th><th>Unitário</th><th>Subtotal</th></tr></thead><tbody>
                 {% for item in venda.itens %}
                 <tr><td>{{ item.produto_nome }}</td><td>{{ item.quantidade }}</td><td>R$ {{ '%.2f'|format(item.preco_unitario)|replace('.', ',') }}</td><td>R$ {{ '%.2f'|format(item.subtotal)|replace('.', ',') }}</td></tr>
+<<<<<<< HEAD
                 {% endfor %}
             </tbody></table>
             {% else %}<p class="note">Nenhum item foi encontrado para esta venda.</p>{% endif %}
@@ -234,5 +238,33 @@
     </main>
 
 >>>>>>> cf0932eae84a6e7463f4f85ed0b04252e3bfd15a
+=======
+                {% endfor %}
+            </tbody></table>
+            {% else %}<p class="note">Nenhum item foi encontrado para esta venda.</p>{% endif %}
+        </section>
+        <section class="section">
+            <h2>Resumo financeiro</h2>
+            <div class="row"><span class="label">Subtotal</span><span class="value">R$ {{ '%.2f'|format(venda.total_bruto or 0)|replace('.', ',') }}</span></div>
+            <div class="row discount"><span>Desconto total</span><span class="value">− R$ {{ '%.2f'|format((venda.total_bruto or 0) - (venda.total_liquido or 0))|replace('.', ',') }}</span></div>
+            <div class="row total"><span>Total pago</span><span class="value">R$ {{ '%.2f'|format(venda.total_liquido or 0)|replace('.', ',') }}</span></div>
+        </section>
+        <section class="section">
+            <h2>Forma(s) de pagamento</h2>
+            {% if venda.pagamentos %}
+                {% for pagamento in venda.pagamentos %}
+                <div class="payment"><span class="method">{{ pagamento.forma_pagamento|replace('_', ' ') }}</span><span class="payment-value">R$ {{ '%.2f'|format(pagamento.valor)|replace('.', ',') }}</span></div>
+                {% endfor %}
+            {% else %}<p class="note">Nenhum pagamento registrado (venda com desconto integral).</p>{% endif %}
+        </section>
+        {% if venda.observacao %}<section class="section"><h2>Observação</h2><p class="note">{{ venda.observacao }}</p></section>{% endif %}
+    </div>
+    <div class="actions">
+        <a class="btn btn-primary" href="/pdv/">Nova venda</a>
+        <a class="btn btn-secondary" href="/pdv/historico">Histórico de vendas</a>
+        <button class="btn btn-secondary" type="button" onclick="window.print()">Imprimir comprovante</button>
+    </div>
+</main>
+>>>>>>> 2d524973bd6085d3dd75cd58c37e95e20a0aa9d3
 </body>
 </html>
