@@ -46,7 +46,7 @@
             font-weight: 700;
             font-size: 16px;
             letter-spacing: .02em;
-            color: #00ff88;
+            color: #beee16;
         }
 
         .topbar-links a {
@@ -58,7 +58,7 @@
         }
 
         .topbar-links a:hover {
-            color: #00ff88;
+            color: #beee16;
         }
 
         /* =========================================================
@@ -108,7 +108,7 @@
         }
 
         .busca-input:focus {
-            border-color: #00ff88;
+            border-color: #beee16;
             box-shadow: 0 0 0 2px rgba(0,255,136,.10);
         }
 
@@ -139,7 +139,7 @@
         }
 
         .produto-card:hover {
-            border-color: #00ff88;
+            border-color: #beee16;
             transform: translateY(-2px);
             box-shadow: 0 4px 18px rgba(0,255,136,.12);
         }
@@ -173,7 +173,7 @@
         .produto-card-preco {
             font-size: 15px;
             font-weight: 700;
-            color: #00ff88;
+            color: #beee16;
         }
 
         .produto-card-estoque {
@@ -241,8 +241,8 @@
         }
 
         .cliente-select:focus {
-            border-color: #00ff88;
-            box-shadow: 0 0 0 2px rgba(0,255,136,.10);
+            border-color: #beee16;
+            box-shadow: 0 0 0 2px rgba(190, 238, 22, .10);
         }
 
         .desconto-badge {
@@ -250,7 +250,7 @@
             align-items: center;
             gap: 5px;
             background: #0d2e20;
-            color: #00ff88;
+            color: #beee16;
             font-size: 12px;
             font-weight: 600;
             padding: 4px 10px;
@@ -331,9 +331,9 @@
         }
 
         .qty-btn:hover {
-            background: #00ff88;
+            background: #beee16;
             color: #050505;
-            border-color: #00ff88;
+            border-color: #beee16;
         }
 
         .qty-value {
@@ -390,7 +390,7 @@
         }
 
         .total-linha.desconto {
-            color: #00ff88;
+            color: #beee16;
         }
 
         .total-linha.final {
@@ -420,8 +420,8 @@
         }
 
         .obs-input:focus {
-            border-color: #00ff88;
-            box-shadow: 0 0 0 2px rgba(0,255,136,.10);
+            border-color: #beee16;
+            box-shadow: 0 0 0 2px rgba(190, 238, 22, .10);
         }
 
         /* =========================================================
@@ -430,7 +430,7 @@
         .btn-finalizar {
             width: 100%;
             padding: 14px;
-            background: #00ff88;
+            background: #beee16;
             color: #050505;
             border: none;
             border-radius: 10px;
@@ -519,8 +519,8 @@
 
         .pagamento-grid select:focus,
         .pagamento-grid input:focus {
-            border-color: #00ff88;
-            box-shadow: 0 0 0 2px rgba(0,255,136,.08);
+            border-color: #beee16;
+            box-shadow: 0 0 0 2px rgba(190, 238, 22, .08);
         }
 
         .pagamento-segundo {
@@ -533,15 +533,15 @@
             border: 1px dashed #3b3b3b;
             border-radius: 7px;
             background: transparent;
-            color: #00ff88;
+            color: #beee16;
             font-size: 11px;
             font-weight: 700;
             cursor: pointer;
         }
 
         .pagamento-toggle:hover {
-            border-color: #00ff88;
-            background: rgba(0,255,136,.05);
+            border-color: #beee16;
+            background: rgba(190, 238, 22, .05);
         }
 
         .pagamento-resumo {
@@ -573,7 +573,7 @@
         }
 
         .pagamento-resumo-box.ok strong {
-            color: #00ff88;
+            color: #beee16;
         }
 
         .pagamento-resumo-box.pendente strong {
@@ -611,7 +611,7 @@
         }
 
         ::-webkit-scrollbar-thumb:hover {
-            background: #00ff88;
+            background: #beee16;
         }
 
         /* =========================================================
@@ -697,7 +697,9 @@
 
         <nav class="topbar-links">
             <a href="/pdv/historico">Histórico de vendas</a>
+            {% if usuario.role == 'admin' %}
             <a href="/clientes">Clientes</a>
+            {% endif %}
             <a href="/dashboard">Dashboard</a>
         </nav>
     </header>
