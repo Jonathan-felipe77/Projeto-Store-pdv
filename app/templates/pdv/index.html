@@ -44,15 +44,106 @@
 
 
         /* Barra administrativa superior */
-        .barra-admin { width: 100%; min-height: 40px; background: #080808; border-bottom: 1px solid #1b1b1b; color: #a5a5a5; display: flex; align-items: stretch; padding: 0 28px; position: sticky; top: 0; z-index: 100; }
-        .barra-admin-inner { width: 100%; max-width: 1540px; margin: 0 auto; display: flex; align-items: stretch; gap: 3px; overflow-x: auto; scrollbar-width: none; }
+        /* BARRA ADMINISTRATIVA — RETA, ALINHADA E UM POUCO MAIOR */
+        .barra-admin {
+            width: 100%;
+            height: 54px;
+            min-height: 54px;
+            background: #080808;
+            border-bottom: 1px solid #252525;
+            color: #a5a5a5;
+            display: flex;
+            align-items: stretch;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .barra-admin-inner {
+            width: 100%;
+            max-width: 1540px;
+            height: 54px;
+            margin: 0 auto;
+            display: flex;
+            align-items: stretch;
+            justify-content: flex-start;
+            gap: 5px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-width: none;
+        }
+
         .barra-admin-inner::-webkit-scrollbar { display: none; }
-        .barra-admin a { position: relative; flex: 0 0 auto; min-height: 40px; padding: 0 13px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; color: #a6a6a6; border-radius: 5px 5px 0 0; font-size: 13px; font-weight: 700; white-space: nowrap; transition: color .2s, background .2s; }
-        .barra-admin a:hover { color: #f1f1f1; background: #141414; }
-        .barra-admin a.ativo { color: #c8ff1a; background: #111; }
-        .barra-admin a.ativo::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 0; height: 3px; border-radius: 4px; background: #c8ff1a; }
-        .barra-admin .admin-icone { width: 14px; text-align: center; font-size: 13px; }
-        @media (max-width: 720px) { .barra-admin { padding: 0 5px; } .barra-admin a { padding: 0 10px; font-size: 12px; gap: 6px; } }
+
+        .barra-admin a {
+            position: relative;
+            flex: 0 0 auto;
+            height: 54px;
+            min-height: 54px;
+            padding: 0 17px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            border-radius: 0;
+            color: #a6a6a6;
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: color .2s, background .2s;
+        }
+
+        .barra-admin a:hover {
+            color: #ffffff;
+            background: #151515;
+        }
+
+        .barra-admin a.ativo {
+            color: #c8ff1a;
+            background: #111111;
+        }
+
+        .barra-admin a.ativo::after {
+            content: "";
+            position: absolute;
+            left: 12px;
+            right: 12px;
+            bottom: 0;
+            height: 3px;
+            background: #c8ff1a;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .barra-admin .admin-icone {
+            width: 17px;
+            flex: 0 0 17px;
+            text-align: center;
+            font-size: 15px;
+        }
+
+        @media (max-width: 720px) {
+            .barra-admin {
+                height: 48px;
+                min-height: 48px;
+                padding: 0 5px;
+            }
+
+            .barra-admin-inner {
+                height: 48px;
+                gap: 2px;
+            }
+
+            .barra-admin a {
+                height: 48px;
+                min-height: 48px;
+                padding: 0 12px;
+                gap: 7px;
+                font-size: 13px;
+            }
+        }
+
         .cabecalho-principal { max-width: 1540px; margin: auto; min-height: 100px; padding: 17px 22px; display: grid; grid-template-columns: 220px minmax(280px, 1fr) auto; align-items: center; gap: 35px; }
 
         .logo { color: #111; font-size: 30px; font-weight: 800; letter-spacing: .025em; white-space: nowrap; }
@@ -65,7 +156,7 @@
 
         .campo-busca input { width: 100%; border: 0; outline: 0; background: transparent; font-size: 16px; color: #222; }
 
-        .acoes-topo { display: flex; align-items: center; gap: 21px; white-space: nowrap; }
+        .acoes-topo { display: flex; align-items: center; justify-content: flex-end; gap: 16px; white-space: nowrap; }
 
         .link-conta { font-size: 14px; font-weight: 700; }
 
@@ -80,6 +171,8 @@
         .navegacao a, .navegacao button { background: none; border: 0; color: #292929; font-size: 13px; flex-shrink: 0; }
 
         .navegacao a:hover, .navegacao button:hover { color: var(--verde); }
+        .navegacao button { min-height: 47px; padding: 0 12px; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .2s, border-color .2s; }
+        .navegacao button.ativo { color: var(--verde); border-bottom-color: var(--verde); font-weight: 700; }
 
         main { max-width: 1540px; margin: auto; padding: 30px 22px 95px; }
 
@@ -111,7 +204,7 @@
 
         .painel-filtro select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 7px; background: white; }
 
-        .categorias-redondas { display: grid; grid-template-columns: repeat(7, minmax(90px, 1fr)); gap: 17px; padding: 10px 25px 31px; border-bottom: 1px solid #e3e3e3; margin-bottom: 34px; }
+        .categorias-redondas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 17px; padding: 10px 25px 31px; border-bottom: 1px solid #e3e3e3; margin-bottom: 34px; }
 
         .categoria-redonda { border: 0; padding: 0; background: transparent; color: #666; text-align: center; min-width: 0; }
 
@@ -125,7 +218,7 @@
 
         .categoria-redonda span:last-child { font-size: 16px; display: block; line-height: 1.3; }
 
-        .chips-categorias { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 27px; margin: 0 18px 31px; }
+        .chips-categorias { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin: 0 18px 31px; }
 
         .chip-categoria { height: 46px; border: 1px solid #d5d5d5; border-radius: 11px; color: #161616; background: #fff; font-size: 14px; padding: 0 12px; transition: background .15s, border-color .15s; }
 
@@ -487,7 +580,7 @@
 
             .logo { font-size: 25px; }
 
-            .categorias-redondas { grid-template-columns: repeat(4, minmax(75px, 1fr)); row-gap: 22px; }
+            .categorias-redondas { grid-template-columns: repeat(4, minmax(65px, 1fr)); row-gap: 22px; }
 
             .grade-produtos { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 29px 20px; }
 
@@ -521,6 +614,8 @@
             .categoria-imagem { width: clamp(62px, 17vw, 100px); margin-bottom: 8px; }
 
             .categoria-redonda span:last-child { font-size: 12px; }
+
+            .categorias-redondas { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 17px 12px; padding-left: 0; padding-right: 0; }
 
             .chips-categorias { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin: 0 0 22px; }
 
@@ -594,8 +689,6 @@
 
         <div class="acoes-topo">
 
-            <a class="link-conta" href="/clientes">Entre ou cadastre-se</a>
-
             <button class="botao-tema" id="botao-tema" type="button" onclick="alternarTema()" aria-label="Ativar tema escuro" title="Alternar tema claro/escuro"><span class="botao-tema-icone" id="botao-tema-icone" aria-hidden="true">☾</span><span id="botao-tema-texto">Escuro</span></button>
 
             <button class="icone-topo" type="button" aria-label="Favoritos" onclick="mostrarFavoritos()">♡</button>
@@ -609,25 +702,13 @@
 
 
     <nav class="navegacao" aria-label="Categorias da loja">
-
         <div class="navegacao-inner">
-
-            <button type="button" onclick="limparFiltros()">Ofertas</button>
-
-            <button type="button" onclick="ordenarPor('recentes')">Novidades</button>
-
-            <button type="button" onclick="buscarCategoria('masculino')">Masculino</button>
-
-            <button type="button" onclick="buscarCategoria('jeans')">Jeans</button>
-
-            <button type="button" onclick="buscarCategoria('acessórios')">Acessórios</button>
-
-            <button type="button" onclick="buscarCategoria('calçado')">Calçados</button>
-
-            <a href="/produtos">Todos os produtos</a>
-
+            <button type="button" data-categoria-nav="bones" onclick="buscarCategoria('bones')">Bonés</button>
+            <button type="button" data-categoria-nav="blusa de frio" onclick="buscarCategoria('blusa de frio')">Blusa de frio</button>
+            <button type="button" data-categoria-nav="camisetas polos" onclick="buscarCategoria('camisetas polos')">Camisetas polos</button>
+            <button type="button" data-categoria-nav="camisetas" onclick="buscarCategoria('camisetas')">Camisetas</button>
+            <button type="button" data-categoria-nav="todos" class="ativo" onclick="limparFiltros()">Todos os produtos</button>
         </div>
-
     </nav>
 
 
@@ -662,11 +743,11 @@
 
 
 
-        <div class="migalhas"><a href="/pdv/">Início</a><span>›</span><a href="#grade-produtos">Masculino</a><span>›</span><strong>Camisetas</strong></div>
+        <div class="migalhas"><a href="/pdv/">Início</a><span>›</span><strong id="categoria-atual">Todos os produtos</strong></div>
 
         <section class="titulo-linha">
 
-            <div class="titulo-grupo"><h1>CAMISETAS MASCULINAS</h1><span class="contagem-produtos">{{ produtos|length }} produtos</span></div>
+            <div class="titulo-grupo"><h1 id="titulo-categoria">TODOS OS PRODUTOS</h1><span class="contagem-produtos">{{ produtos|length }} produtos</span></div>
 
             <div class="filtro-wrap">
 
@@ -696,50 +777,49 @@
 
 
 
-        {% set nomes_categorias = ['Básicas', 'Algodão Premium', 'Esportivas', 'Music', 'Geek', 'Texturizadas', 'Regatas'] %}
-
+        {% set categorias_menu = [
+            {'nome': 'Bonés', 'chave': 'bones'},
+            {'nome': 'Blusa de frio', 'chave': 'blusa de frio'},
+            {'nome': 'Camisetas polos', 'chave': 'camisetas polos'},
+            {'nome': 'Camisetas', 'chave': 'camisetas'}
+        ] %}
         <section class="categorias-redondas" aria-label="Categorias em destaque">
-
-            {% for categoria in nomes_categorias %}
-
-            <button class="categoria-redonda" type="button" onclick="buscarCategoria('{{ categoria|lower }}')">
-
-                <span class="categoria-imagem">
-
-                    {% if produtos|length > loop.index0 and produtos[loop.index0].imagem_url %}
-
-                        <img src="{{ produtos[loop.index0].imagem_url }}" alt="{{ categoria }}" loading="lazy">
-
-                    {% else %}
-
-                        <span class="categoria-placeholder">◯</span>
-
+            {% for categoria in categorias_menu %}
+            {% set ns = namespace(produto=none) %}
+            {% for produto_categoria in produtos %}
+                {% set nome_categoria = produto_categoria.nome|lower %}
+                {% if ns.produto is none %}
+                    {% if categoria.chave == 'bones' and ('boné' in nome_categoria or 'bone' in nome_categoria) %}
+                        {% set ns.produto = produto_categoria %}
+                    {% elif categoria.chave == 'blusa de frio' and ('blusa de frio' in nome_categoria or 'moletom' in nome_categoria or 'jaqueta' in nome_categoria or 'casaco' in nome_categoria or 'hoodie' in nome_categoria) %}
+                        {% set ns.produto = produto_categoria %}
+                    {% elif categoria.chave == 'camisetas polos' and ('polo' in nome_categoria) %}
+                        {% set ns.produto = produto_categoria %}
+                    {% elif categoria.chave == 'camisetas' and ('camiseta' in nome_categoria or 't-shirt' in nome_categoria or 'tee' in nome_categoria) and 'polo' not in nome_categoria %}
+                        {% set ns.produto = produto_categoria %}
                     {% endif %}
-
-                </span>
-
-                <span>{{ categoria }}</span>
-
-            </button>
-
+                {% endif %}
             {% endfor %}
-
+            <button class="categoria-redonda" type="button" onclick="buscarCategoria('{{ categoria.chave }}')">
+                <span class="categoria-imagem">
+                    {% if ns.produto and ns.produto.imagem_url %}
+                        <img src="{{ ns.produto.imagem_url }}" alt="{{ categoria.nome }}" loading="lazy">
+                    {% else %}
+                        <span class="categoria-placeholder">◯</span>
+                    {% endif %}
+                </span>
+                <span>{{ categoria.nome }}</span>
+            </button>
+            {% endfor %}
         </section>
 
 
 
         <section class="chips-categorias" aria-label="Filtros rápidos">
-
-            <button type="button" class="chip-categoria" data-filtro="básicas" onclick="ativarChip(this, 'básicas')">CAMISETAS BÁSICAS</button>
-
-            <button type="button" class="chip-categoria" data-filtro="manga curta" onclick="ativarChip(this, 'manga curta')">MANGA CURTA</button>
-
-            <button type="button" class="chip-categoria" data-filtro="manga longa" onclick="ativarChip(this, 'manga longa')">MANGA LONGA</button>
-
-            <button type="button" class="chip-categoria" data-filtro="regatas" onclick="ativarChip(this, 'regatas')">REGATAS</button>
-
-            <button type="button" class="chip-categoria" data-filtro="algodão peruano" onclick="ativarChip(this, 'algodão peruano')">ALGODÃO PERUANO</button>
-
+            <button type="button" class="chip-categoria" data-filtro="bones" onclick="ativarChip(this, 'bones')">BONÉS</button>
+            <button type="button" class="chip-categoria" data-filtro="blusa de frio" onclick="ativarChip(this, 'blusa de frio')">BLUSA DE FRIO</button>
+            <button type="button" class="chip-categoria" data-filtro="camisetas polos" onclick="ativarChip(this, 'camisetas polos')">CAMISETAS POLOS</button>
+            <button type="button" class="chip-categoria" data-filtro="camisetas" onclick="ativarChip(this, 'camisetas')">CAMISETAS</button>
         </section>
 
 
@@ -1385,25 +1465,10 @@
                 if (categoria) {
 
                     const mapa = {
-
-                        'basicas': ['basica', 'básica', 'essencial', 'lisa', 'camiseta'],
-
-                        'manga curta': ['manga curta', 'camiseta', 't-shirt'],
-
-                        'manga longa': ['manga longa', 'longa', 'manga'],
-
-                        'regatas': ['regata', 'regatas'],
-
-                        'algodao peruano': ['peruano', 'algodao peruano'],
-
-                        'esportivas': ['esportiva', 'esportivo', 'sport'],
-
-                        'texturizadas': ['texturizada', 'textura'],
-
-                        'music': ['music', 'banda', 'rock'],
-
-                        'geek': ['geek', 'heroi', 'marvel', 'anime']
-
+                        'bones': ['boné', 'bone', 'bones', 'cap'],
+                        'blusa de frio': ['blusa de frio', 'moletom', 'jaqueta', 'casaco', 'hoodie', 'sweatshirt'],
+                        'camisetas polos': ['camiseta polo', 'camisa polo', 'polo', 'polos'],
+                        'camisetas': ['camiseta', 'camisetas', 't-shirt', 'tee']
                     };
 
                     const termos = mapa[categoria] || [categoria];
@@ -1424,9 +1489,29 @@
 
         }
 
+        function atualizarCategoriaVisual(categoria) {
+            const titulos = {
+                'bones': { titulo: 'BONÉS', label: 'Bonés' },
+                'blusa de frio': { titulo: 'BLUSA DE FRIO', label: 'Blusa de frio' },
+                'camisetas polos': { titulo: 'CAMISETAS POLOS', label: 'Camisetas polos' },
+                'camisetas': { titulo: 'CAMISETAS', label: 'Camisetas' },
+                '': { titulo: 'TODOS OS PRODUTOS', label: 'Todos os produtos' }
+            };
+            const item = titulos[categoria] || titulos[''];
+            document.getElementById('titulo-categoria').textContent = item.titulo;
+            document.getElementById('categoria-atual').textContent = item.label;
+            document.title = `M&J Store — ${item.label}`;
+            document.querySelectorAll('[data-categoria-nav]').forEach(botao => {
+                const chave = botao.dataset.categoriaNav;
+                botao.classList.toggle('ativo', chave === (categoria || 'todos'));
+            });
+        }
+
         function buscarCategoria(categoria) {
 
             filtroCategoriaAtivo = normalizarTexto(categoria);
+
+            atualizarCategoriaVisual(filtroCategoriaAtivo);
 
             document.getElementById('busca-produto').value = '';
 
@@ -1444,6 +1529,8 @@
 
             filtroCategoriaAtivo = mesma ? '' : normalizarTexto(categoria);
 
+            atualizarCategoriaVisual(filtroCategoriaAtivo);
+
             document.querySelectorAll('.chip-categoria').forEach(b => b.classList.remove('ativo'));
 
             if (!mesma) botao.classList.add('ativo');
@@ -1455,6 +1542,8 @@
         function limparFiltros() {
 
             filtroCategoriaAtivo = ''; somenteFavoritos = false;
+
+            atualizarCategoriaVisual('');
 
             document.getElementById('busca-produto').value = '';
 
