@@ -4,250 +4,461 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ "Editar" if editando else "Novo" }} Usuário — M&J STORE</title>
+
+    <title>{{ "Editar" if editando else "Novo" }} usuário | M&J Store</title>
+
+    <link rel="stylesheet" href="/static/css/navbar.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        /* Reset e Estilos Gerais */
+        :root {
+            --bg: #101010;
+            --surface: #151515;
+            --line: #303030;
+            --text: #f5f5f5;
+            --muted: #999999;
+            --green: #c8ff1a;
+            --green-hover: #dcff70;
+            --red: #ff6464;
+        }
+
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
         }
 
         body {
-            background-color: #0b0b0b; /* Fundo escuro absoluto */
-            color: #ffffff;
             min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            width: min(620px, 94%);
+            margin: 0 auto;
+            padding: 28px 0 50px;
+        }
+
+        .page-heading {
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 20px;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding-bottom: 21px;
+            margin-bottom: 22px;
+            border-bottom: 1px solid var(--line);
         }
 
-        /* Card do Formulário */
-        .form-card {
-            background-color: #141414; /* Cinza escuro dos cards do site */
-            border: 1px solid #222;
-            width: 100%;
-            max-width: 500px;
-            padding: 40px 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Logo simulada no topo do form */
-        .brand-logo {
-            text-align: center;
-            font-size: 18px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            margin-bottom: 25px;
-            color: #ffffff;
-        }
-
-        .brand-logo span {
-            color: #ccff00;
-            font-size: 11px;
-            vertical-align: super;
+        .eyebrow {
+            margin-bottom: 9px;
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
         }
 
         h1 {
-            font-size: 24px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
-            margin-bottom: 30px;
-            text-align: center;
-            border-bottom: 1px solid #222;
-            padding-bottom: 15px;
-        }
-
-        /* Alerta de Erro Estilizado */
-        .alert-error {
-            background-color: rgba(255, 68, 68, 0.1);
-            color: #ff4444;
-            border-left: 4px solid #ff4444;
-            padding: 12px 15px;
-            font-size: 13px;
+            font-size: clamp(22px, 3vw, 29px);
             font-weight: 600;
-            margin-bottom: 25px;
+            letter-spacing: -.7px;
         }
 
-        /* Grupos de Input */
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin-bottom: 22px;
+        .subtitle {
+            margin-top: 9px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
         }
 
-        label {
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px;
+            padding: 0 14px;
+            border: 1px solid #414141;
+            border-radius: 6px;
+            background: transparent;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .btn:hover {
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .form-card {
+            overflow: hidden;
+            border: 1px solid #2d2d2d;
+            background: #121212;
+        }
+
+        .card-heading {
+            padding: 19px 22px;
+            border-bottom: 1px solid #2d2d2d;
+            background: #171717;
+        }
+
+        .brand {
+            margin-bottom: 9px;
+            color: var(--text);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.8px;
+        }
+
+        .brand span {
+            color: var(--green);
+        }
+
+        .card-heading h2 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .card-heading p {
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 10px;
+            line-height: 1.7;
+        }
+
+        .form-body {
+            padding: 23px 22px;
+        }
+
+        .alert-error {
+            margin-bottom: 20px;
+            padding: 13px 14px;
+            border: 1px solid #ff646435;
+            background: #ff64640d;
+            color: var(--red);
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1.7;
+        }
+
+        .field {
+            margin-bottom: 19px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 9px;
+            color: #eeeeee;
             font-size: 11px;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #888;
         }
 
-        /* Inputs, Passwords e Selects customizados */
-        input[type="text"],
-        input[type="email"],
-        input[type="password"],
-        select {
-            width: 100%;
-            background-color: #1a1a1a;
-            border: 1px solid #333;
-            color: #ffffff;
-            padding: 14px;
-            font-size: 14px;
+        .required {
+            color: var(--green);
+        }
+
+        .optional {
+            color: var(--muted);
+            font-size: 10px;
             font-weight: 500;
+        }
+
+        .field input,
+        .field select {
+            display: block;
+            width: 100%;
+            min-height: 44px;
+            padding: 11px 12px;
+            border: 1px solid #383838;
+            border-radius: 5px;
             outline: none;
-            transition: all 0.3s ease;
+            background: #101010;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 12px;
+            transition: border-color .2s, box-shadow .2s;
         }
 
-        /* Foco com efeito Verde Neon do site */
-        input:focus, select:focus {
-            border-color: #ccff00;
-            box-shadow: 0 0 5px rgba(204, 255, 0, 0.2);
-        }
-
-        /* Estilização do placeholder padrão */
-        ::placeholder {
-            color: #555;
-            font-size: 13px;
-        }
-
-        /* Customização da seta do select para combinar */
-        select {
-            appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23888'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 14px center;
-            background-size: 20px;
+        .field select {
             cursor: pointer;
         }
 
-        /* Container de botões na base */
+        .field select option {
+            background: #151515;
+            color: #ffffff;
+        }
+
+        .field input::placeholder {
+            color: #707070;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 2px #c8ff1a12;
+        }
+
+        .field-hint {
+            margin-top: 7px;
+            color: #777777;
+            font-size: 10px;
+            line-height: 1.7;
+        }
+
         .form-actions {
             display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 35px;
+            gap: 10px;
+            margin-top: 25px;
+            padding-top: 19px;
+            border-top: 1px solid #292929;
         }
 
-        /* Botão Salvar (Baseado no botão principal "Ver Coleção") */
         .btn-submit {
-            width: 100%;
-            background-color: #ccff00;
-            color: #000000;
-            border: none;
-            padding: 16px;
-            font-size: 13px;
+            flex: 1;
+            min-height: 44px;
+            padding: 0 15px;
+            border: 1px solid var(--green);
+            border-radius: 5px;
+            background: var(--green);
+            color: #101010;
+            font-family: inherit;
+            font-size: 10px;
             font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
             cursor: pointer;
-            transition: background-color 0.2s;
+            transition: .2s;
         }
 
         .btn-submit:hover {
-            background-color: #b2df00;
+            border-color: var(--green-hover);
+            background: var(--green-hover);
         }
 
-        /* Botão Cancelar (Estilo secundário discreto) */
-        .btn-cancel {
-            display: block;
-            text-align: center;
-            width: 100%;
-            background-color: transparent;
-            border: 1px solid #333;
-            color: #ffffff;
-            text-decoration: none;
-            padding: 14px;
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s;
+        .form-note {
+            margin-top: 17px;
+            color: #777777;
+            font-size: 10px;
+            line-height: 1.7;
         }
 
-        .btn-cancel:hover {
-            border-color: #ffffff;
-            background-color: #ffffff;
-            color: #000000;
+        .bottom-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: var(--muted);
+            font-size: 11px;
+            transition: .2s;
+        }
+
+        .bottom-link:hover {
+            color: var(--green);
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding-top: 22px;
+            }
+
+            .page-heading {
+                align-items: flex-start;
+            }
+
+            .page-heading > .btn {
+                width: 100%;
+            }
+
+            .card-heading {
+                padding: 17px;
+            }
+
+            .form-body {
+                padding: 20px 16px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .btn,
+            .form-actions .btn-submit {
+                width: 100%;
+                min-height: 44px;
+            }
         }
     </style>
-    <link rel="stylesheet" href="/static/css/navbar.css">
 </head>
+
 <body>
     {% include "shared/navbar.html" %}
 
+    <main class="container">
+        <header class="page-heading">
+            <div>
+                <div class="eyebrow">M&J STORE / ADMINISTRAÇÃO</div>
 
-    <div class="form-card">
-        <div class="brand-logo">M&J<span>STORE</span></div>
+                <h1>
+                    {{ "Editar usuário" if editando else "Novo usuário" }}
+                </h1>
 
-        <h1>{{ "Editar" if editando else "Novo" }} Usuário</h1>
-
-        {% if erro %}
-            <div class="alert-error">{{ erro }}</div>
-        {% endif %}
-
-        <form action="{{ '/usuarios/' + editando.id|string + '/editar' if editando else '/usuarios/novo' }}" method="post">
-
-            <div class="input-group">
-                <label for="nome">Nome completo</label>
-                <input type="text" 
-                       id="nome"
-                       name="nome" 
-                       value="{{ editando.nome if editando else (valores.nome if valores else '') }}" 
-                       required>
+                <p class="subtitle">
+                    {% if editando %}
+                        Atualize os dados e as permissões da conta.
+                    {% else %}
+                        Cadastre uma nova conta para acessar o sistema.
+                    {% endif %}
+                </p>
             </div>
 
-            <div class="input-group">
-                <label for="email">E-mail corporativo</label>
-                <input type="email" 
-                       id="email"
-                       name="email" 
-                       value="{{ editando.email if editando else (valores.email if valores else '') }}" 
-                       required>
+            <a href="/usuarios" class="btn">← VOLTAR À LISTA</a>
+        </header>
+
+        <section class="form-card">
+            <div class="card-heading">
+                <div class="brand">M&J <span>STORE</span></div>
+
+                <h2>Dados do usuário</h2>
+
+                <p>Preencha os dados abaixo para continuar.</p>
             </div>
 
-            <div class="input-group">
-                <label for="senha">Senha de acesso</label>
-                <input type="password" 
-                       id="senha"
-                       name="senha" 
-                       {% if editando %}
-                       placeholder="Deixe em branco para manter a senha atual"
-                       {% else %}
-                       required minlength="6"
-                       {% endif %}>
-            </div>
+            <form
+                class="form-body"
+                action="{{ '/usuarios/' + editando.id|string + '/editar' if editando else '/usuarios/novo' }}"
+                method="post"
+            >
+                {% if erro %}
+                    <div class="alert-error" role="alert">
+                        {{ erro }}
+                    </div>
+                {% endif %}
 
-            <div class="input-group">
-                <label for="role">Perfil de acesso</label>
-                <select id="role" name="role">
-                    <option value="operador" {{ 'selected' if (editando and editando.role == 'operador') or (valores and valores.role == 'operador') else '' }}>
-                        Operador
-                    </option>
-                    <option value="admin" {{ 'selected' if (editando and editando.role == 'admin') or (valores and valores.role == 'admin') else '' }}>
-                        Administrador
-                    </option>
-                </select>
-            </div>
+                <div class="field">
+                    <label for="nome">
+                        Nome completo <span class="required">*</span>
+                    </label>
 
-            <div class="form-actions">
-                <button type="submit" class="btn-submit">
-                    {{ "Salvar alterações" if editando else "Cadastrar usuário" }}
-                </button>
-                <a href="/usuarios" class="btn-cancel">Cancelar</a>
-            </div>
+                    <input
+                        type="text"
+                        id="nome"
+                        name="nome"
+                        value="{{ editando.nome if editando else (valores.nome if valores else '') }}"
+                        placeholder="Digite o nome completo"
+                        autocomplete="name"
+                        maxlength="150"
+                        required
+                    >
+                </div>
 
-        </form>
-    </div>
+                <div class="field">
+                    <label for="email">
+                        E-mail corporativo <span class="required">*</span>
+                    </label>
 
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value="{{ editando.email if editando else (valores.email if valores else '') }}"
+                        placeholder="nome@empresa.com"
+                        autocomplete="email"
+                        maxlength="254"
+                        required
+                    >
+                </div>
+
+                <div class="field">
+                    <label for="senha">
+                        Senha de acesso
+                        {% if not editando %}
+                            <span class="required">*</span>
+                        {% else %}
+                            <span class="optional">(opcional ao editar)</span>
+                        {% endif %}
+                    </label>
+
+                    <input
+                        type="password"
+                        id="senha"
+                        name="senha"
+                        autocomplete="{{ 'new-password' if not editando else 'new-password' }}"
+                        {% if editando %}
+                            placeholder="Deixe em branco para manter a senha atual"
+                        {% else %}
+                            placeholder="Crie uma senha com pelo menos 6 caracteres"
+                            minlength="6"
+                            required
+                        {% endif %}
+                    >
+
+                    {% if editando %}
+                        <p class="field-hint">
+                            Para manter a senha atual, não preencha este campo.
+                        </p>
+                    {% else %}
+                        <p class="field-hint">
+                            A senha deve ter pelo menos 6 caracteres.
+                        </p>
+                    {% endif %}
+                </div>
+
+                <div class="field">
+                    <label for="role">
+                        Perfil de acesso <span class="required">*</span>
+                    </label>
+
+                    <select id="role" name="role" required>
+                        <option
+                            value="operador"
+                            {% if (editando and editando.role == 'operador') or (valores and valores.role == 'operador') or (not editando and not valores) %}
+                                selected
+                            {% endif %}
+                        >
+                            Operador
+                        </option>
+
+                        <option
+                            value="admin"
+                            {% if (editando and editando.role == 'admin') or (valores and valores.role == 'admin') %}
+                                selected
+                            {% endif %}
+                        >
+                            Administrador
+                        </option>
+                    </select>
+
+                    <p class="field-hint">
+                        Escolha o nível de acesso que será atribuído à conta.
+                    </p>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">
+                        {{ "SALVAR ALTERAÇÕES" if editando else "CADASTRAR USUÁRIO" }}
+                    </button>
+
+                    <a href="/usuarios" class="btn">
+                        CANCELAR
+                    </a>
+                </div>
+
+                <p class="form-note">
+                    <span class="required">*</span> Campos obrigatórios.
+                </p>
+            </form>
+        </section>
+
+        <a href="/" class="bottom-link">← Voltar para o Dashboard</a>
+    </main>
 </body>
 </html>
