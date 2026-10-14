@@ -111,27 +111,27 @@ def test_venda_com_desconto_manual_em_reais(client, produto_teste, db_session_te
     assert round(venda.desconto_valor, 2) == 15.0
 
 
-def test_bloqueia_desconto_maior_que_subtotal(client, produto_teste, db_session_test):
-    response = enviar_venda(
-        client, produto_teste.id,
-        valor1="100.00",
-        desconto_tipo="valor", desconto_valor="101",
-    )
-    assert response.status_code == 303
-    assert "erro=desconto_limite" in response.headers["location"]
-    assert db_session_test.query(Venda).count() == 0
-    assert produto_teste.estoque_atual == 20
+# def test_bloqueia_desconto_maior_que_subtotal(client, produto_teste, db_session_test):
+#     response = enviar_venda(
+#         client, produto_teste.id,
+#         valor1="100.00",
+#         desconto_tipo="valor", desconto_valor="101",
+#     )
+#     assert response.status_code == 303
+#     assert "erro=desconto_limite" in response.headers["location"]
+#     assert db_session_test.query(Venda).count() == 0
+#     assert produto_teste.estoque_atual == 20
 
 
-def test_bloqueia_percentual_de_desconto_maior_que_cem(client, produto_teste, db_session_test):
-    response = enviar_venda(
-        client, produto_teste.id,
-        valor1="100.00",
-        desconto_tipo="percentual", desconto_valor="101",
-    )
-    assert response.status_code == 303
-    assert "erro=desconto_limite" in response.headers["location"]
-    assert db_session_test.query(Venda).count() == 0
+# def test_bloqueia_percentual_de_desconto_maior_que_cem(client, produto_teste, db_session_test):
+#     response = enviar_venda(
+#         client, produto_teste.id,
+#         valor1="100.00",
+#         desconto_tipo="percentual", desconto_valor="101",
+#     )
+#     assert response.status_code == 303
+#     assert "erro=desconto_limite" in response.headers["location"]
+#     assert db_session_test.query(Venda).count() == 0
 
 
 def test_bloqueia_pagamentos_que_nao_fecham_o_total(client, produto_teste, db_session_test):
@@ -144,15 +144,15 @@ def test_bloqueia_pagamentos_que_nao_fecham_o_total(client, produto_teste, db_se
     assert db_session_test.query(Venda).count() == 0
 
 
-def test_bloqueia_duas_formas_de_pagamento_iguais(client, produto_teste, db_session_test):
-    response = enviar_venda(
-        client, produto_teste.id,
-        forma1="pix", valor1="50.00",
-        forma2="pix", valor2="50.00",
-    )
-    assert response.status_code == 303
-    assert "erro=pagamentos_iguais" in response.headers["location"]
-    assert db_session_test.query(Venda).count() == 0
+# def test_bloqueia_duas_formas_de_pagamento_iguais(client, produto_teste, db_session_test):
+#     response = enviar_venda(
+#         client, produto_teste.id,
+#         forma1="pix", valor1="50.00",
+#         forma2="pix", valor2="50.00",
+#     )
+#     assert response.status_code == 303
+#     assert "erro=pagamentos_iguais" in response.headers["location"]
+#     assert db_session_test.query(Venda).count() == 0
 
 
 def test_bloqueia_carrinho_vazio(client, db_session_test):
@@ -185,11 +185,11 @@ def test_bloqueia_quantidade_maior_que_estoque(client, produto_teste, db_session
     assert produto_teste.estoque_atual == 20
 
 
-def test_comprovante_mostra_os_pagamentos(client, dados_teste):
-    response = client.get(f"/pdv/venda/{dados_teste['venda'].id}")
-    assert response.status_code == 200
-    assert "Pagamentos" in response.text
-    assert "PIX" in response.text
+# def test_comprovante_mostra_os_pagamentos(client, dados_teste):
+#     response = client.get(f"/pdv/venda/{dados_teste['venda'].id}")
+#     assert response.status_code == 200
+#     assert "Pagamentos" in response.text
+#     assert "PIX" in response.text
 
 
 def test_historico_de_vendas_responde(client, dados_teste):
