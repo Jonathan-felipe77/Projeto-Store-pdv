@@ -408,6 +408,27 @@
             </div>
 
 
+            <!-- FORMAS DE PAGAMENTO -->
+            {% if venda.pagamentos %}
+                <hr class="linha-sep">
+                <div class="total-linha">
+                    <span><strong>Pagamentos</strong></span>
+                    <span></span>
+                </div>
+                {% for pagamento in venda.pagamentos %}
+                    <div class="total-linha">
+                        <span>
+                            {% if pagamento.forma_pagamento == 'dinheiro' %}Dinheiro
+                            {% elif pagamento.forma_pagamento == 'pix' %}PIX
+                            {% elif pagamento.forma_pagamento == 'debito' %}Cartão de débito
+                            {% elif pagamento.forma_pagamento == 'credito' %}Cartão de crédito
+                            {% else %}{{ pagamento.forma_pagamento|title }}{% endif %}
+                        </span>
+                        <span>R$ {{ "%.2f"|format(pagamento.valor) }}</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
             <!-- OBSERVAÇÃO -->
             {% if venda.observacao %}
 
