@@ -1,671 +1,488 @@
+
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <title>{{ "Editar cliente" if editando else "Novo cliente" }} | M&J Store</title>
 
-    <title>
-        {{ "Editar" if editando else "Novo" }} Cliente
-    </title>
+    <link rel="stylesheet" href="/static/css/navbar.css">
 
-    <link
-        rel="stylesheet"
-        href="/static/css/navbar.css"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        :root {
+            --bg: #101010;
+            --surface: #151515;
+            --surface-2: #191919;
+            --line: #303030;
+            --text: #f5f5f5;
+            --muted: #999999;
+            --green: #c8ff1a;
+            --green-hover: #dcff70;
+            --red: #ff6464;
+        }
 
         * {
             box-sizing: border-box;
-            font-family:
-                'Montserrat',
-                sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-
-            margin: 0;
-
             min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Montserrat', sans-serif;
+        }
 
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(0,255,136,.07),
-                    transparent 32%
-                ),
-                #090909;
-
-            color: #fff;
+        a {
+            color: inherit;
+            text-decoration: none;
         }
 
         .container {
-
-            width: 92%;
-
-            max-width: 850px;
-
+            width: min(760px, 94%);
             margin: 0 auto;
-
-            padding: 45px 0 70px;
+            padding: 28px 0 50px;
         }
 
-        .topo {
+        /* Cabeçalho */
 
-            margin-bottom: 25px;
-        }
-
-        .topo h1 {
-
-            margin: 0 0 8px;
-
-            font-size: 30px;
-
-            font-weight: 800;
-        }
-
-        .topo p {
-
-            margin: 0;
-
-            color: #888;
-
-            font-size: 14px;
-        }
-
-        .linha-verde {
-
-            width: 55px;
-
-            height: 4px;
-
-            margin-top: 12px;
-
-            background: #beee16;
-
-            border-radius: 20px;
-        }
-
-        .form-card {
-
-            background: #111;
-
-            border:
-                1px solid #242424;
-
-            border-radius: 14px;
-
-            overflow: hidden;
-
-            box-shadow:
-                0 15px 40px
-                rgba(0,0,0,.35);
-        }
-
-        .card-topo {
-
-            padding: 20px 25px;
-
-            background: #131313;
-
-            border-bottom:
-                1px solid #242424;
-        }
-
-        .card-topo h2 {
-
-            margin: 0 0 5px;
-
-            font-size: 16px;
-        }
-
-        .card-topo span {
-
-            color: #777;
-
-            font-size: 12px;
-        }
-
-        .formulario {
-
-            padding: 28px 25px;
-        }
-
-        .erro {
-
-            margin-bottom: 20px;
-
-            padding: 13px 15px;
-
-            background:
-                rgba(255,60,60,.08);
-
-            border:
-                1px solid
-                rgba(255,60,60,.25);
-
-            border-radius: 8px;
-
-            color: #ff6b6b;
-
-            font-size: 13px;
-
-            font-weight: 600;
-        }
-
-        .campo {
-
-            margin-bottom: 20px;
-        }
-
-        .campo label {
-
-            display: block;
-
-            margin-bottom: 8px;
-
-            color: #ddd;
-
-            font-size: 13px;
-
-            font-weight: 700;
-        }
-
-        .obrigatorio {
-
-            color: #beee16;
-        }
-
-        .opcional {
-
-            color: #666;
-
-            font-size: 11px;
-        }
-
-        input[type="text"],
-        input[type="number"] {
-
-            width: 100%;
-
-            height: 46px;
-
-            padding: 0 14px;
-
-            background: #181818;
-
-            border:
-                1px solid #2b2b2b;
-
-            border-radius: 8px;
-
-            outline: none;
-
-            color: #fff;
-
-            font-size: 13px;
-        }
-
-        input:focus {
-
-            border-color:
-                #beee16;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(179, 255, 0, 0.08);
-        }
-
-        /* ======================================================
-           TIPO
-        ====================================================== */
-
-        .tipo-titulo {
-
-            display: block;
-
-            margin-bottom: 10px;
-
-            color: #ddd;
-
-            font-size: 13px;
-
-            font-weight: 700;
-        }
-
-        .opcoes-tipo {
-
-            display: grid;
-
-            grid-template-columns:
-                1fr 1fr;
-
-            gap: 12px;
-        }
-
-        .opcao {
-
-            position: relative;
-        }
-
-        .opcao input {
-
-            position: absolute;
-
-            opacity: 0;
-
-            pointer-events: none;
-        }
-
-        .tipo-card {
-
+        .page-heading {
             display: flex;
-
             align-items: center;
-
-            gap: 12px;
-
-            min-height: 72px;
-
-            padding: 14px;
-
-            background: #181818;
-
-            border:
-                1px solid #2b2b2b;
-
-            border-radius: 10px;
-
-            cursor: pointer;
-
-            transition: .2s;
+            justify-content: space-between;
+            gap: 18px;
+            flex-wrap: wrap;
+            padding-bottom: 22px;
+            margin-bottom: 22px;
+            border-bottom: 1px solid var(--line);
         }
 
-        .tipo-card:hover {
-
-            background: #1d1d1d;
-
-            border-color: #444;
-        }
-
-        .bolinha {
-
-            width: 21px;
-
-            height: 21px;
-
-            flex-shrink: 0;
-
-            border:
-                2px solid #555;
-
-            border-radius: 50%;
-
-            position: relative;
-        }
-
-        .tipo-texto strong {
-
-            display: block;
-
-            margin-bottom: 4px;
-
-            font-size: 13px;
-        }
-
-        .tipo-texto small {
-
-            color: #666;
-
+        .eyebrow {
+            margin-bottom: 9px;
+            color: var(--muted);
             font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
         }
 
-        .opcao input:checked +
-        .tipo-card {
-
-            background:
-                rgba(187, 255, 0, 0.034);
-
-            border-color:
-                #beee16;
+        h1 {
+            font-size: clamp(23px, 3vw, 30px);
+            font-weight: 600;
+            letter-spacing: -.8px;
         }
 
-        .opcao input:checked +
-        .tipo-card
-        .bolinha {
-
-            border-color:
-                #beee16;
-        }
-
-        .opcao input:checked +
-        .tipo-card
-        .bolinha::after {
-
-            content: "";
-
-            position: absolute;
-
-            width: 9px;
-
-            height: 9px;
-
-            top: 4px;
-
-            left: 4px;
-
-            background: #beee16;
-
-            border-radius: 50%;
-        }
-
-        /* ======================================================
-           DESCONTO
-        ====================================================== */
-
-        .desconto-box {
-
-            margin-top: 25px;
-
-            padding: 20px;
-
-            background:
-                rgba(187, 255, 0, 0.04);
-
-            border:
-                1px solid
-                rgba(179, 255, 0, 0.15);
-
-            border-radius: 10px;
-        }
-
-        .desconto-titulo {
-
-            margin-bottom: 7px;
-
-            color: #beee16;
-
-            font-size: 15px;
-
-            font-weight: 800;
-        }
-
-        .desconto-descricao {
-
-            margin-bottom: 15px;
-
-            color: #777;
-
-            font-size: 11px;
-
-            line-height: 1.6;
-        }
-
-        .desconto-input {
-
-            position: relative;
-        }
-
-        .desconto-input input {
-
-            padding-right: 45px;
-        }
-
-        .porcentagem {
-
-            position: absolute;
-
-            right: 15px;
-
-            top: 50%;
-
-            transform:
-                translateY(-50%);
-
-            color: #beee16;
-
-            font-weight: 800;
-        }
-
-        /* ======================================================
-           BOTÕES
-        ====================================================== */
-
-        .acoes {
-
-            display: flex;
-
-            align-items: center;
-
-            gap: 12px;
-
-            margin-top: 25px;
+        .subtitle {
+            margin-top: 9px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
         }
 
         .btn {
-
             display: inline-flex;
-
             align-items: center;
-
             justify-content: center;
-
-            min-height: 44px;
-
-            padding: 0 22px;
-
-            border-radius: 8px;
-
-            text-decoration: none;
-
-            font-size: 13px;
-
-            font-weight: 800;
-
+            gap: 8px;
+            min-height: 42px;
+            padding: 0 15px;
+            border: 1px solid #414141;
+            border-radius: 6px;
+            background: transparent;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 10px;
+            font-weight: 700;
+            text-align: center;
             cursor: pointer;
-
             transition: .2s;
         }
 
-        .btn-salvar {
-
-            background: #beee16;
-
-            color: #000;
-
-            border: none;
+        .btn:hover {
+            border-color: var(--green);
+            color: var(--green);
         }
 
-        .btn-salvar:hover {
-
-            background: #beee16;
-
-            transform:
-                translateY(-2px);
+        .btn-primary {
+            border-color: var(--green);
+            background: var(--green);
+            color: #101010;
         }
 
-        .btn-cancelar {
-
-            background: #1a1a1a;
-
-            border:
-                1px solid #303030;
-
-            color: #aaa;
+        .btn-primary:hover {
+            border-color: var(--green-hover);
+            background: var(--green-hover);
+            color: #101010;
         }
 
-        .btn-cancelar:hover {
+        /* Cartão do formulário */
 
-            background: #222;
-
-            color: #fff;
+        .form-card {
+            overflow: hidden;
+            border: 1px solid #2d2d2d;
+            background: #121212;
         }
 
-        .rodape-info {
+        .card-heading {
+            padding: 20px 22px;
+            border-bottom: 1px solid #2d2d2d;
+            background: #171717;
+        }
 
-            margin-top: 20px;
+        .brand {
+            margin-bottom: 9px;
+            color: var(--text);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.8px;
+        }
 
-            text-align: center;
+        .brand span {
+            color: var(--green);
+        }
 
-            color: #555;
+        .card-heading h2 {
+            font-size: 14px;
+            font-weight: 600;
+        }
 
+        .card-heading p {
+            margin-top: 6px;
+            color: var(--muted);
+            font-size: 10px;
+            line-height: 1.7;
+        }
+
+        .form-body {
+            padding: 24px 22px;
+        }
+
+        /* Erro */
+
+        .error-message {
+            margin-bottom: 20px;
+            padding: 13px 14px;
+            border: 1px solid #ff646435;
+            background: #ff64640d;
+            color: var(--red);
             font-size: 11px;
+            font-weight: 600;
+            line-height: 1.7;
         }
 
-        @media (max-width: 600px) {
+        /* Campos */
 
+        .field {
+            margin-bottom: 20px;
+        }
+
+        .field label,
+        .field-title {
+            display: block;
+            margin-bottom: 9px;
+            color: #eeeeee;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .required {
+            color: var(--green);
+        }
+
+        .optional {
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .field input[type="text"],
+        .field input[type="number"] {
+            display: block;
+            width: 100%;
+            min-height: 45px;
+            padding: 12px 13px;
+            border: 1px solid #383838;
+            border-radius: 5px;
+            outline: none;
+            background: #101010;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 12px;
+            transition: border-color .2s, box-shadow .2s;
+        }
+
+        .field input::placeholder {
+            color: #666666;
+        }
+
+        .field input:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 2px #c8ff1a12;
+        }
+
+        .field-hint {
+            margin-top: 7px;
+            color: #777777;
+            font-size: 10px;
+            line-height: 1.7;
+        }
+
+        /* Tipo de cliente */
+
+        .customer-types {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+
+        .type-option {
+            position: relative;
+            min-width: 0;
+        }
+
+        .type-option input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+        }
+
+        .type-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 77px;
+            padding: 14px;
+            border: 1px solid #353535;
+            border-radius: 6px;
+            background: var(--surface-2);
+            cursor: pointer;
+            transition: border-color .2s, background .2s;
+        }
+
+        .type-card:hover {
+            border-color: #555555;
+            background: #1d1d1d;
+        }
+
+        .radio-circle {
+            position: relative;
+            flex: 0 0 19px;
+            width: 19px;
+            height: 19px;
+            border: 1px solid #666666;
+            border-radius: 50%;
+        }
+
+        .type-option input:checked + .type-card {
+            border-color: var(--green);
+            background: #c8ff1a09;
+        }
+
+        .type-option input:checked + .type-card .radio-circle {
+            border-color: var(--green);
+        }
+
+        .type-option input:checked + .type-card .radio-circle::after {
+            content: "";
+            position: absolute;
+            inset: 4px;
+            border-radius: 50%;
+            background: var(--green);
+        }
+
+        .type-option input:focus-visible + .type-card {
+            outline: 2px solid var(--green);
+            outline-offset: 3px;
+        }
+
+        .type-name {
+            display: block;
+            color: var(--text);
+            font-size: 11px;
+            font-weight: 700;
+            line-height: 1.5;
+        }
+
+        .type-description {
+            display: block;
+            margin-top: 4px;
+            color: var(--muted);
+            font-size: 9px;
+            line-height: 1.5;
+        }
+
+        /* Desconto */
+
+        .discount-card {
+            margin-top: 5px;
+            padding: 19px;
+            border: 1px solid #c8ff1a2b;
+            background: #c8ff1a07;
+        }
+
+        .discount-card h3 {
+            color: var(--green);
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .discount-card p {
+            margin-top: 7px;
+            margin-bottom: 15px;
+            color: var(--muted);
+            font-size: 10px;
+            line-height: 1.7;
+        }
+
+        .discount-input {
+            position: relative;
+        }
+
+        .discount-input input {
+            padding-right: 43px !important;
+        }
+
+        .percent-symbol {
+            position: absolute;
+            top: 50%;
+            right: 14px;
+            transform: translateY(-50%);
+            color: var(--green);
+            font-size: 13px;
+            font-weight: 800;
+            pointer-events: none;
+        }
+
+        /* Botões */
+
+        .form-actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #292929;
+        }
+
+        .form-actions .btn {
+            min-height: 44px;
+        }
+
+        .form-note {
+            margin-top: 16px;
+            color: #777777;
+            font-size: 10px;
+            line-height: 1.7;
+        }
+
+        .bottom-link {
+            display: inline-block;
+            margin-top: 22px;
+            color: var(--muted);
+            font-size: 11px;
+            transition: .2s;
+        }
+
+        .bottom-link:hover {
+            color: var(--green);
+        }
+
+        @media (max-width: 560px) {
             .container {
-
-                width: 92%;
-
-                padding-top: 30px;
+                padding-top: 22px;
             }
 
-            .topo h1 {
-
-                font-size: 24px;
+            .page-heading {
+                align-items: flex-start;
             }
 
-            .formulario {
-
-                padding: 22px 18px;
+            .page-heading > .btn {
+                width: 100%;
             }
 
-            .opcoes-tipo {
+            .card-heading {
+                padding: 17px;
+            }
 
+            .form-body {
+                padding: 20px 16px;
+            }
+
+            .customer-types {
                 grid-template-columns: 1fr;
             }
 
-            .acoes {
-
-                flex-direction: column-reverse;
-
+            .form-actions {
+                flex-direction: column;
                 align-items: stretch;
             }
 
-            .btn {
-
+            .form-actions .btn {
                 width: 100%;
             }
+
+            .discount-card {
+                padding: 15px;
+            }
         }
-
     </style>
-
 </head>
 
-
 <body>
-
     {% include "shared/navbar.html" %}
 
-
     <main class="container">
+        <header class="page-heading">
+            <div>
+                <div class="eyebrow">M&amp;J STORE / CLIENTES</div>
 
-        <div class="topo">
+                <h1>
+                    {{ "Editar cliente" if editando else "Novo cliente" }}
+                </h1>
 
-            <h1>
-
-                {{
-                    "Editar cliente"
-                    if editando
-                    else
-                    "Novo cliente"
-                }}
-
-            </h1>
-
-            <p>
-
-                {{
-                    "Atualize as informações do cliente."
-                    if editando
-                    else
-                    "Cadastre um novo cliente no sistema."
-                }}
-
-            </p>
-
-            <div class="linha-verde"></div>
-
-        </div>
-
-
-        <section class="form-card">
-
-
-            <div class="card-topo">
-
-                <h2>
-                    Dados do cliente
-                </h2>
-
-                <span>
-                    Preencha as informações abaixo
-                </span>
-
+                <p class="subtitle">
+                    {% if editando %}
+                        Atualize as informações e as configurações do cliente.
+                    {% else %}
+                        Cadastre um cliente para utilizar no sistema de vendas.
+                    {% endif %}
+                </p>
             </div>
 
+            <a href="/clientes/" class="btn">
+                ← VOLTAR À LISTA
+            </a>
+        </header>
+
+        <section class="form-card">
+            <div class="card-heading">
+                <div class="brand">M&amp;J <span>STORE</span></div>
+                <h2>Dados do cliente</h2>
+                <p>Preencha os campos abaixo para continuar.</p>
+            </div>
 
             <form
-
-                class="formulario"
-
-                action="{{
-                    '/clientes/' +
-                    editando.id|string +
-                    '/editar'
-                    if editando
-                    else
-                    '/clientes/novo'
-                }}"
-
+                class="form-body"
+                action="{{ '/clientes/' + editando.id|string + '/editar' if editando else '/clientes/novo' }}"
                 method="post"
             >
-
-
                 {% if erro %}
-
-                <div class="erro">
-                    {{ erro }}
-                </div>
-
+                    <div class="error-message" role="alert">
+                        {{ erro }}
+                    </div>
                 {% endif %}
 
-
-                <!-- NOME -->
-
-                <div class="campo">
-
+                <div class="field">
                     <label for="nome">
-
-                        Nome completo
-
-                        <span class="obrigatorio">
-                            *
-                        </span>
-
+                        Nome completo <span class="required">*</span>
                     </label>
 
                     <input
@@ -674,294 +491,157 @@
                         name="nome"
                         required
                         autofocus
-
+                        maxlength="150"
+                        autocomplete="name"
                         placeholder="Digite o nome completo"
-
-                        value="{{
-                            editando.nome
-                            if editando
-                            else
-                            (valores.nome
-                            if valores
-                            else '')
-                        }}"
+                        value="{{ editando.nome if editando else (valores.nome if valores else '') }}"
                     >
-
                 </div>
 
-
-                <!-- MATRÍCULA -->
-
-                <div class="campo">
-
+                <div class="field">
                     <label for="matricula">
-
                         Identificação
-
-                        <span class="opcional">
-                            (opcional)
-                        </span>
-
+                        <span class="optional">(opcional)</span>
                     </label>
 
                     <input
                         type="text"
                         id="matricula"
                         name="matricula"
-
-                        placeholder="Digite uma identificação"
-
-                        value="{{
-                            editando.matricula
-                            if editando
-                            else
-                            (valores.matricula
-                            if valores
-                            else '')
-                        }}"
+                        maxlength="100"
+                        placeholder="Digite a matrícula ou identificação"
+                        value="{{ editando.matricula if editando else (valores.matricula if valores else '') }}"
                     >
 
+                    <p class="field-hint">
+                        Preencha caso o cliente possua uma matrícula ou identificação interna.
+                    </p>
                 </div>
 
-
-                <!-- TELEFONE -->
-
-                <div class="campo">
-
+                <div class="field">
                     <label for="telefone">
-
                         Telefone
-
-                        <span class="opcional">
-                            (opcional)
-                        </span>
-
+                        <span class="optional">(opcional)</span>
                     </label>
 
                     <input
                         type="text"
                         id="telefone"
                         name="telefone"
-
-                        placeholder="Ex: (11) 99999-9999"
-
-                        value="{{
-                            editando.telefone
-                            if editando
-                            else
-                            (valores.telefone
-                            if valores
-                            else '')
-                        }}"
+                        maxlength="30"
+                        autocomplete="tel"
+                        placeholder="Ex.: (11) 99999-9999"
+                        value="{{ editando.telefone if editando else (valores.telefone if valores else '') }}"
                     >
-
                 </div>
 
-
-                <!-- TIPO -->
-
-                <div class="campo">
-
-                    <span class="tipo-titulo">
-                        Tipo de cliente
+                <div class="field">
+                    <span class="field-title">
+                        Tipo de cliente <span class="required">*</span>
                     </span>
 
+                    {% set associado_atual = editando.is_associado if editando else (valores.is_associado if valores else false) %}
+                    {% set associado_selecionado = associado_atual in [true, 1, 'true', 'True', '1', 'on', 'sim'] %}
 
-                    <div class="opcoes-tipo">
-
-
-                        <div class="opcao">
-
+                    <div class="customer-types">
+                        <div class="type-option">
                             <input
                                 type="radio"
-
                                 id="cliente_normal"
-
                                 name="is_associado"
-
                                 value="false"
-
-                                {% if not editando %}
-                                    checked
-                                {% elif
-                                    not editando.is_associado %}
-                                    checked
-                                {% endif %}
+                                {% if not associado_selecionado %}checked{% endif %}
+                                required
                             >
 
-                            <label
-                                for="cliente_normal"
-                                class="tipo-card"
-                            >
+                            <label for="cliente_normal" class="type-card">
+                                <span class="radio-circle"></span>
 
-                                <div class="bolinha"></div>
-
-                                <div class="tipo-texto">
-
-                                    <strong>
-                                        Cliente Normal
-                                    </strong>
-
-                                    <small>
-                                        Cliente comum
-                                    </small>
-
-                                </div>
-
+                                <span>
+                                    <span class="type-name">Cliente normal</span>
+                                    <span class="type-description">Cadastro de cliente comum</span>
+                                </span>
                             </label>
-
                         </div>
 
-
-                        <div class="opcao">
-
+                        <div class="type-option">
                             <input
                                 type="radio"
-
                                 id="cliente_associado"
-
                                 name="is_associado"
-
                                 value="true"
-
-                                {% if
-                                    editando
-                                    and
-                                    editando.is_associado
-                                %}
-                                    checked
-                                {% endif %}
+                                {% if associado_selecionado %}checked{% endif %}
+                                required
                             >
 
-                            <label
-                                for="cliente_associado"
-                                class="tipo-card"
-                            >
+                            <label for="cliente_associado" class="type-card">
+                                <span class="radio-circle"></span>
 
-                                <div class="bolinha"></div>
-
-                                <div class="tipo-texto">
-
-                                    <strong>
-                                        Cliente Associado
-                                    </strong>
-
-                                    <small>
-                                        Apenas identificação
-                                    </small>
-
-                                </div>
-
+                                <span>
+                                    <span class="type-name">Cliente associado</span>
+                                    <span class="type-description">Cliente identificado como associado</span>
+                                </span>
                             </label>
+                        </div>
+                    </div>
 
+                    <p class="field-hint">
+                        Selecione o tipo correspondente ao cadastro do cliente.
+                    </p>
+                </div>
+
+                <section class="discount-card">
+                    <h3>Desconto do cliente</h3>
+
+                    <p>
+                        Defina o percentual de desconto individual que poderá ser aplicado nas vendas para este cliente.
+                    </p>
+
+                    <div class="field" style="margin-bottom:0">
+                        <label for="desconto_percentual">
+                            Percentual de desconto
+                            <span class="required">*</span>
+                        </label>
+
+                        <div class="discount-input">
+                            <input
+                                type="number"
+                                id="desconto_percentual"
+                                name="desconto_percentual"
+                                min="0"
+                                max="100"
+                                step="0.01"
+                                required
+                                placeholder="0"
+                                value="{{ editando.desconto_percentual if editando else (valores.desconto_percentual if valores else 0) }}"
+                            >
+
+                            <span class="percent-symbol">%</span>
                         </div>
 
+                        <p class="field-hint">
+                            Informe um valor entre 0 e 100.
+                        </p>
                     </div>
+                </section>
 
-                </div>
-
-
-                <!-- DESCONTO -->
-
-                <div class="desconto-box">
-
-                    <div class="desconto-titulo">
-                        Desconto do cliente
-                    </div>
-
-                    <div class="desconto-descricao">
-
-                        Escolha o desconto que este
-                        cliente receberá no PDV.
-                        O desconto é individual e
-                        não depende de ser associado.
-
-                    </div>
-
-
-                    <div class="desconto-input">
-
-                        <input
-                            type="number"
-
-                            id="desconto_percentual"
-
-                            name="desconto_percentual"
-
-                            min="0"
-
-                            max="100"
-
-                            step="0.01"
-
-                            required
-
-                            placeholder="0"
-
-                            value="{{
-                                editando.desconto_percentual
-                                if editando
-                                else
-                                (
-                                    valores.desconto_percentual
-                                    if valores
-                                    else
-                                    0
-                                )
-                            }}"
-                        >
-
-                        <span class="porcentagem">
-                            %
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <!-- AÇÕES -->
-
-                <div class="acoes">
-
-                    <button
-                        type="submit"
-                        class="btn btn-salvar"
-                    >
-
-                        {{
-                            "Salvar alterações"
-                            if editando
-                            else
-                            "Cadastrar cliente"
-                        }}
-
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        {{ "SALVAR ALTERAÇÕES" if editando else "CADASTRAR CLIENTE" }}
                     </button>
 
-
-                    <a
-                        href="/clientes"
-                        class="btn btn-cancelar"
-                    >
-                        Cancelar
+                    <a href="/clientes/" class="btn">
+                        CANCELAR
                     </a>
-
                 </div>
 
+                <p class="form-note">
+                    <span class="required">*</span> Campos obrigatórios.
+                </p>
             </form>
-
         </section>
 
-
-        <div class="rodape-info">
-
-            O desconto pode variar de
-            0% a 100% para cada cliente.
-
-        </div>
-
+        <a href="/" class="bottom-link">← Voltar para o Dashboard</a>
     </main>
-
 </body>
-
 </html>
