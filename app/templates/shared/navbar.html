@@ -27,6 +27,7 @@
 
             <div class="app-navbar-links">
 
+                <!-- DASHBOARD -->
                 <a
                     href="/"
                     class="app-navbar-link {% if request.url.path == '/' %}active{% endif %}"
@@ -35,6 +36,7 @@
                     Dashboard
                 </a>
 
+                <!-- PDV -->
                 <a
                     href="/pdv"
                     class="app-navbar-link {% if request.url.path.startswith('/pdv') %}active{% endif %}"
@@ -43,6 +45,7 @@
                     PDV
                 </a>
 
+                <!-- PRODUTOS -->
                 <a
                     href="/produtos"
                     class="app-navbar-link {% if request.url.path.startswith('/produtos') %}active{% endif %}"
@@ -51,6 +54,7 @@
                     Produtos
                 </a>
 
+                <!-- CATEGORIAS -->
                 {% if usuario and usuario.get('role') == 'admin' %}
 
                 <a
@@ -63,7 +67,7 @@
 
                 {% endif %}
 
-
+                <!-- CLIENTES -->
                 {% if usuario and usuario.get('role') == 'admin' %}
 
                 <a
@@ -76,7 +80,7 @@
 
                 {% endif %}
 
-
+                <!-- ESTOQUE -->
                 {% if usuario and usuario.get('role') == 'admin' %}
 
                 <a
@@ -89,7 +93,7 @@
 
                 {% endif %}
 
-
+                <!-- USUÁRIOS -->
                 {% if usuario and usuario.get('role') == 'admin' %}
 
                 <a
@@ -105,7 +109,10 @@
             </div>
 
 
-            <!-- AÇÕES -->
+            <!-- =====================================================
+                 AÇÕES DA NAVBAR
+                 ===================================================== -->
+
             <div class="app-navbar-actions">
 
                 <!-- BOTÃO TEMA -->
@@ -154,9 +161,9 @@
 </nav>
 
 
-<!-- =====================================================
+<!-- ============================================================
      ESTILO DO BOTÃO DE TEMA
-     ===================================================== -->
+     ============================================================ -->
 
 <style>
 
@@ -166,13 +173,12 @@
     height: 42px;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 
     padding: 0;
 
-    border: 1px solid rgba(255,255,255,0.12);
+    border: 1px solid rgba(255, 255, 255, 0.12);
 
     border-radius: 50%;
 
@@ -203,11 +209,13 @@
 
     box-shadow:
         0 0 18px
-        rgba(200,255,26,0.15);
+        rgba(200, 255, 26, 0.15);
 }
 
 
-/* TEMA CLARO */
+/* ============================================================
+   TEMA CLARO - BOTÃO
+   ============================================================ */
 
 body.light-theme .app-navbar-theme {
 
@@ -229,9 +237,71 @@ body.light-theme .app-navbar-theme:hover {
 
     box-shadow:
         0 0 18px
-        rgba(141,181,0,0.18);
+        rgba(141, 181, 0, 0.18);
 }
 
+
+/* ============================================================
+   TEMA CLARO - PÁGINA
+   ============================================================ */
+
+body.light-theme {
+
+    background: #f2f2f2 !important;
+
+    color: #222222 !important;
+}
+
+
+/* ============================================================
+   NAVBAR NO TEMA CLARO
+   ============================================================ */
+
+body.light-theme .app-navbar {
+
+    background: #ffffff !important;
+
+    border-bottom-color: #dddddd !important;
+}
+
+
+body.light-theme .app-navbar-link {
+
+    color: #444444 !important;
+}
+
+
+body.light-theme .app-navbar-link:hover {
+
+    color: #111111 !important;
+}
+
+
+body.light-theme .app-navbar-user {
+
+    color: #444444 !important;
+}
+
+
+body.light-theme .app-navbar-logout {
+
+    color: #333333 !important;
+
+    border-color: #cccccc !important;
+}
+
+
+body.light-theme .app-navbar-logout:hover {
+
+    background: #f2f2f2 !important;
+
+    color: #111111 !important;
+}
+
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
 
 @media (max-width: 700px) {
 
@@ -241,7 +311,6 @@ body.light-theme .app-navbar-theme:hover {
         height: 40px;
 
         font-size: 17px;
-
     }
 
 }
@@ -249,12 +318,18 @@ body.light-theme .app-navbar-theme:hover {
 </style>
 
 
+<!-- ============================================================
+     JAVASCRIPT
+     MENU MOBILE + TEMA
+     ============================================================ -->
+
 <script>
+
 (function () {
 
-    /* =====================================================
+    /* ========================================================
        MENU MOBILE
-       ===================================================== */
+       ======================================================== */
 
     const toggle =
         document.querySelector('.app-navbar-toggle');
@@ -304,9 +379,9 @@ body.light-theme .app-navbar-theme:hover {
     }
 
 
-    /* =====================================================
+    /* ========================================================
        BOTÃO DE TEMA
-       ===================================================== */
+       ======================================================== */
 
     const themeButton =
         document.getElementById('themeToggle');
@@ -317,13 +392,17 @@ body.light-theme .app-navbar-theme:hover {
     }
 
 
+    /* ========================================================
+       APLICAR TEMA
+       ======================================================== */
+
     function aplicarTema(tema) {
 
         const claro =
             tema === 'claro';
 
 
-        /* Aplica o tema no BODY */
+        /* Remove/adiciona tema no BODY */
 
         document.body.classList.toggle(
             'light-theme',
@@ -331,13 +410,25 @@ body.light-theme .app-navbar-theme:hover {
         );
 
 
-        /* Troca o ícone */
+        /* Também coloca no HTML */
+
+        document.documentElement.classList.toggle(
+            'light-theme',
+            claro
+        );
+
+
+        /* ====================================================
+           ÍCONE
+           ==================================================== */
 
         themeButton.textContent =
             claro ? '☀️' : '🌙';
 
 
-        /* Acessibilidade */
+        /* ====================================================
+           ACESSIBILIDADE
+           ==================================================== */
 
         themeButton.setAttribute(
             'aria-pressed',
@@ -363,24 +454,28 @@ body.light-theme .app-navbar-theme:hover {
     }
 
 
-    /* =====================================================
-       CARREGA O TEMA SALVO
-       ===================================================== */
+    /* ========================================================
+       TEMA SALVO
+       ======================================================== */
 
     const temaSalvo =
         localStorage.getItem('tema');
 
 
-    aplicarTema(
-        temaSalvo === 'claro'
-            ? 'claro'
-            : 'escuro'
-    );
+    if (temaSalvo === 'claro') {
+
+        aplicarTema('claro');
+
+    } else {
+
+        aplicarTema('escuro');
+
+    }
 
 
-    /* =====================================================
-       CLIQUE
-       ===================================================== */
+    /* ========================================================
+       CLIQUE NO BOTÃO
+       ======================================================== */
 
     themeButton.addEventListener(
         'click',
@@ -410,4 +505,5 @@ body.light-theme .app-navbar-theme:hover {
     );
 
 })();
+
 </script>
